@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\KategoriController;
+use App\Http\Controllers\API\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,11 @@ Route::controller(KategoriController::class)->group(function () {
     Route::get('/kategori-list', 'index'); 
     Route::post('/kategori-add', 'store');
     Route::post('/kategori-delete', 'remove');
+});
+
+Route::controller(ProductController::class)->group(function(){
+    Route::get('/product-byid/{id}', 'detail'); 
+    Route::get('/product-list', 'index'); 
+    Route::post('/product-add', 'store');
+    Route::post('/product-delete', 'remove');
 });
