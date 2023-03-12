@@ -5,10 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Service\Kategori\KategoriService;
 use Illuminate\Http\Request;
+use App\Http\Traits\ResponseApi;
 
 class KategoriController extends Controller
 {
     //
+    use ResponseApi;
     protected $kategori_service;
     public function __construct(KategoriService $kategori_service)
     {
@@ -18,37 +20,29 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $data = $this->kategori_service->postKategoriService($request,$request->id_kategori);
-        return response()->json([
-            "status"=>"ok",
-            "data"=>$data
-        ],200);
+        $helper = getObject($data,1);
+        return $this->getResponse($data, $helper);
     }
 
     public function index(Request $request)
     {
         $data = $this->kategori_service->getAllKategoryService($request);
-        return response()->json([
-            "status"=>"ok",
-            "data"=>$data
-        ],200);
+        $helper = getObject($data,1); //1
+        return $this->getResponse($data, $helper);
     }
 
     public function detail($id)
     {
         $data = $this->kategori_service->getKategoryByIdService($id);
-        return response()->json([
-            "status"=>"ok",
-            "data"=>$data
-        ],200);
+        $helper = getObject($data,1); //1
+        return $this->getResponse($data, $helper);
     }
 
     public function remove(Request $request)
     {
         $id = $request->id_kategori;
         $data = $this->kategori_service->deleteKategoriService($request);
-        return response()->json([
-            "status"=>"ok",
-            "data"=>$data
-        ],200);
+        $helper = getObject($data,1); //1
+        return $this->getResponse($data, $helper);//2
     }
 }

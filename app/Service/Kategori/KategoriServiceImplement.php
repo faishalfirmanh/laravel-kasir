@@ -27,8 +27,10 @@ class KategoriServiceImplement implements KategoriService{
 
     public function postKategoriService($data,$id){
 
+        $find_name = $this->kategoriRepository->getKategoryById($id) != NULL ? $this->kategoriRepository->getKategoryById($id)->nama_kategori : null;
+        $cek_ = $data->nama_kategori == $find_name ? '' : 'unique:kategoris,nama_kategori';
         $validated = Validator::make($data->all(),[
-            'nama_kategori' => 'required|unique:kategoris,nama_kategori|max:255'
+            'nama_kategori' => 'required|'.$cek_
         ]);
         if ($validated->fails()) {
             return $validated->errors();
