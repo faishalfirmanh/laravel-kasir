@@ -14,10 +14,15 @@ class Product extends Model
         'kategori_id',
         'harga_beli',
         'total_kg',
+        'expired'
     ];
 
     public function kategori(){
         return $this->belongsTo(Kategori::class,'kategori_id','id_kategori')->select('id_kategori','nama_kategori');
+    }
+
+    public function priceSellProduct(){
+        return $this->hasMany(ProductJual::class,'product_id','id_product');
     }
 
 }

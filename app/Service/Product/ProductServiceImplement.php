@@ -27,18 +27,29 @@ class ProductServiceImplement implements ProductService{
 
     public function postProductService($data,$id){
 
+        $find = $this->ProductRepository->getProductById($id);
+        if ($find != NULL) {
+            if ($find->nama_product == $data->nama_product) {
+                $kondisi_ = '';
+            }else{
+                $kondisi_ = 'unique:products,nama_product';
+            }
+        }else{
+            $kondisi_ = 'unique:products,nama_product';
+        }
+
         $validated = Validator::make($data->all(),[
-            'nama_product' => 'required|unique:products,nama_product|max:255',
+            'nama_product' => 'required|'.$kondisi_,
             'kategori_id' => 'required|integer|exists:kategoris,id_kategori',
             'harga_beli' => 'required|integer',
-            'total_kg' => 'required|integer'
+            'total_kg' => 'required|integer',
+            'expired'=> 'required|date_format:Y-m-d|after:today'
         ]);
         if ($validated->fails()) {
             return $validated->errors();
         }
 
         if ($id != NULL) {
-            $find = $this->ProductRepository->getProductById($id);
             if ($find != NULL) {
                 $data = $this->ProductRepository->postProduct($data,$id);
             }else{

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Repository\Product;
+namespace App\Repository\ProductJual;
 
-use App\Models\Product;
-use App\Repository\Product\ProductRepository;
+use App\Models\ProductJual as ProductJualModel;
+use App\Repository\ProductJual\ProductJualRepository;
 
-class ProductRepositoryImplement implements ProductRepository{
+class ProductJualRepositoryImplement implements ProductJualRepository{
 
     protected $model;
-    public function __construct(Product $model)
+    public function __construct(ProductJualModel $model)
     {
         $this->model = $model;
     }
@@ -21,23 +21,17 @@ class ProductRepositoryImplement implements ProductRepository{
     public function getAllProductPaginate($limit,$keyword)
     {
         if (!empty($keyword)) {
-            $data = $this->model
-            ->with("kategori")
-            ->with("priceSellProduct")
-            ->where('nama_product','like','%'.$keyword .'%')
+            $data = $this->model->with("kategori")->where('nama_product','like','%'.$keyword .'%')
             ->limit($limit)->paginate($limit);
         }else{
-            $data = $this->model
-            ->with("kategori")
-            ->with("priceSellProduct")
-            ->limit($limit)->paginate($limit);
+            $data = $this->model->with("kategori")->limit($limit)->paginate($limit);
         }
         return $data;
     }
 
     public function getProductById($id)
     {
-        $data = $this->model->with("kategori")->with("priceSellProduct")
+        $data = $this->model->with("kategori")
                     ->where('id_product',$id)
                     ->first();
         return $data;
@@ -52,13 +46,11 @@ class ProductRepositoryImplement implements ProductRepository{
             $model_save->kategori_id = strtolower($data->kategori_id);
             $model_save->harga_beli = strtolower($data->harga_beli);
             $model_save->total_kg = strtolower($data->total_kg);
-            $model_save->expired = $data->expired;
         }else{
             $model_save->nama_product = strtolower($data->nama_product);
             $model_save->kategori_id = strtolower($data->kategori_id);
             $model_save->harga_beli = strtolower($data->harga_beli);
             $model_save->total_kg = strtolower($data->total_kg);
-            $model_save->expired = $data->expired;
         }
         $model_save->save();
         return $model_save->fresh();

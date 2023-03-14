@@ -24,6 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::controller(KategoriController::class)->group(function () {
     Route::get('/kategori-byid/{id}', 'detail'); 
+    Route::get('/kategori-detail', 'detail2'); 
     Route::get('/kategori-list', 'index'); 
     Route::post('/kategori-add', 'store');
     Route::post('/kategori-delete', 'remove');

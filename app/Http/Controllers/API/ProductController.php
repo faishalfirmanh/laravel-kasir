@@ -5,14 +5,18 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Service\Product\ProductService;
 use Illuminate\Http\Request;
+use App\Http\Traits\ResponseApi;
+use App\Service\ProductJual\ProductJualService;
 
 class ProductController extends Controller
 {
     //
+    use ResponseApi;
     protected $service;
-    public function __construct(ProductService $service)
+    public function __construct(ProductService $service, ProductJualService $product_jual_service)
     {
         $this->service = $service;
+        $this->product_jual_service = $product_jual_service;
     }
 
     public function store(Request $request)
@@ -52,5 +56,13 @@ class ProductController extends Controller
         ],200);
     }
 
+    public function save_price_sell_product(Request $request){
+        $data = $this->product_jual_service->postProductJualService($request,$request->id_product_jual);
+
+    }
+
+    public function remove_price_sell_product(Request $request){
+
+    }
 
 }

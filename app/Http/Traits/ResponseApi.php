@@ -28,4 +28,20 @@ trait ResponseApi{
         }
     }
 
+    public function responseSucess($data){
+        return response()->json([
+            "status"=>"ok",
+            "msg"=> "success",
+            "data"=> $data
+        ],200);
+    }
+
+    public function responseError($data){
+        return response()->json([
+            "status"=>"no",
+            "msg"=> "no found or error",
+            "data"=>$data
+        ],404);
+    }
+
 }
