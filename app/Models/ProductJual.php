@@ -18,7 +18,7 @@ class ProductJual extends Model
     ];
 
     public function productName(){
-        return $this->belongsTo(Product::class,'product_id ','id_product_jual')->select('nama_product');
+        return $this->belongsTo(Product::class,'product_id','id_product');
     }
 
 }

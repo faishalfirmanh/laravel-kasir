@@ -35,4 +35,9 @@ Route::controller(ProductController::class)->group(function(){
     Route::get('/product-list', 'index'); 
     Route::post('/product-add', 'store');
     Route::post('/product-delete', 'remove');
+
+    Route::get('/product-jualById/{id}','detailProductJual');
+    Route::post('/product-jual-save','save_price_sell_product');
+    Route::post('/product-jual-delete','remove_price_sell_product');
+    
 });

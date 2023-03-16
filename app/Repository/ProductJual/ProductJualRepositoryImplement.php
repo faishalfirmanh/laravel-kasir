@@ -29,34 +29,33 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
         return $data;
     }
 
-    public function getProductById($id)
+    public function getProductJualById($id)
     {
-        $data = $this->model->with("kategori")
-                    ->where('id_product',$id)
-                    ->first();
+        //tambah with('namafungsimode') kalau ingin menampilkan data yg berhubungan
+        $data = $this->model->where('id_product_jual',$id)->first();
         return $data;
     }
 
-    public function postProduct($data,$id)
+    public function postProductJual($data,$id)
     {
         $model_save = $this->model;
         if ( intval($id) > 0 || $id != NULL) {
-            $model_save = $this->model->where('id_product',$id)->first();
-            $model_save->nama_product = strtolower($data->nama_product);
-            $model_save->kategori_id = strtolower($data->kategori_id);
-            $model_save->harga_beli = strtolower($data->harga_beli);
-            $model_save->total_kg = strtolower($data->total_kg);
+            $model_save = $this->model->where('id_product_jual',$id)->first();
+            $model_save->product_id = $data->product_id;
+            $model_save->start_kg = $data->start_kg;
+            $model_save->end_kg =$data->end_kg;
+            $model_save->price_sell = $data->price_sell;
         }else{
-            $model_save->nama_product = strtolower($data->nama_product);
-            $model_save->kategori_id = strtolower($data->kategori_id);
-            $model_save->harga_beli = strtolower($data->harga_beli);
-            $model_save->total_kg = strtolower($data->total_kg);
+            $model_save->product_id = $data->product_id;
+            $model_save->start_kg = $data->start_kg;
+            $model_save->end_kg = $data->end_kg;
+            $model_save->price_sell = $data->price_sell;
         }
         $model_save->save();
         return $model_save->fresh();
     }
 
-    public function deleteProduct($id)
+    public function deleteProductJual($id)
     {
         $model = $this->model->find($id);
         return $model->delete();

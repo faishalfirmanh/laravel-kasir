@@ -20,15 +20,15 @@ class ProductJualServiceImplement implements ProductJualService{
         return $data;
     }
 
-    public function getProductByIdService($id){
+    public function getProductJualByIdService($id){
 
-        $data = $this->ProductJualRepository->getProductById($id);
+        $data = $this->ProductJualRepository->getProductJualById($id);
         return $data;
     }
 
     public function postProductJualService($request,$id){
 
-        $validated = Validator::make($data->all(),[
+        $validated = Validator::make($request->all(),[
             'product_id' => 'required|integer|exists:products,id_product',
             'start_kg' => 'required|integer',
             'end_kg' => 'required|integer',
@@ -37,18 +37,18 @@ class ProductJualServiceImplement implements ProductJualService{
         if ($validated->fails()) {
             return $validated->errors();
         }
-        
-        return  $data;
+        $save = $this->ProductJualRepository->postProductJual($request,$id);
+        return  $save;
     }
     
-    public function deleteProductService($id){
-        $validated = Validator::make($id->all(),[
-            'id_product' => 'required|integer|exists:products,id_product'
+    public function deleteProductJualService($req){
+        $validated = Validator::make($req->all(),[
+            'id_product_jual' => 'required|integer|exists:product_juals,id_product_jual'
         ]);
         if ($validated->fails()) {
             return $validated->errors();
         }
-        $delete = $this->ProductRepository->deleteProduct($id->id_product);
+        $delete = $this->ProductJualRepository->deleteProductJual($req->id_product_jual);
         return $delete;
     }
 

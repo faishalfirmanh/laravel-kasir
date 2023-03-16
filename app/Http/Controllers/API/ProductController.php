@@ -56,12 +56,19 @@ class ProductController extends Controller
         ],200);
     }
 
-    public function save_price_sell_product(Request $request){
-        $data = $this->product_jual_service->postProductJualService($request,$request->id_product_jual);
+    public function detailProductJual($id){
+        $data = $this->product_jual_service->getProductJualByIdService($id);
+        return $this->responseSucess($data);
+    }
 
+    public function save_price_sell_product(Request $request){
+        $data = $this->product_jual_service->postProductJualService($request,$request->id);
+        return $this->responseSucess($data);
     }
 
     public function remove_price_sell_product(Request $request){
+        $data = $this->product_jual_service->deleteProductJualService($request);
+        return $this->responseSucess($data);
 
     }
 
