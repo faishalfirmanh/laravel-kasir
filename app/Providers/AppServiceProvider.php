@@ -8,12 +8,20 @@ use App\Repository\Product\ProductRepository;
 use App\Repository\Product\ProductRepositoryImplement;
 use App\Repository\ProductJual\ProductJualRepository;
 use App\Repository\ProductJual\ProductJualRepositoryImplement;
+use App\Repository\Role\RoleRepository;
+use App\Repository\Role\RoleRepositoryImplement;
+use App\Repository\Users\UserRepository;
+use App\Repository\Users\UserRepositoryImplement;
 use App\Service\Kategori\KategoriService;
 use App\Service\Kategori\KategoriServiceImplement;
 use App\Service\Product\ProductService;
 use App\Service\Product\ProductServiceImplement;
 use App\Service\ProductJual\ProductJualService;
 use App\Service\ProductJual\ProductJualServiceImplement;
+use App\Service\Role\RoleService;
+use App\Service\Role\RoleServiceImplement;
+use App\Service\Users\UserService;
+use App\Service\Users\UserServiceImplement;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,6 +42,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductJualRepository::class, ProductJualRepositoryImplement::class);
         $this->app->bind(ProductJualService::class,ProductJualServiceImplement::class);
         //
+        $this->app->bind(RoleRepository::class, RoleRepositoryImplement::class);
+        $this->app->bind(RoleService::class, RoleServiceImplement::class);
+        $this->app->bind(UserRepository::class,UserRepositoryImplement::class);
+        $this->app->bind(UserService::class, UserServiceImplement::class);
     }
 
     /**
