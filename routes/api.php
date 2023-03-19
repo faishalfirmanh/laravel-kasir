@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\KategoriController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,4 +41,11 @@ Route::controller(ProductController::class)->group(function(){
     Route::post('/product-jual-save','save_price_sell_product');
     Route::post('/product-jual-delete','remove_price_sell_product');
     
+});
+
+Route::controller(UserController::class)->group(function(){
+    Route::post('/user-add','store');
+    Route::get('/user-list','index');
+    Route::get('/user-byid/{id}','detail');
+    Route::post('/user-delete','remove');
 });

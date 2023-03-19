@@ -14,12 +14,20 @@ class UserServiceImplement implements UserService{
 
     public function GetUserByIdService($id)
     {
-        
+        $find = $this->user_repository->getUserById($id->id);
+        return $find;
     }
 
     public function DeleteUserService($id)
     {
-        
+        $validated = Validator::make($id->all(),[
+            'id' => 'required|integer|exists:users,id'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        $delete = $this->user_repository->deleteUser($id->id);
+        return $delete;
     }
 
     public function PostUserService($request, $id)
@@ -28,18 +36,21 @@ class UserServiceImplement implements UserService{
             'id_roles' => 'required|integer|exists:roles,id',
             'name' => 'required|string',
             'email' => 'required|email',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'id'=> 'integer|exists:users,id'
         ]);
         if ($validated->fails()) {
             return $validated->errors();
         }
-        $save = $this->ProductJualRepository->postProductJual($request,$id);
+        $save = $this->user_repository->postUser($request,$id);
         return  $save;
     }
 
     public function GetAllUserService($request)
     {
-        
+        $limit = 10;
+        $data = $this->user_repository->getAllUserPaginate($limit,$request->keyword);
+        return $data;
     }
 
 }
