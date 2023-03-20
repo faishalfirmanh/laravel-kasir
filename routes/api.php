@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\KategoriController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -48,4 +49,11 @@ Route::controller(UserController::class)->group(function(){
     Route::get('/user-list','index');
     Route::get('/user-byid/{id}','detail');
     Route::post('/user-delete','remove');
+});
+
+Route::controller(RoleController::class)->group(function(){
+    Route::post('/role-add','store');
+    Route::get('/role-list','index');
+    Route::get('/role-byid/{id}','detail');
+    Route::post('/role-delete','remove');
 });
