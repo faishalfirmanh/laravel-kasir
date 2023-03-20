@@ -14,10 +14,10 @@ class KategoriController extends Controller
     //
     use ResponseApi;
     protected $kategori_service;
-    public function __construct(KategoriService $kategori_service,KategoriLogic  $global_service,KategoriRepo $repo)
+    public function __construct(KategoriService $kategori_service)
     {
         $this->kategori_service = $kategori_service;
-        $this->global_service = $global_service;
+        // $this->global_service = $global_service;
         // parent::__construct($repo);
     }
 

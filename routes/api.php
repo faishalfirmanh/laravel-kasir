@@ -22,15 +22,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('login',[UserController::class,'loginUser']);
+Route::post('logout',[UserController::class,'logoutUser']);
 
-
-Route::controller(KategoriController::class)->group(function () {
-    Route::get('/kategori-byid/{id}', 'detail'); 
-    Route::get('/kategori-detail', 'detail2'); 
-    Route::get('/kategori-list', 'index'); 
-    Route::post('/kategori-add', 'store');
-    Route::post('/kategori-delete', 'remove');
+Route::group(['middleware' => ['jwt.verify']], function() {
+     //--use jwt--
+    Route::controller(KategoriController::class)->group(function () {
+        Route::get('/kategori-byid/{id}', 'detail'); 
+        Route::get('/kategori-detail', 'detail2'); 
+        Route::get('/kategori-list', 'index'); 
+        Route::post('/kategori-add', 'store');
+        Route::post('/kategori-delete', 'remove');
+    });
+    //--use jwt--
 });
+
 
 Route::controller(ProductController::class)->group(function(){
     Route::get('/product-byid/{id}', 'detail'); 
