@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+  /*========== Colors ==========*/
+  --hue: 240;
+  --first-color: hsl(var(--hue), 16%, 18%);
+  --first-color-alt: hsl(var(--hue), 16%, 12%);
+  --title-color: hsl(var(--hue), 8%, 15%);
+  --text-color: hsl(var(--hue), 8%, 35%);
+  --body-color: hsl(var(--hue), 100%, 99%);
+  --container-color: #FFF;
+
+  /*========== Font and typography ==========*/
+  --body-font: 'Poppins', sans-serif;
+  --big-font-size: 1.5rem;
+  --normal-font-size: .938rem;
+
+  /*========== z index ==========*/
+  --z-modal: 1000;
+}
+
+@media screen and (min-width: 968px) {
+    :root{
+        --big-font-size:1.75rem;
+        --normal-font-size:1rem;
+    }
+}
+/*-------- modal base  -------*/
+.modal >.modal_button{
+    font-family: var(--body-color);
+    font-size: var(--normal-font-size);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.modal_container{
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+.modal_cus{
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+.modal_button{
+    display: inline-block;
+    background-color: #f57878;
+    color: #fff;
+    padding: 1rem 1.25rem;
+    border-radius: .5rem;
+    transition: .3s;
+}
+
+.modal_button:hover{
+    background-color: #f50c0c;
+}
+.modal_container_open{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: hsla(var(--hue), 18%, 75%, .8);
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-items: flex-end;
+    overflow: hidden;
+    transition: all .3s;
+    z-index: var(--z-modal);
+    visibility: hidden; 
+    opacity: 0; 
+}
+.modal_content{
+    position: relative;
+    background-color: var(--container-color);
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    border-radius: 1rem 1rem 1rem 1rem;
+    transition: all .5s;
+    margin-bottom: 20px;
+    /*-- effect --*/
+    /* transform: translateY(10%); */
+    /*-- effect 2--*/
+    transform: scale(.5) translateY(10%);
+}
+.modal__img{
+    width: 150px;
+    max-width: 30%;
+    height: auto;
+    margin-bottom: .75rem;
+}
+.modal__close{
+    display: inline-flex;
+    background-color: var(--first-color);
+    border-radius: .25rem;
+    color: #fff;
+    font-size: 1.4rem;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    cursor: pointer;
+}
+.modal__title{
+   font-size: var(--big-font-size);
+   color: var(--title-color);
+   font-weight: 500;
+}
+.modal__description{
+    margin-bottom: 1.5rem;
+}
+
+.modal__button-width{
+    width: 80%;
+    cursor: pointer;
+    border: none;
+}
+.modal__button-link{
+    display: block;
+    margin: 1rem auto 0;
+    background-color: transparent;
+    background:none;
+    border:none;
+    cursor: pointer;
+    font-weight: 500;
+}
+.show-modal{
+    visibility: visible; 
+    opacity: 1; 
+}
+.show-modal .modal_content{
+    /* transform: translateY(0); */
+    transform: scale(1) translateY(0);
+}
+
+@media screen and (max-width: 576px){
+    .modal_content{
+      margin: auto;
+      width: 380px;
+      border-radius: 1.25rem;
+    }
+
+}

@@ -1,0 +1,87 @@
+
+body{
+    font-size: 10px;
+    font-weight: 400;
+    font-family: Recursive;
+    text-rendering:optimizeLegibility;
+}
+
+.pagination-custom{
+    /* height: 100vh;
+    background: #f12711;
+    background: linear-gradient(to right, #f5af15, #f12711); */
+   
+}
+
+.pagination-custom .heading--text{
+
+}
+
+.pagination-custom .heading--text h2{
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    line-height: 1.3;
+}
+
+.pagination-custom .pagination-link{
+    list-style-type:none;
+    background: #d7d7d7;
+    margin: 2rem 0;
+    padding: 1.2rem 1.6rem;
+    border-radius: 2rem;
+}
+
+.pagination-custom .pagination-link li{
+    display: inline-block;
+    margin: 0 .1rem;
+    line-height: 2.8;
+}
+
+.pagination-custom .pagination-link li a:link,
+.pagination-custom .pagination-link li a:visited{
+    font-size: 12px;
+    font-weight:500;
+    padding: 1rem;
+    background: #ffff;
+    border-radius: 1.5rem;
+    text-decoration: none;
+    color: #555;
+    cursor: pointer;
+    transition: all .4s;
+}
+
+.pagination-custom .pagination-link li a:hover {
+    background: #54a0ff;
+    color: #fff;
+    padding: 1.2rem;
+}
+
+.pagination-custom .pagination-link li .active:link,
+.pagination-custom .pagination-link li .active:visited{
+    background: #54a0ff;
+    color: #fff;
+}
+
+@media only screen and (max-width : 1080px){
+    .pagination-custom .pagination-link li:nth-child(9){
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .pagination-custom .pagination-link li:nth-child(8),
+    .pagination-custom .pagination-link li:nth-child(7),
+    .pagination-custom .pagination-link li:nth-child(6){
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 500px){
+    .pagination-custom .pagination-link li:nth-child(6),
+    .pagination-custom .pagination-link li:nth-child(5),
+    .pagination-custom .pagination-link li:nth-child(4){
+        display: none;
+    }
+}
