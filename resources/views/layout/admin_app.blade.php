@@ -116,7 +116,7 @@
         <!--modal end-->
     </div>
 
-   
+@stack('scripts')   
 <script src="{{ asset('css/js/modal_custom.js') }}"></script>
 <script>
 </script>

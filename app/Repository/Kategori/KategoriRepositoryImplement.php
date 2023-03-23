@@ -23,7 +23,7 @@ class KategoriRepositoryImplement implements KategoriRepository{
             $data = $this->model->where('nama_kategori','like','%'.$keyword .'%')
             ->limit($limit)->paginate($limit);
         }else{
-            $data = $this->model->limit($limit)->paginate($limit);
+            $data = $this->model->with(['productRelasiKategori'])->limit($limit)->paginate($limit);
         }
         return $data;
     }

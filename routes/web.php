@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\KategoriController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WEB\AdminController;
 
@@ -17,6 +18,8 @@ use App\Http\Controllers\WEB\AdminController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/api-kategori',[KategoriController::class,'index'])->name('api-kategori');
 
 Route::get('/dashboard',[AdminController::class, 'dashboardView'])->name('dashboard');
 Route::get('/kategori',[AdminController::class, 'kategoriView'])->name('kategori');

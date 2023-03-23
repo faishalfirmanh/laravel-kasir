@@ -26,16 +26,17 @@ Route::post('login',[UserController::class,'loginUser']);
 Route::post('logout',[UserController::class,'logoutUser']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-     //--use jwt--
-    Route::controller(KategoriController::class)->group(function () {
-        Route::get('/kategori-byid/{id}', 'detail'); 
-        Route::get('/kategori-detail', 'detail2'); 
-        Route::get('/kategori-list', 'index'); 
-        Route::post('/kategori-add', 'store');
-        Route::post('/kategori-delete', 'remove');
-    });
-    //--use jwt--
+    
 });
+//--use jwt--
+Route::controller(KategoriController::class)->group(function () {
+    Route::get('/kategori-byid/{id}', 'detail'); 
+    Route::get('/kategori-detail', 'detail2')->name('kategori-details'); 
+    Route::get('/kategori-list', 'index')->name('kategori-list'); 
+    Route::post('/kategori-add', 'store')->name('kategori-add');
+    Route::post('/kategori-delete', 'remove')->name('kategori-delete');
+});
+//--use jwt--
 
 
 Route::controller(ProductController::class)->group(function(){
