@@ -14,11 +14,15 @@ class UserSeeder extends Seeder
     public function run()
     {
         //
-        $admin = new User;
-        $admin->id_roles = env('user_login_id_role');
-        $admin->name = env('user_login_name');
-        $admin->email = env('user_login_email');
-        $admin->password = bcrypt(env('user_login_pass'));
-        $admin->save();
+        $find = User::query()->where('email','admin@mail.com')->first();
+        if ($find == NULL) {
+            $admin = new User;
+            $admin->id_roles = env('user_login_id_role');
+            $admin->name = env('user_login_name');
+            $admin->email = env('user_login_email');
+            $admin->password = bcrypt(env('user_login_pass'));
+            $admin->save();
+        }
+       
     }
 }

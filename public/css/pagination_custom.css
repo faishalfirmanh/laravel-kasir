@@ -65,12 +65,22 @@ body{
 }
 
 @media only screen and (max-width : 1080px){
+
+    .pagination-custom .pagination-link li.page_next{
+        display: inline !important;
+    }
+
     .pagination-custom .pagination-link li:nth-child(9){
         display: none;
     }
 }
 
 @media only screen and (max-width: 767px){
+
+    .pagination-custom .pagination-link li.page_next{
+        display: inline !important;
+    }
+
     .pagination-custom .pagination-link li:nth-child(8),
     .pagination-custom .pagination-link li:nth-child(7),
     .pagination-custom .pagination-link li:nth-child(6){
@@ -79,6 +89,11 @@ body{
 }
 
 @media only screen and (max-width: 500px){
+
+    .pagination-custom .pagination-link li.page_next{
+        display: inline !important;
+    }
+
     .pagination-custom .pagination-link li:nth-child(6),
     .pagination-custom .pagination-link li:nth-child(5),
     .pagination-custom .pagination-link li:nth-child(4){

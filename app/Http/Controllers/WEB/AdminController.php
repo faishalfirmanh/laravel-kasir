@@ -4,6 +4,7 @@ namespace App\Http\Controllers\WEB;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -15,7 +16,7 @@ class AdminController extends Controller
     }
 
     public function dashboardView(Request $request)
-    {
+    { 
         return view('admin.dashboard.index');
     }
 

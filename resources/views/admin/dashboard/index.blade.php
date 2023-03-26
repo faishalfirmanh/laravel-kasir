@@ -2,6 +2,13 @@
 @section('title')
  Dashboard
 @endsection
+<style>
+    .far.fa-eye,
+    .far.fa-edit,
+    .far.fa-trash-alt:hover{
+        cursor: pointer;
+    }
+</style>
 @section('dashboard')
     <div class="cards">
         <div class="card">
@@ -44,68 +51,72 @@
 @endsection
 
 @section('table_content')
-    <div class="tables" style="margin-top:-80px;">
-        <div class="last-appointments">
-            <div class="heading">
-                <h2>Kategori</h2>
-                <a href="#" class="btn">Tambah</a>
-            </div>
-            <table class="appointmens" id="kategori-table-id">
-                <thead>
-                    <td>No</td>
-                    <td>Name Kategori</td>
-                    <td>Total Product</td>
-                    <td>Actions</td>
-                </thead>
-                <tbody id="table-body-kategori">
-                    {{-- <tr>
-                        <td>1</td>
-                        <td>Sayur</td>
-                        <td>20</td>
-                        <td>
-                            <a href=""><i class="far fa-eye"></i></a>
-                            <a href=""><i class="far fa-edit"></i></a>
-                            <a href=""><i class="far fa-trash-alt"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Bahan Pokok</td>
-                        <td>10</td>
-                        <td>
-                            <a href=""><i class="far fa-eye"></i></a>
-                            <a href=""><i class="far fa-edit"></i></a>
-                            <a href=""><i class="far fa-trash-alt"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Buah</td>
-                        <td>20</td>
-                        <td>
-                            <i class="far fa-eye"></i>
-                            <i class="far fa-edit"></i>
-                            <i class="far fa-trash-alt"></i>
-                        </td>
-                    </tr> --}}
-                </tbody>
-            </table>
-            <div class="pagination-custom">
-                <ul class="pagination-link" id="link-paging-id">
-                    {{-- <li> <a href="#" class="prev"> <i class="fas fa-arrow-circle-left" aria-hidden="true"></i> </a> </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#" class="active">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">6</a></li>
-                    <li><a href="#">7</a></li>
-                    <li><a href="#">.....</a></li>
-                    <li><a href="#" class="next"> <i class="fas fa-arrow-circle-right" aria-hidden="true"></i> </a></li> --}}
-                </ul>
-            </div>
-        </div>
+<div class="tables" style="margin-top:-80px;">
+    
+    <div class="heading">
+        <h2>Kategori</h2>
+        <a href="#" class="btn">Tambah</a>
     </div>
+
+    <section class="table__body">
+        <table class="" id="kategori-table-id">
+            <thead>
+                <td>No</td>
+                <td>Name Kategori</td>
+                <td>Total Product</td>
+                <td>Actions</td>
+            </thead>
+            <tbody id="table-body-kategori">
+                {{-- <tr>
+                    <td>1</td>
+                    <td>Sayur</td>
+                    <td>20</td>
+                    <td>
+                        <a href=""><i class="far fa-eye"></i></a>
+                        <a href=""><i class="far fa-edit"></i></a>
+                        <a href=""><i class="far fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Bahan Pokok</td>
+                    <td>10</td>
+                    <td>
+                        <a href=""><i class="far fa-eye"></i></a>
+                        <a href=""><i class="far fa-edit"></i></a>
+                        <a href=""><i class="far fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Buah</td>
+                    <td>20</td>
+                    <td>
+                        <i class="far fa-eye"></i>
+                        <i class="far fa-edit"></i>
+                        <i class="far fa-trash-alt"></i>
+                    </td>
+                </tr> --}}
+            </tbody>
+        </table>
+    </section>
+    
+    <div class="pagination-custom">
+        <ul class="pagination-link" id="link-paging-id">
+            {{-- <li> <a href="#" class="prev"> <i class="fas fa-arrow-circle-left" aria-hidden="true"></i> </a> </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#" class="active">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">6</a></li>
+            <li><a href="#">7</a></li>
+            <li><a href="#">.....</a></li>
+            <li><a href="#" class="next"> <i class="fas fa-arrow-circle-right" aria-hidden="true"></i> </a></li> --}}
+        </ul>
+    </div>
+    
+</div>
 @endsection
 
 @push('scripts')
@@ -137,9 +148,9 @@
                             <td>${data[i].nama_kategori}</td>
                             <td>${data[i].product_relasi_kategori.length}</td>
                             <td>
-                                <i class="far fa-eye"></i>
-                                <i class="far fa-edit"></i>
-                                <i class="far fa-trash-alt"></i>
+                                <i onclick='detailKategori(${data[i].id_kategori})' class="far fa-eye"></i>
+                                <i onclick='editKategori(${data[i].id_kategori})' class="far fa-edit"></i>
+                                <i onclick='removeKategori(${data[i].id_kategori})' class="far fa-trash-alt"></i>
                             </td>
                         </tr>`;
                 table.innerHTML += row;
@@ -160,7 +171,7 @@
                     `;
                 wraper_pagination.innerHTML += paging;
             }
-            let pagging_last = `<li><a href="#" class="next"> <i class="fas fa-arrow-circle-right" aria-hidden="true"></i> </a></li>`
+            let pagging_last = `<li class="page_next"><a href="#" class="next"> <i class="fas fa-arrow-circle-right" aria-hidden="true"></i> </a></li>`
             wraper_pagination.innerHTML += pagging_last;
         }
     }
@@ -189,6 +200,45 @@
                     console.log('error',err);
                 }
         })
+    }
+
+    function detailKategori(id){
+       
+    }
+
+    function removeKategori(id){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Yakin ingin menghapus kategori ini ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `{{route('kategori-delete')}}`,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'post',
+                    data:{'id_kategori':id},
+                    success: function(response){
+                        
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    },
+                    error: function(err){
+                        console.log('error',err);
+                    }
+                })                
+            }
+        })
+       
     }
 </script>
 @endpush
