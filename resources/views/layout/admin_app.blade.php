@@ -11,6 +11,7 @@
     <link href="{{ asset('css/modal.css') }}" rel="stylesheet" type="text/css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-2/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
 </head>
@@ -32,7 +33,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('kategori')}}">
+                    <a href="{{route('view-kategori')}}">
                         <i class="fas fa-bars"></i>
                         <div class="title">Kategori</div>
                     </a>
@@ -121,6 +122,7 @@
 
 @stack('scripts')   
 <script src="{{ asset('css/js/modal_custom.js') }}"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script>
 </script>
 </body>

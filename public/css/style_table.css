@@ -94,7 +94,7 @@ tbody tr:nth-child(even){
 }
 
 tbody tr:hover{
-    background-color: #a8a4f7;
+    background-color: #a8a4f7 !important;
 }
 
 .status{
