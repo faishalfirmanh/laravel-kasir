@@ -4,6 +4,7 @@ use App\Http\Controllers\API\KategoriController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WEB\AdminController;
 use App\Http\Controllers\WEB\KategoriServerSideController;
+use App\Http\Controllers\WEB\ProductServerSideController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,5 @@ Route::get('/product',[AdminController::class, 'productView'])->name('product');
 //serverside
 Route::get('/server-kategori',[KategoriServerSideController::class,'getKategori'])->name('server-side-kategori');
 Route::get('/view-kategori', [KategoriServerSideController::class, 'viewKategori'])->name('view-kategori');
+Route::get('/server-product',[ProductServerSideController::class,'getProduct'])->name('server-side-product');
+Route::get('/view-product', [ProductServerSideController::class, 'viewProduct'])->name('view-product');

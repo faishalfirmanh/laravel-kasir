@@ -13,7 +13,9 @@ class Product extends Model
         'nama_product',
         'kategori_id',
         'harga_beli',
+        'is_kg',
         'total_kg',
+        'pcs',
         'expired'
     ];
 

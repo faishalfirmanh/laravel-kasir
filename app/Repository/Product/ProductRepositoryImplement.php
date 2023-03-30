@@ -51,14 +51,16 @@ class ProductRepositoryImplement implements ProductRepository{
             $model_save->nama_product = strtolower($data->nama_product);
             $model_save->kategori_id = strtolower($data->kategori_id);
             $model_save->harga_beli = strtolower($data->harga_beli);
-            $model_save->total_kg = strtolower($data->total_kg);
             $model_save->expired = $data->expired;
+            $model_save->is_kg = $data->is_kg;
+            cek_is_kg($data->is_kg,$model_save,$data);
         }else{
             $model_save->nama_product = strtolower($data->nama_product);
             $model_save->kategori_id = strtolower($data->kategori_id);
             $model_save->harga_beli = strtolower($data->harga_beli);
-            $model_save->total_kg = strtolower($data->total_kg);
             $model_save->expired = $data->expired;
+            $model_save->is_kg = $data->is_kg;
+            cek_is_kg($data->is_kg,$model_save,$data);
         }
         $model_save->save();
         return $model_save->fresh();

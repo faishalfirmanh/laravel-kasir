@@ -14,6 +14,7 @@
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
   
@@ -39,7 +40,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('product')}}">
+                    <a href="{{route('view-product')}}">
                         <i class="fas fa-puzzle-piece"></i>
                         <div class="title">Product</div>
                     </a>

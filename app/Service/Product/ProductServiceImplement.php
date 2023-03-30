@@ -38,12 +38,17 @@ class ProductServiceImplement implements ProductService{
             $kondisi_ = 'unique:products,nama_product';
         }
 
+        $cek_kondisi_stock_kg = $data->is_kg == 1 ? 'required|integer' : '';
+        $cek_kondisi_stock_pcs = $data->is_kg == 0 ? 'required|integer' : '';
+        
         $validated = Validator::make($data->all(),[
             'nama_product' => 'required|'.$kondisi_,
             'kategori_id' => 'required|integer|exists:kategoris,id_kategori',
             'harga_beli' => 'required|integer',
-            'total_kg' => 'required|integer',
-            'expired'=> 'required|date_format:Y-m-d|after:today'
+            'expired'=> 'required|date_format:Y-m-d|after:today',
+            'is_kg' => 'required|numeric|between:0,1',
+            'total_kg' => $cek_kondisi_stock_kg,
+            'pcs'=> $cek_kondisi_stock_pcs
         ]);
         if ($validated->fails()) {
             return $validated->errors();

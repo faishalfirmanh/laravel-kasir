@@ -24,3 +24,14 @@ if(!function_exists('getObject')){
        
     }
 }
+
+if (!function_exists('cek_is_kg')) {
+    function cek_is_kg($isKg,$model,$input){
+        if ($isKg == '1') {
+            $model->total_kg =  $input->total_kg;
+        }else{
+            $model->pcs = $input->pcs;
+        }
+        return $model;
+    }
+}
