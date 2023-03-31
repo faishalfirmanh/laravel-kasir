@@ -35,6 +35,12 @@ class KategoriController extends Controller
         return $this->getResponse($data, $helper);
     }
 
+    public function allKategori(Request $request)
+    {
+        $data = $this->kategori_service->getAllKategroyServiceNoPaginate($request);
+        return $this->responseSucess($data);
+    }
+
     public function detail($id)
     {
         $data = $this->kategori_service->getKategoryByIdService($id);

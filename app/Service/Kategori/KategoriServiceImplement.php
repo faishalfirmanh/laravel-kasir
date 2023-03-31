@@ -19,6 +19,12 @@ class KategoriServiceImplement implements KategoriService{
         return $data;
     }
 
+    public function getAllKategroyServiceNoPaginate($request)
+    {
+        $data = $this->kategoriRepository->getAllKategori();
+        return $data;
+    }
+
     public function getKategoryByIdService($id){
 
         $data = $this->kategoriRepository->getKategoryById($id);

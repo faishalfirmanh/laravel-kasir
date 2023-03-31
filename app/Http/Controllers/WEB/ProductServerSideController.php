@@ -30,6 +30,9 @@ class ProductServerSideController extends Controller
                 ->addColumn('nama_product', function ($data) {
                     return $data->nama_product;
                 })
+                ->addColumn('kategori', function ($data) {
+                    return $data->kategori->nama_kategori;
+                })
                 ->addColumn('harga_beli', function ($data) {
                     return number_format($data->harga_beli);
                 })
@@ -42,7 +45,8 @@ class ProductServerSideController extends Controller
                     return $stock;
                 })
                 ->addColumn('action', function($data){
-                    $actionBtn = '<i onclick="editKategori('.$data->id_product.')" class="far fa-edit" style="margin-right:5px;"></i>';
+                    $actionBtn = '<i onclick="editKategori('.$data->id_product.')" title="edit-product" class="far fa-edit" style="margin-right:5px;"></i>';
+                    $actionBtn .= '<i class="fas fa-money-bill" style="background:#3FD12E" title="edit-price-product"></i>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])

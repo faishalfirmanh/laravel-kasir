@@ -13,6 +13,7 @@
       margin-left: 15px;
    }
    .far.fa-edit,
+   .fas.fa-money-bill,
    .far.fa-trash-alt:hover{
         cursor: pointer;
    }
@@ -28,6 +29,7 @@
             <tr>
                <th>No</th>
                <th>Name Product</th>
+               <th>Kategori</th>
                <th>Harga Beli</th>
                <th>Stock</th>
                <th>Action</th>
@@ -52,6 +54,7 @@
          columns: [
                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                {data: 'nama_product', name: 'nama_product'},
+               {data: 'kategori', name: 'kategori'},
                {data: 'harga_beli', name: 'harga_beli'},
                {data: 'stock', name: 'stock'},
                {
@@ -84,7 +87,7 @@
          type: 'get',
          success: function(response){
             if (response.data.data.length > 0) {
-               let html_opt = `<option value="">- pilih kategori product-</option>`;
+               let html_opt = `<option value="0">- pilih kategori product-</option>`;
                response.data.data.forEach((e) => {
                    html_opt += `<option value="${e.id_kategori}">${e.nama_kategori}</option>`;
                   if($("#kategori_select")) {
@@ -99,19 +102,101 @@
          }
       })     
 
-         Swal.fire({
+     
+      function cekValidasi(name,select,beli,berat,expired){
+         if (name == '') {
+            Swal.showValidationMessage(`Input nama tidak boleh kosong`)
+         }
+         if (select == 0) {
+            Swal.showValidationMessage(`Input kategori tidak boleh kosong`)
+         }
+         if (beli == '') {
+            Swal.showValidationMessage(`Input harga tidak boleh kosong`)
+         }
+         if (berat == '') {
+            Swal.showValidationMessage(`Input total berat tidak boleh kosong`)
+         }
+         if (expired == '') {
+            Swal.showValidationMessage(`Input expired tidak boleh kosong`)
+         }
+         if (new Date(expired) < new Date()) {
+            Swal.showValidationMessage(`Input expired tidak boleh kurang dari hari ini`)
+         }
+      }
+
+
+      Swal.fire({
          title: 'Tambah Product',
          html: `<input type="text" id="name_product" class="swal2-input" placeholder="nama product">
                <select  name="" id="kategori_select" class="swal2-input" required>	
-               <input type="text" id="harga_beli" class="swal2-input" placeholder="harga beli">`,
+               <input type="text" id="harga_beli" class="swal2-input" placeholder="harga beli">
+               <label style='align:left'>Pilih satuan kg</label>
+               <input type="checkbox" class="is_kg" id="is_kg" name="is_kg">
+               <input type="text" id="total_satuan" class="swal2-input" placeholder="total berat / pcs">
+               <input type="date" id="expired" class="swal2-input">`,
          confirmButtonText: 'Save',
-         focusConfirm: false,
+         focusConfirm: true,
          preConfirm: () => {
-            
+            let btn_save = document.getElementsByClassName('swal2-confirm')
+            let name = $("#name_product").val();
+            let id_kategori = $("#kategori_select").val();
+            let harga_beli = $("#harga_beli").val();
+            let cek_satuan = $('.is_kg:checked').val() == undefined ? 0 : 1; 
+            let berat = $("#total_satuan").val();
+            let expired = $("#expired").val();
+            cekValidasi(name,id_kategori,harga_beli,berat,expired)
+           
+           
          }
          }).then((result) => {
-            console.log(result);
-         })
+
+            let btn_save = document.getElementsByClassName('swal2-confirm')
+            let name = $("#name_product").val();
+            let id_kategori = $("#kategori_select").val();
+            let harga_beli = $("#harga_beli").val();
+            let cek_satuan = $('.is_kg:checked').val() == undefined ? 0 : 1; 
+            let berat = $("#total_satuan").val();
+            let expired = $("#expired").val();
+           
+            
+            let data_pcs = {
+                              'nama_product' : name,
+                              'kategori_id' : id_kategori,
+                              'harga_beli' : harga_beli,
+                              'is_kg' : cek_satuan,
+                              'pcs':berat,
+                              'expired':expired
+                           };
+            let data_kg = {
+                           'nama_product' : name,
+                           'kategori_id' : id_kategori,
+                           'harga_beli' : harga_beli,
+                           'is_kg' : cek_satuan,
+                           'total_kg':berat,
+                           'expired':expired
+                         }
+            $.ajax({
+                type:'post',
+                headers: {
+                  'X-CSRF-TOKEN': '{{ csrf_token() }}'
+               },
+                url:`{{route('product-add')}}`,
+                data: cek_satuan == '1' ? data_kg : data_pcs,
+                success:function(data) { 
+                  if (data.status == 'ok') {
+                     $('.product-yajra').DataTable().ajax.reload(null, true);
+                     Swal.fire(
+                              'Add',
+                              'Tambah data product berhasil',
+                              'success'
+                           )
+                  }
+                },
+                error:function(err){
+                  console.log(err);
+                }
+            });
+      })
 
    });
          

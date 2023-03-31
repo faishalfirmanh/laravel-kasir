@@ -32,7 +32,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 Route::controller(KategoriController::class)->group(function () {
     Route::get('/kategori-byid/{id}', 'detail'); 
     Route::get('/kategori-detail', 'detail2')->name('kategori-details'); 
-    Route::get('/kategori-list', 'index')->name('kategori-list'); 
+    Route::get('/kategori-list', 'index')->name('kategori-list');
+    Route::get('/kategori-all', 'allKategori')->name('kategori-all');
     Route::post('/kategori-add', 'store')->name('kategori-add');
     Route::post('/kategori-delete', 'remove')->name('kategori-delete');
 });
@@ -40,14 +41,15 @@ Route::controller(KategoriController::class)->group(function () {
 
 
 Route::controller(ProductController::class)->group(function(){
-    Route::get('/product-byid/{id}', 'detail'); 
-    Route::get('/product-list', 'index'); 
-    Route::post('/product-add', 'store');
-    Route::post('/product-delete', 'remove');
+    Route::get('/product-byid/{id}', 'detail')->name('product-detail'); 
+    Route::get('/product-list', 'index')->name('product-list'); 
+    Route::get('/product-all','getAllProductController')->name('product-all');
+    Route::post('/product-add', 'store')->name('product-add');
+    Route::post('/product-delete', 'remove')->name('product-delete');
 
-    Route::get('/product-jualById/{id}','detailProductJual');
-    Route::post('/product-jual-save','save_price_sell_product');
-    Route::post('/product-jual-delete','remove_price_sell_product');
+    Route::get('/product-jualById/{id}','detailProductJual')->name('product-jual-detail');
+    Route::post('/product-jual-save','save_price_sell_product')->name('product-jual-save');
+    Route::post('/product-jual-delete','remove_price_sell_product')->name('product-jual-remove');
     
 });
 

@@ -17,12 +17,12 @@ use App\Http\Controllers\WEB\ProductServerSideController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/api-kategori',[KategoriController::class,'index'])->name('api-kategori');
-Route::get('/dashboard',[AdminController::class, 'dashboardView'])->name('dashboard');
+Route::get('/',[AdminController::class, 'dashboardView'])->name('dashboard');
 Route::get('/kategori',[AdminController::class, 'kategoriView'])->name('kategori');
 Route::get('/product',[AdminController::class, 'productView'])->name('product');
 

@@ -13,6 +13,12 @@ class ProductServiceImplement implements ProductService{
         $this->ProductRepository = $ProductRepository;
     }
 
+    public function getAllProductNoPaginate()
+    {
+        $data = $this->ProductRepository->getAllProduct();
+        return $data;
+    }
+
     public function getAllProductService($request){
         $limit = 10;
         $data = $this->ProductRepository->getAllProductPaginate($limit,$request->keyword);

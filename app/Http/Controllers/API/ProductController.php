@@ -22,10 +22,12 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $this->service->postProductService($request,$request->id_product);
-        return response()->json([
-            "status"=>"ok",
-            "data"=>$data
-        ],200);
+        $total_result_kolom = json_decode(json_encode($data), true);
+        if (count($total_result_kolom) == 10) {
+           return $this->responseSucess($data);
+        }else{
+            return $this->responseError($data);
+        }
 
     }
 
@@ -37,6 +39,13 @@ class ProductController extends Controller
             "data"=>$data
         ],200);
     }
+
+    public function getAllProductController(Request $request)
+    {
+        $data = $this->service->getAllProductNoPaginate();
+        return $this->responseSucess($data);
+    }
+
 
     public function detail($id)
     {
