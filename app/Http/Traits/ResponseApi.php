@@ -44,4 +44,13 @@ trait ResponseApi{
         ],404);
     }
 
+    public function generalResponse($data,$total_kolom){
+        $total_result_kolom = count(json_decode(json_encode($data), true));
+        if ((int)$total_kolom == $total_result_kolom) {
+            return $this->responseSucess($data);
+        }else{
+            return $this->responseError($data);
+        }
+    }
+
 }

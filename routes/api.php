@@ -30,8 +30,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 });
 //--use jwt--
 Route::controller(KategoriController::class)->group(function () {
-    Route::get('/kategori-byid/{id}', 'detail'); 
+    Route::get('/kategori-byid/{id}', 'detail')->name('kategori-details-byId'); 
     Route::get('/kategori-detail', 'detail2')->name('kategori-details'); 
+    Route::get('/kategori-details-input','detailKategori')->name('kategori-details-input');
     Route::get('/kategori-list', 'index')->name('kategori-list');
     Route::get('/kategori-all', 'allKategori')->name('kategori-all');
     Route::post('/kategori-add', 'store')->name('kategori-add');

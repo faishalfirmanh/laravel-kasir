@@ -1,6 +1,6 @@
 @extends('layout.admin_app')
 @section('title')
- kategori
+ Product
 @endsection
 @section('table_content')
 <style>

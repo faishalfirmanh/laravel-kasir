@@ -18,6 +18,9 @@
    }
 </style>
 <div class="tables" style="margin-top:20px;">
+   <div class="" style="margin-left:25px">
+      <a href="#" id="add_kategori" class="btn">Tambah Kategori</a>
+   </div>
    <section class="table__body">
       <table class="kategori-yajra">
          <thead>
@@ -60,7 +63,55 @@
 </script>
 <script>
    function editKategori(id){
-      console.log(id);
+      $.ajax({
+         type: "get",
+         url:"{{ route('kategori-details-input') }}",
+         data:{'id_kategori':id},
+         success: function(response){
+            Swal.fire({
+               title: 'Tambah Kategori',
+               html: `<input type="text" id="name_kategori_edit" value='${response.data.nama_kategori}' class="swal2-input" placeholder="nama kategori">`,
+               confirmButtonText: 'Save',
+               showCancelButton: true,
+               cancelButtonColor: '#d33',
+               focusConfirm: true,
+            }).then((result) => {
+               if (result.isConfirmed) {
+                  let name_kategori = $("#name_kategori_edit").val();
+                  $.ajax({
+                     url: `{{route('kategori-add')}}`,
+                     headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                     },
+                     type: 'post',
+                     data:{
+                           'id_kategori' : id,
+                           'nama_kategori':name_kategori
+                          },
+                     success: function(response){
+                        if (response.status == 'ok'){
+                           $('.kategori-yajra').DataTable().ajax.reload(null, true);
+                           Swal.fire(
+                                       'Add',
+                                       'Update data kategori berhasil',
+                                       'success'
+                                    )
+                        }
+                     },
+                     error: function(er){
+                        Swal.fire({
+                           icon: 'error',
+                           text: 'nama kategori wajib diisi...',
+                        })
+                     }
+                  })
+               }
+            })
+         },
+         error: function(err){
+            console.log(err);
+         }
+      })
    }
 
    function deleteKategori(id){
@@ -95,5 +146,44 @@
             }
         })
    }
+
+   $("#add_kategori").click(function(){
+      Swal.fire({
+         title: 'Tambah Kategori',
+         html: `<input type="text" id="name_kategori" class="swal2-input" placeholder="nama kategori">`,
+         confirmButtonText: 'Save',
+         showCancelButton: true,
+         cancelButtonColor: '#d33',
+         focusConfirm: true,
+      }).then((result) => {
+         if (result.isConfirmed) {
+            let name_kategori = $("#name_kategori").val();
+            $.ajax({
+               url: `{{route('kategori-add')}}`,
+               headers: {
+                  'X-CSRF-TOKEN': '{{ csrf_token() }}'
+               },
+               type: 'post',
+               data:{'nama_kategori':name_kategori},
+               success: function(response){
+                  if (response.status == 'ok'){
+                     $('.kategori-yajra').DataTable().ajax.reload(null, true);
+                     Swal.fire(
+                                 'Add',
+                                 'Tambah data kategori berhasil',
+                                 'success'
+                              )
+                  }
+               },
+               error: function(er){
+                  Swal.fire({
+                     icon: 'error',
+                     text: 'nama kategori wajib diisi...',
+                  })
+               }
+            })
+         }
+      })
+   })
 </script>
 @endpush

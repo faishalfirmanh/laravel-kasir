@@ -24,8 +24,7 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $data = $this->kategori_service->postKategoriService($request,$request->id_kategori);
-        $helper = getObject($data,1);
-        return $this->getResponse($data, $helper);
+        return $this->generalResponse($data, 4);
     }
 
     public function index(Request $request)
@@ -44,8 +43,18 @@ class KategoriController extends Controller
     public function detail($id)
     {
         $data = $this->kategori_service->getKategoryByIdService($id);
-        $helper = getObject($data,0); //1
-        return $this->getResponse($data, $helper);
+        return $this->responseSucess($data);
+    }
+
+    public function detailKategori(Request $request){
+        $data =  $this->kategori_service->getKategoriByidServiceFix($request);
+        return $this->responseSucess($data);
+    }
+
+    public function detailById(Request $request)
+    {
+        $data = $this->kategori_service->getKategoryByIdService($request->id);
+        return $this->responseSucess($data);
     }
 
     public function detail2(Request $request)

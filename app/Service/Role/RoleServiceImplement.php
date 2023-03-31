@@ -33,8 +33,19 @@ class RoleServiceImplement implements RoleService{
 
     public function PostRoleService($request, $id)
     {
+        if ($id > 0) {
+            $cek = $this->role_repository->getRoleById($id);
+            if ($cek != NULL) {
+                $cek_name = $cek->name_role == $request->name_role ? '' : 'unique:roles,name_role';
+            }else{
+                $cek_name = 'unique:roles,name_role';
+            }
+        }else{
+              $cek_name = 'unique:roles,name_role';
+        }
         $validator = Validator::make($request->all(),[
             'id'=> 'integer|exists:roles,id',
+            'name_role'=> 'required|string|'.$cek_name,
             'kategori'=> 'required|numeric|between:0,1',
             'product'=> 'required|numeric|between:0,1',
             'kasir'=> 'required|numeric|between:0,1',
