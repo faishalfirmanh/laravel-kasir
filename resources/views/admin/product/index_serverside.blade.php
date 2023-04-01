@@ -17,6 +17,16 @@
    .far.fa-trash-alt:hover{
         cursor: pointer;
    }
+   .style-pricenoset{
+      text-align: center;
+      background: #fc8c67;
+      border-radius: 5px;
+      height: 23px;
+      width: 70%;
+      color: wheat;
+      font-size: 13px;
+      font-weight: bold;
+   }
 </style>
 
 <div class="tables" style="margin-top:20px;">
@@ -31,6 +41,7 @@
                <th>Name Product</th>
                <th>Kategori</th>
                <th>Harga Beli</th>
+               <th>Harga Jual</th>
                <th>Stock</th>
                <th>Action</th>
             </tr>
@@ -56,6 +67,7 @@
                {data: 'nama_product', name: 'nama_product'},
                {data: 'kategori', name: 'kategori'},
                {data: 'harga_beli', name: 'harga_beli'},
+               {data: 'harga_jual', name: 'harga_jual'},
                {data: 'stock', name: 'stock'},
                {
                   data: 'action', 
@@ -69,8 +81,35 @@
    });
 </script>
 <script>
-   function editKategori(id){
+   function editProduct(id){
       console.log(id);
+   }
+
+   function editProductPrice(id){
+      $.ajax({
+            type:'post',
+            headers: {
+                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                     },
+            url:`{{route('product-jual-byid-product')}}`,
+            data:{'id_product' : id},
+            success:function(data) { 
+               console.log(data.data);
+               Swal.fire({
+                  title: 'Tambah Kategori',
+                  html: `<input type="text" id="name_kategori" class="swal2-input" placeholder="nama kategori">`,
+                  confirmButtonText: 'Save',
+                  showCancelButton: true,
+                  cancelButtonColor: '#d33',
+                  focusConfirm: true,
+               }).then((result) => {
+               
+               })
+            },
+            error:function(err){
+               console.log(err);
+            }
+      });
    }
 
    function deleteKategori(id){

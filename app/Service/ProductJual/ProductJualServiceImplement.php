@@ -26,6 +26,18 @@ class ProductJualServiceImplement implements ProductJualService{
         return $data;
     }
 
+    public function getProductJualByIdProductService($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'id_product' => 'required|integer|exists:products,id_product',
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        $get_data = $this->ProductJualRepository->getProductJualByIdProduct($request->id_product);
+        return  $get_data;
+    }
+
     public function postProductJualService($request,$id){
 
         $validated = Validator::make($request->all(),[

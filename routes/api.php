@@ -43,11 +43,14 @@ Route::controller(KategoriController::class)->group(function () {
 
 Route::controller(ProductController::class)->group(function(){
     Route::get('/product-byid/{id}', 'detail')->name('product-detail'); 
+    // Route::get('/product-byid-input', 'detailRequestId')->name('product-detail-input'); 
+    Route::post('porudct-detailById','detailRequestId')->name('porudct-detailById');
     Route::get('/product-list', 'index')->name('product-list'); 
     Route::get('/product-all','getAllProductController')->name('product-all');
     Route::post('/product-add', 'store')->name('product-add');
     Route::post('/product-delete', 'remove')->name('product-delete');
 
+    Route::post('/product-jual-byid-product','getProductJualByIdProduct')->name('product-jual-byid-product');
     Route::get('/product-jualById/{id}','detailProductJual')->name('product-jual-detail');
     Route::post('/product-jual-save','save_price_sell_product')->name('product-jual-save');
     Route::post('/product-jual-delete','remove_price_sell_product')->name('product-jual-remove');

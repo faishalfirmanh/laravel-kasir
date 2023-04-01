@@ -46,6 +46,15 @@ class ProductController extends Controller
         return $this->responseSucess($data);
     }
 
+    public function detailRequestId(Request $request)
+    {
+        $data = $this->service->getProductByIdServiceInput($request);
+        return response()->json([
+            "status"=>"ok",
+            "data"=>$data
+        ],200);
+      
+    }
 
     public function detail($id)
     {
@@ -63,6 +72,14 @@ class ProductController extends Controller
             "status"=>"ok",
             "data"=>$data
         ],200);
+    }
+
+    public function getProductJualByIdProduct(Request $request)
+    {
+        $data = $this->product_jual_service->getProductJualByIdProductService($request);
+        // $cek = count($data) > 0 ? $this->responseSucess($data) : $this->responseError($data);
+        return $this->responseSucess($data);
+
     }
 
     public function detailProductJual($id){

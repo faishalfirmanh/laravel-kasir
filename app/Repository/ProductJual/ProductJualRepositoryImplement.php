@@ -36,6 +36,13 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
         return $data;
     }
 
+    public function getProductJualByIdProduct($id)
+    {
+        $data = $this->model->where('product_id',$id)->with('productName')->get();
+        return $data;
+    }
+
+
     public function postProductJual($data,$id)
     {
         $model_save = $this->model;

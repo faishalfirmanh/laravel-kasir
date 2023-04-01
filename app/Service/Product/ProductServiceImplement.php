@@ -31,6 +31,18 @@ class ProductServiceImplement implements ProductService{
         return $data;
     }
 
+    public function getProductByIdServiceInput($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'id_product' => 'required|exists:products,id_product',
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        $data = $this->ProductRepository->getProductById($request->id_product);
+        return $data;
+    }
+
     public function postProductService($data,$id){
 
         $find = $this->ProductRepository->getProductById($id);
