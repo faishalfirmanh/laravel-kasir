@@ -98,4 +98,16 @@ class ProductController extends Controller
 
     }
 
+    public function getAllProductPriceSet(Request $request)
+    {
+        $data = $this->service->getAllProductServicePriceSet($request);
+        return $this->responseSucess($data);
+    }
+
+    public function getAllProductPriceNotSet(Request $request)
+    {
+        $data = $this->service->getAllProductServicePriceNotSet($request);
+        return $this->responseSucess($data);
+    }
+
 }

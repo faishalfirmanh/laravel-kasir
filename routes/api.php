@@ -55,6 +55,11 @@ Route::controller(ProductController::class)->group(function(){
     Route::get('/product-jualById/{id}','detailProductJual')->name('product-jual-detail');
     Route::post('/product-jual-save','save_price_sell_product')->name('product-jual-save');
     Route::post('/product-jual-delete','remove_price_sell_product')->name('product-jual-remove');
+
+    Route::post('/product-list-jual-price-set','getAllProductPriceSet')->name('product-list-jual-price-set');
+    Route::post('/product-list-jual-price-not-set','getAllProductPriceNotSet')->name('product-list-jual-price-not-set');
+
+    //serach product price
     
 });
 

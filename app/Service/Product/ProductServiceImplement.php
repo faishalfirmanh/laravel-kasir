@@ -19,6 +19,20 @@ class ProductServiceImplement implements ProductService{
         return $data;
     }
 
+    public function getAllProductServicePriceSet($request)
+    {
+        $limit = 10;
+        $data = $this->ProductRepository->getAllProductJualPriceSet($limit,$request->keyword,1);
+        return $data;
+    }
+
+    public function getAllProductServicePriceNotSet($request)
+    {
+        $limit = 10;
+        $data = $this->ProductRepository->getAllProductJualPriceSet($limit,$request->keyword,0);
+        return $data;
+    }
+
     public function getAllProductService($request){
         $limit = 10;
         $data = $this->ProductRepository->getAllProductPaginate($limit,$request->keyword);

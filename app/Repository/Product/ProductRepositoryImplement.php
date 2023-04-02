@@ -35,6 +35,41 @@ class ProductRepositoryImplement implements ProductRepository{
         return $data;
     }
 
+
+    public function getAllProductJualPriceSet($limit,$keyword,$is_price_set)
+    {
+        if (!empty($keyword)) {
+            $data = $this->model
+            ->with("kategori")
+            ->with("priceSellProduct")
+            ->when($is_price_set  == 1, function ($q) {
+                $q->whereHas('priceSellProduct', function ($query){
+                    $query->whereNotNull('product_id');
+                });
+            })
+            ->when($is_price_set  !== 1, function ($q) {
+                $q->doesntHave('priceSellProduct');
+            })
+            ->where('nama_product','like','%'.$keyword .'%')
+            ->limit($limit)->paginate($limit);
+        }else{
+           
+            $data = $this->model
+            ->with("kategori")
+            ->with("priceSellProduct")
+            ->when($is_price_set  == 1, function ($q) {
+                $q->whereHas('priceSellProduct', function ($query){
+                    $query->whereNotNull('product_id');
+                });
+            })
+            ->when($is_price_set  !== 1, function ($q) {
+                $q->doesntHave('priceSellProduct');
+            })
+            ->limit($limit)->paginate($limit);
+        }
+        return $data;
+    }
+
     public function getProductById($id)
     {
         $data = $this->model->with("kategori")->with("priceSellProduct")
