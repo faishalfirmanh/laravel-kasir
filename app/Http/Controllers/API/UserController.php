@@ -9,6 +9,7 @@ use App\Http\Traits\ResponseApi;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
@@ -65,7 +66,7 @@ class UserController extends Controller
             if (password_verify($pass, $search_data->password)) {
                 
                //jwt
-               $myTTL = 60*24*5; //minutes expired jwt
+               $myTTL = 60*24*5; //minutes expired jwt (5 days)
                JWTAuth::factory()->setTTL($myTTL);
                try {
                     if (! $token = JWTAuth::attempt($credentials)) {
@@ -82,13 +83,13 @@ class UserController extends Controller
                         ], 500);
                 }
                //jwt
-                
                 return response()->json([
                     'message' => 'success login',
                     'email'=>$search_data->email,
                     'jwt_token'=>$token,
                     'token_type' => 'Bearer',
                     'id_user'=> $search_data->id,
+                    'role'=> $search_data->getRole
                 ],200);    
             }else{
                 return response()->json([
@@ -102,8 +103,16 @@ class UserController extends Controller
         }
     }
 
-    public function logoutUser()
+    function logouttess(Request $request) //is used
     {
+        $removeToken = JWTAuth::invalidate(JWTAuth::getToken());
 
+        if($removeToken) {
+            //return response JSON
+            return response()->json([
+                'success' => true,
+                'message' => 'Logout Berhasil!',  
+            ]);
+        }
     }
 }
