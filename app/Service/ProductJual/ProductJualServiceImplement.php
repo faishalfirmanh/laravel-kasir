@@ -20,6 +20,18 @@ class ProductJualServiceImplement implements ProductJualService{
         return $data;
     }
 
+    public function getProductJualSearchService($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'keyword' => 'string|nullable'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        $get_data = $this->ProductJualRepository->getAllProductPriceSearch($request->keyword);
+        return  $get_data;
+    }
+
     public function getProductJualByIdService($id){
 
         $data = $this->ProductJualRepository->getProductJualById($id);

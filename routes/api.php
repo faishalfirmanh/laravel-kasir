@@ -60,6 +60,7 @@ Route::controller(ProductController::class)->group(function(){
     Route::post('/product-list-jual-price-not-set','getAllProductPriceNotSet')->name('product-list-jual-price-not-set');
 
     //serach product price
+    Route::post('/product-list-jual-price-search','getProdcutPriceSearch')->name('product-list-jual-price-search');
     
 });
 

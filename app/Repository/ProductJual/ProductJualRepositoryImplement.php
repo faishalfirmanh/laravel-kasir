@@ -4,6 +4,8 @@ namespace App\Repository\ProductJual;
 
 use App\Models\ProductJual as ProductJualModel;
 use App\Repository\ProductJual\ProductJualRepository;
+use stdClass;
+
 
 class ProductJualRepositoryImplement implements ProductJualRepository{
 
@@ -27,6 +29,30 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
             $data = $this->model->with("kategori")->limit($limit)->paginate($limit);
         }
         return $data;
+    }
+
+    public function getAllProductPriceSearch($keyword)
+    {
+       if (!empty($keyword)) {
+            $data = $this->model
+            ->select("*")
+            ->join("products","product_juals.product_id","=","products.id_product")
+            ->where("products.nama_product",'like','%'.strtolower($keyword).'%')
+            ->get();
+       }else{
+            $data = $this->model
+            ->select("*")
+            ->join("products","product_juals.product_id","=","products.id_product")
+            ->get();
+       }
+        $data_val = [];
+        foreach ($data as $key) {
+            $coll = new stdClass();
+            $coll->nama_product = $key->nama_product."|".$key->start_kg."-".$key->end_kg."kg";
+            $coll->harga = $key->price_sell;
+            array_push($data_val,$coll);
+        }
+        return $data_val;
     }
 
     public function getProductJualById($id)

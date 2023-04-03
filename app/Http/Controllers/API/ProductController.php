@@ -110,4 +110,10 @@ class ProductController extends Controller
         return $this->responseSucess($data);
     }
 
+    public function getProdcutPriceSearch(Request $request)
+    {
+        $data = $this->product_jual_service->getProductJualSearchService($request);
+        return $this->responseSucess($data);
+    }
+
 }
