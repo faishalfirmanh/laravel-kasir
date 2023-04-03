@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repository\Kategori\KategoriRepository;
 use App\Repository\Kategori\KategoriRepositoryImplement;
+use App\Repository\NewStruck\NewStruckRepository;
+use App\Repository\NewStruck\NewStruckRepositoryImpelemnt;
 use App\Repository\Product\ProductRepository;
 use App\Repository\Product\ProductRepositoryImplement;
 use App\Repository\ProductJual\ProductJualRepository;
@@ -14,6 +16,8 @@ use App\Repository\Users\UserRepository;
 use App\Repository\Users\UserRepositoryImplement;
 use App\Service\Kategori\KategoriService;
 use App\Service\Kategori\KategoriServiceImplement;
+use App\Service\NewStruck\NewStruckService;
+use App\Service\NewStruck\NewStruckServiceImplement;
 use App\Service\Product\ProductService;
 use App\Service\Product\ProductServiceImplement;
 use App\Service\ProductJual\ProductJualService;
@@ -46,6 +50,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(RoleService::class, RoleServiceImplement::class);
         $this->app->bind(UserRepository::class,UserRepositoryImplement::class);
         $this->app->bind(UserService::class, UserServiceImplement::class);
+
+        //struck
+        $this->app->bind(NewStruckRepository::class, NewStruckRepositoryImpelemnt::class);
+        $this->app->bind(NewStruckService::class, NewStruckServiceImplement::class);
     }
 
     /**

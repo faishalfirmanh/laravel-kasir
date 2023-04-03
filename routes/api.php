@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\KategoriController;
+use App\Http\Controllers\API\NewStruckController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\UserController;
@@ -62,6 +63,13 @@ Route::controller(ProductController::class)->group(function(){
     //serach product price
     Route::post('/product-list-jual-price-search','getProdcutPriceSearch')->name('product-list-jual-price-search');
     
+});
+
+ //struct 
+Route::controller(NewStruckController::class)->group(function(){
+    Route::post('/get-struck-id','getStrudById')->name('get-struck-id');
+    Route::post('/generate-new-struck','GenerateNewStruck')->name('generate-new-struck');
+    Route::post('/update-data-struck','UpdateStruck')->name('update-data-struck');
 });
 
 Route::controller(UserController::class)->group(function(){

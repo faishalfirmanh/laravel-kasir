@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\NewStruck;
+
 if(!function_exists('getObject')){
     function getObject($data,$isIndex = null){//jika index bernilai 1
         if ($isIndex != NULL) {
@@ -34,4 +36,21 @@ if (!function_exists('cek_is_kg')) {
         }
         return $model;
     }
+
+if (!function_exists('cek_last_id_struck')) {
+    function cek_last_id_struck(){
+        $data = NewStruck::query()->limit(1)->orderBy('id_struck',"DESC")->get();
+        if (count($data) > 0) {
+            $l = [];
+            foreach ($data as $key => $value) {
+                array_push($l,$value->id_struck);
+            }
+            $cek  = intval($l[0])+1;
+        }else{
+            $cek = 1;
+        }
+        return $cek;
+    }
+}
+
 }

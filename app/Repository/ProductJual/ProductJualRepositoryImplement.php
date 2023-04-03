@@ -48,8 +48,10 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
         $data_val = [];
         foreach ($data as $key) {
             $coll = new stdClass();
+            $coll->idProduct = $key->id_product;
+            $coll->id_product_jual = $key->id_product_jual;
             $coll->nama_product = $key->nama_product."|".$key->start_kg."-".$key->end_kg."kg";
-            $coll->harga = $key->price_sell;
+            $coll->harga_jual = $key->price_sell;
             array_push($data_val,$coll);
         }
         return $data_val;
