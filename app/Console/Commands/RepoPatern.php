@@ -3,6 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
+use App\Models\User;
 
 class RepoPatern extends Command
 {
@@ -11,14 +14,14 @@ class RepoPatern extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'make:repo-patern  {name : The name of the repository patern }';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Untuk membuat repository partrn';
 
     /**
      * Create a new command instance.
@@ -37,6 +40,42 @@ class RepoPatern extends Command
      */
     public function handle()
     {
-        return 0;
+        $dir_name = 'App\Http\Controllers\API';
+        $name_repo_patern = $this->argument("name");
+        if (file_exists($dir_name)) {
+            $cek_controller_exsis = "App\Http\Controllers\API\\".$name_repo_patern."Controller.php";
+            if (file_exists($cek_controller_exsis)) {
+                unlink($cek_controller_exsis);
+                $createController = fopen('./App/Http/Controllers/API/'.$name_repo_patern.'Controller'.'.php', 'x');
+                $write_controller = "<?php
+                namespace ".$dir_name.";
+                use App\Http\Controllers\Controller;
+                use Illuminate\Http\Request;
+                use App\Http\Traits\ResponseApi;
+                class ".$name_repo_patern."Controller"." extends Controller{
+
+                }";
+                fwrite($createController, $write_controller);
+                $this->info("sukses");
+            }else{
+               $createController = fopen('./App/Http/Controllers/API/'.$name_repo_patern.'Controller'.'.php', 'x');
+                $write_controller = "<?php
+                namespace ".$dir_name."; 
+                use App\Http\Controllers\Controller;
+                use Illuminate\Http\Request;
+                use App\Http\Traits\ResponseApi;
+                class ".$name_repo_patern."Controller"." extends Controller{
+                    
+                }";
+                fwrite($createController, $write_controller);
+                $this->info("sukses crate baru");
+            }
+           
+        }else{
+            $this->error('folder api didalam controllers tidak ada');
+        }
+       
+       
+        
     }
 }
