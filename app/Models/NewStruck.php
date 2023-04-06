@@ -16,6 +16,7 @@ class NewStruck extends Model
         'total_harga_dibayar',
         'pembeli_bayar',
         'kembalian',
-        'keuntungan_bersih'
+        'keuntungan_bersih',
+        'status', //0 generate, 1 tambah keranjang, 2 pembeli bayar, 3 selesai
     ];
 }

@@ -24,7 +24,8 @@ class KeranjangKasirController extends Controller
 
     public function CreateNewKerajangProduct(Request $request)
     {
-
+        $data = $this->service->CreateKeranjangServiceById($request);
+        return $this->responseSucess($data);
     }
 
     public function UpdateDataKeranjang(Request $request)

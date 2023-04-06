@@ -22,9 +22,17 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
         return $create;
     }
 
-    public function updateStatusNewStruck($id, $request)
+    public function updateStatusNewStruck($id, $total_harga_harus_dibayar,$status = 0, $pembeli_bayar =0)
     {
 
+        $model = $this->model->find($id)->first();
+        $model->total_harga_dibayar = $total_harga_harus_dibayar;
+        $model->pembeli_bayar = $pembeli_bayar;
+        $model->kembalian = 0;
+        $model->status = $status;
+        $model->save();
+        return $model->fresh();
+        
     }
 
    

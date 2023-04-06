@@ -2,6 +2,7 @@
 
 namespace App\Repository\KeranjangKasir;
 use App\Models\KeranjangKasir;
+use Illuminate\Support\Facades\DB;
 
 class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
 
@@ -13,7 +14,7 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
 
     public function getKeranjangById($id)
     {
-        $data = $this->model->find($id)->first();
+        $data = $this->model->where('id_keranjang_kasir', $id)->first();
         return $data;
     }
 
@@ -27,7 +28,7 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         $modal_save->status = 0;
         $modal_save->struck_id  = $request->struck_id;
         $modal_save->save();
-        return $model_save->fresh();
+        return $modal_save->fresh();
     }
 
     public function UpdateKeranjang($request, $id)
@@ -43,6 +44,12 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
     public function ReduceJumlahKerajang($id)
     {
         
+    }
+
+    public function getAllTotalPriceMustPayByIdStruck($idStruck)
+    {
+        $data = $this->model->where('struck_id', $idStruck)->sum('total_harga_item');
+        return $data;
     }
 
 }
