@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repository\Kategori\KategoriRepository;
 use App\Repository\Kategori\KategoriRepositoryImplement;
+use App\Repository\KeranjangKasir\KeranjangKasirRepository;
+use App\Repository\KeranjangKasir\KeranjangKasirRepositoryImplement;
 use App\Repository\NewStruck\NewStruckRepository;
 use App\Repository\NewStruck\NewStruckRepositoryImpelemnt;
 use App\Repository\Product\ProductRepository;
@@ -16,6 +18,8 @@ use App\Repository\Users\UserRepository;
 use App\Repository\Users\UserRepositoryImplement;
 use App\Service\Kategori\KategoriService;
 use App\Service\Kategori\KategoriServiceImplement;
+use App\Service\KeranjangKasir\KeranjangKasirService;
+use App\Service\KeranjangKasir\KeranjangKasirServiceImplement;
 use App\Service\NewStruck\NewStruckService;
 use App\Service\NewStruck\NewStruckServiceImplement;
 use App\Service\Product\ProductService;
@@ -54,6 +58,9 @@ class AppServiceProvider extends ServiceProvider
         //struck
         $this->app->bind(NewStruckRepository::class, NewStruckRepositoryImpelemnt::class);
         $this->app->bind(NewStruckService::class, NewStruckServiceImplement::class);
+        //keranjangToStruck
+        $this->app->bind(KeranjangKasirService::class, KeranjangKasirServiceImplement::class);
+        $this->app->bind(KeranjangKasirRepository::class, KeranjangKasirRepositoryImplement::class);
     }
 
     /**

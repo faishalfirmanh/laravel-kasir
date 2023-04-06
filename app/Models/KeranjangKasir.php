@@ -13,8 +13,14 @@ class KeranjangKasir extends Model
     protected $fillable = [
         'product_jual_id',
         'jumlah_item_dibeli',
+        'harga_tiap_item',
         'total_harga_item',
         'struck_id',
         'status'
     ];
+
+    public function productJual()
+    {
+        return $this->hasMany(ProductJual::class, 'id_product_jual', 'product_jual_id');
+    }
 }

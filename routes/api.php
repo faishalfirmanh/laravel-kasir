@@ -5,6 +5,7 @@ use App\Http\Controllers\API\NewStruckController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\KeranjangKasirController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,7 @@ Route::post('login',[UserController::class,'loginUser'])->name('login');
 Route::post('logout-api',[UserController::class,'logouttess'])->name('logout-api');
 
 
-Route::group(['middleware' => ['jwt.verify']], function() {
+// Route::group(['middleware' => ['jwt.verify']], function() {
     //--use jwt--
     Route::controller(KategoriController::class)->group(function () {
         Route::get('/kategori-byid/{id}', 'detail')->name('kategori-details-byId'); 
@@ -39,7 +40,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::post('/kategori-delete', 'remove')->name('kategori-delete');
     });
     //--use jwt--
-});
+// });
 
 
 
@@ -70,6 +71,13 @@ Route::controller(NewStruckController::class)->group(function(){
     Route::post('/get-struck-id','getStrudById')->name('get-struck-id');
     Route::post('/generate-new-struck','GenerateNewStruck')->name('generate-new-struck');
     Route::post('/update-data-struck','UpdateStruck')->name('update-data-struck');
+});
+
+//keranjang
+Route::controller(KeranjangKasirController::class)->group(function(){
+    Route::post('/get-kerajang-byid','GetKerajangById')->name('get-kerajang-byid');
+    Route::post('/kerajang-create','CreateNewKerajangProduct')->name('kerajang-create');
+    
 });
 
 Route::controller(UserController::class)->group(function(){

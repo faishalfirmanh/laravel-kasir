@@ -3,7 +3,7 @@
 namespace App\Service\ProductJual;
 
 use App\Repository\ProductJual\ProductJualRepository;
-
+use App\Rules\RulesCekPriceLessThan;
 use App\Service\ProductJual\ProductJualService;
 use Illuminate\Support\Facades\Validator;
 class ProductJualServiceImplement implements ProductJualService{
@@ -56,8 +56,9 @@ class ProductJualServiceImplement implements ProductJualService{
             'product_id' => 'required|integer|exists:products,id_product',
             'start_kg' => 'required|integer',
             'end_kg' => 'required|integer',
-            'price_sell' => 'required|integer'
+            'price_sell' => ['required','integer', new RulesCekPriceLessThan($request->product_id)]
         ]);
+        
         if ($validated->fails()) {
             return $validated->errors();
         }
