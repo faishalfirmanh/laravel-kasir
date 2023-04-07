@@ -9,6 +9,7 @@
     <link href="{{ asset('css/style_table.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/pagination_custom.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/modal.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ asset('css/style_modal_global.css') }}" rel="stylesheet" type="text/css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-2/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -19,7 +20,7 @@
 <body>
   
     <div class="container">
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <ul>
                 <li>
                     <a href="#">
@@ -79,7 +80,7 @@
         </div>
         <!-- content --->
         <div class="main">
-            <div class="top-bar">
+            <div class="top-bar" id="top-bar">
                 <div class="search">
                     <input type="text" name="search" placeholder="search here">
                     <label for="search"><i class="fas fa-search"></i></label>
@@ -118,6 +119,7 @@
                 </button> --}}
             </div>
         </div>
+        @yield('modal_global');
         <!--modal end-->
     </div>
 
