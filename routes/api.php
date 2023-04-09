@@ -92,9 +92,11 @@ Route::controller(TokoController::class)->group(function(){
 
 Route::controller(UserController::class)->group(function(){
     Route::post('/user-add','store');
+    Route::post('/user-change-password','changePassword')->name('user-change-password');
+    Route::post('/user-detail','detailParam')->name('user-detail');
     Route::get('/user-list','index');
     Route::get('/user-byid/{id}','detail');
-    Route::post('/user-delete','remove');
+    Route::post('/user-delete','remove')->name('user-delete');
 });
 
 Route::controller(RoleController::class)->group(function(){

@@ -18,6 +18,19 @@ class UserServiceImplement implements UserService{
         return $find;
     }
 
+    public function GetUserByIdServicePost($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'id' => 'required|integer|exists:users,id'
+        ]);
+
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        $find = $this->user_repository->getUserById($request->id);
+        return $find;
+    }
+
     public function DeleteUserService($id)
     {
         $validated = Validator::make($id->all(),[
@@ -53,4 +66,17 @@ class UserServiceImplement implements UserService{
         return $data;
     }
 
+    public function UserChangePassByIdServicePost($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'password' => 'required|string',
+            'id'=> 'integer|exists:users,id'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        $id = $request->id;
+        $save = $this->user_repository->postChangePasswordUser($request,$id);
+        return  $save;
+    }
 }

@@ -57,6 +57,15 @@ class UserRepositoryImplement implements UserRepository{
         return $model_save->fresh();
     }
 
+    public function postChangePasswordUser($req,$id)
+    {
+        $model_save = $this->model;
+        $model_save = $this->model->where('id',$id)->first();
+        $model_save->password = bcrypt($req->password);
+        $model_save->save();
+        return $model_save->fresh();
+    }
+
     public function deleteUser($id)
     {
         $model = $this->model->find($id);

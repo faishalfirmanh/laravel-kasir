@@ -35,6 +35,18 @@ class UserController extends Controller
         return $this->responseSucess($data);
     }
 
+    public function detailParam(Request $request)
+    {
+        $find = $this->service_user->GetUserByIdServicePost($request);
+        return $this->responseSucess($find); 
+    }
+
+    public function changePassword(Request $request)
+    {
+        $change = $this->service_user->UserChangePassByIdServicePost($request);
+        return $this->responseSucess($change);
+    }
+
     public function remove(Request $request)
     {
         $data = $this->service_user->DeleteUserService($request);
