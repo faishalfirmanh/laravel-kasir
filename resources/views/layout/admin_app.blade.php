@@ -35,6 +35,24 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('view-toko')}}">
+                        <i class="fa fa-shopping-bag"></i>
+                        <div class="title">Toko</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('view-role')}}">
+                        <i class="fa fa-info-circle"></i>
+                        <div class="title">Role</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="fa fa-users"></i>
+                        <div class="title">User</div>
+                    </a>
+                </li>
+                <li>
                     <a href="{{route('view-kategori')}}">
                         <i class="fas fa-bars"></i>
                         <div class="title">Kategori</div>
@@ -46,6 +64,14 @@
                         <div class="title">Product</div>
                     </a>
                 </li>
+                <li>
+                    <a href="">
+                        <i class="fa fa-microchip" aria-hidden="true"></i>
+                        <div class="title">Kasir</div>
+                    </a>
+                </li>
+                <!--tes-->
+               
                 {{-- <li>
                     <a href="#">
                         <i class="fas fa-balance-scale-right"></i>

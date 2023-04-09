@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\API\KategoriController;
+use App\Http\Controllers\WEB\TokoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WEB\AdminController;
 use App\Http\Controllers\WEB\KategoriServerSideController;
 use App\Http\Controllers\WEB\ProductServerSideController;
+use App\Http\Controllers\WEB\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +35,11 @@ Route::get('/server-product',[ProductServerSideController::class,'getProduct'])-
 Route::get('/detail-price-product/{id_product}',[ProductServerSideController::class,'detailPriceProduct'])->name('detail-price-product');
 Route::get('/server-price-product/{id}',[ProductServerSideController::class,'getPriceListProductDetail'])->name('server-price-product');
 Route::get('/view-product', [ProductServerSideController::class, 'viewProduct'])->name('view-product');
+
+//toko
+Route::get('/view-toko',[TokoController::class,'viewToko'])->name('view-toko');
+Route::get('/server-side-toko',[TokoController::class, 'getToko'])->name('server-side-toko');
+
+//role
+Route::get('/view-role',[RoleController::class,'viewRole'])->name('view-role');
+Route::get('/server-side-role',[RoleController::class, 'getRole'])->name('server-side-role');
