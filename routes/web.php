@@ -30,4 +30,6 @@ Route::get('/product',[AdminController::class, 'productView'])->name('product');
 Route::get('/server-kategori',[KategoriServerSideController::class,'getKategori'])->name('server-side-kategori');
 Route::get('/view-kategori', [KategoriServerSideController::class, 'viewKategori'])->name('view-kategori');
 Route::get('/server-product',[ProductServerSideController::class,'getProduct'])->name('server-side-product');
+Route::get('/detail-price-product/{id_product}',[ProductServerSideController::class,'detailPriceProduct'])->name('detail-price-product');
+Route::get('/server-price-product/{id}',[ProductServerSideController::class,'getPriceListProductDetail'])->name('server-price-product');
 Route::get('/view-product', [ProductServerSideController::class, 'viewProduct'])->name('view-product');

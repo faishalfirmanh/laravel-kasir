@@ -55,6 +55,7 @@ Route::controller(ProductController::class)->group(function(){
 
     Route::post('/product-jual-byid-product','getProductJualByIdProduct')->name('product-jual-byid-product');
     Route::get('/product-jualById/{id}','detailProductJual')->name('product-jual-detail');
+    Route::post('/product-jual-byid','detailProductJual2')->name('product-jual-byid');
     Route::post('/product-jual-save','save_price_sell_product')->name('product-jual-save');
     Route::post('/product-jual-delete','remove_price_sell_product')->name('product-jual-remove');
 

@@ -87,6 +87,13 @@ class ProductController extends Controller
         return $this->responseSucess($data);
     }
 
+    public function detailProductJual2(Request $request)
+    {
+        $data = $this->product_jual_service->getProductJualByIdSelftService($request);
+        return $this->responseSucess($data);
+    }
+
+
     public function save_price_sell_product(Request $request){
         $data = $this->product_jual_service->postProductJualService($request,$request->id);
         return $this->responseSucess($data);

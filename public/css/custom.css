@@ -227,6 +227,11 @@ td i{
     color: #ffff;
     border-radius: 50px;
 }
+td a{
+    padding: 7px;
+    color: #ffff;
+    border-radius: 50px;
+}
 .fa-eye{
     background: #47cebe;
 }

@@ -27,6 +27,17 @@
       font-size: 13px;
       font-weight: bold;
    }
+
+   .style-total-price{
+      text-align: center;
+      background: #53dfd1;
+      border-radius: 5px;
+      height: 15px;
+      width: 10px;
+      color: black;
+      font-size: 13px;
+      font-weight: bold;
+   }
 </style>
 
 <div class="tables" style="margin-top:20px;">
@@ -325,7 +336,23 @@ $('#form-product').on("submit", function(e) {
 
    function editProductPrice(id){
       //ajax get byid
-      
+      // const modal = document.querySelector('#modalPrice')
+      // const modal_close = modal.querySelector('.modal__close_2')
+      // const input_start_kg = document.getElementById('start_kg');
+      // const input_end_kg = document.getElementById('end_kg');
+      // const input_price = document.getElementById('price-sell');
+      // modal.classList.add('show-modal')
+      // navbar_atas_id.style.position = "initial";
+      // navbar_samping_id.style.position = "initial";
+      // modal_close.addEventListener('click', function(e){
+      //       e.preventDefault()
+      //       input_end_kg.value = ''
+      //       input_start_kg.value = ''
+      //       input_price.value = ''
+      //       modal.classList.remove('show-modal')
+      //       navbar_atas_id.style.position = "fixed";
+      //       navbar_samping_id.style.position = "fixed";
+      // })
       //ajax getbyid
    }
 

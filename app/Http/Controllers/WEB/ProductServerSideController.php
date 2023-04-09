@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
 use App\Models\Product;
+use App\Models\ProductJual;
 use DataTables;
 
 class ProductServerSideController extends Controller
@@ -38,9 +39,11 @@ class ProductServerSideController extends Controller
                 })
                 ->addColumn('harga_jual', function ($data) {
                     $val = [];
+                    $many_price_product_set = count($data->priceSellProduct); 
                     if (count($data->priceSellProduct) > 0) {
                         foreach ($data->priceSellProduct as $key => $value) {
-                           array_push($val,number_format($value->price_sell));
+                            $price = number_format($value->price_sell).'<div class="style-total-price">'.count($data->priceSellProduct).'</div>';
+                           array_push($val,$price);
                         }
                     }else{
                         array_push($val, '<div class="style-pricenoset">'.'Belum diset'.'</div>');
@@ -57,11 +60,51 @@ class ProductServerSideController extends Controller
                 })
                 ->addColumn('action', function($data){
                     $actionBtn = '<i onclick="editProduct('.$data->id_product.')" title="edit-product" class="far fa-edit" style="margin-right:5px;"></i>';
-                    $actionBtn .= '<i onclick="editProductPrice('.$data->id_product.')" class="fas fa-money-bill" style="background:#3FD12E" title="edit-price-product"></i>';
+                    //$actionBtn .= '<i onclick="editProductPrice('.$data->id_product.')" class="fas fa-money-bill" style="background:#3FD12E" title="edit-price-product"></i>';
+                    $actionBtn .= '<a href="' . route('detail-price-product', $data->id_product) . '" class="fas fa-money-bill" style="background:#b4a2fb" title="edit-price-product"></a>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action','harga_jual'])
                 ->make(true);
         }
+    }
+
+    public function detailPriceProduct(Request $request)
+    {
+        $currenturl = url()->full();
+        $to_str = explode("/",$currenturl);
+        $id_product =$to_str[ count($to_str)-1];
+        $name_product = Product::query()->where('id_product',$id_product)->first();
+        return view('admin.product.detail_price_product',[
+            'id' => $id_product,
+            'name' => $name_product->nama_product
+        ]);
+    }
+
+    public function getPriceListProductDetail(Request $request, $id)
+    {
+        $data = ProductJual::query()->with('productName')->where('product_id',$id)->orderBy('id_product_jual','DESC')->get();
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->addColumn('no', function ($data) {
+            $id = $data->id_product;
+            return $id;
+        })
+        ->addColumn('start_kg', function ($data) {
+            return $data->start_kg;
+        })
+        ->addColumn('end_kg', function ($data) {
+            return $data->end_kg;
+        })
+        ->addColumn('price_sell', function ($data) {
+            return $data->price_sell;
+        })
+        ->addColumn('action', function($data){
+            $actionBtn = '<i onclick="editProductJual('.$data->id_product_jual.')" title="edit-price-product" class="far fa-edit" style="margin-right:5px;"></i>';
+            // $actionBtn .= '<i onclick="editProductPrice('.$data->id_product_jual.')" class="fas fa-money-bill" style="background:#3FD12E" title="edit-price-product"></i>';
+            return $actionBtn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
     }
 }
