@@ -6,6 +6,7 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\KeranjangKasirController;
+use App\Http\Controllers\API\TokoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -79,6 +80,14 @@ Route::controller(KeranjangKasirController::class)->group(function(){
     Route::post('/get-kerajang-byid','GetKerajangById')->name('get-kerajang-byid');
     Route::post('/kerajang-create','CreateNewKerajangProduct')->name('kerajang-create');
     
+});
+
+
+Route::controller(TokoController::class)->group(function(){
+    Route::post('/post-toko','store')->name('post-toko');
+    Route::post('/detail-toko','detail')->name('detail-toko');
+    Route::post('/get-all-toko','index')->name('get-all-toko');//no paginate
+    Route::post('/delete-toko','remove')->name('delete-toko');
 });
 
 Route::controller(UserController::class)->group(function(){

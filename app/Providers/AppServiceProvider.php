@@ -14,6 +14,8 @@ use App\Repository\ProductJual\ProductJualRepository;
 use App\Repository\ProductJual\ProductJualRepositoryImplement;
 use App\Repository\Role\RoleRepository;
 use App\Repository\Role\RoleRepositoryImplement;
+use App\Repository\Toko\TokoRepository;
+use App\Repository\Toko\TokoRepositoryImplement;
 use App\Repository\Users\UserRepository;
 use App\Repository\Users\UserRepositoryImplement;
 use App\Service\Kategori\KategoriService;
@@ -28,6 +30,8 @@ use App\Service\ProductJual\ProductJualService;
 use App\Service\ProductJual\ProductJualServiceImplement;
 use App\Service\Role\RoleService;
 use App\Service\Role\RoleServiceImplement;
+use App\Service\Toko\TokoService;
+use App\Service\Toko\TokoServiceImplement;
 use App\Service\Users\UserService;
 use App\Service\Users\UserServiceImplement;
 use Illuminate\Support\ServiceProvider;
@@ -41,6 +45,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        //toko
+        $this->app->bind(TokoRepository::class, TokoRepositoryImplement::class);
+        $this->app->bind(TokoService::class, TokoServiceImplement::class);
         //
         $this->app->bind(KategoriRepository::class, KategoriRepositoryImplement::class);
         $this->app->bind(KategoriService::class, KategoriServiceImplement::class);
