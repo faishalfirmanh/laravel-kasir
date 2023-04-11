@@ -18,6 +18,18 @@ class RoleServiceImplement implements RoleService{
         return $data;
     }
 
+    public function GetRoleByIdServicePost($request)
+    {
+        $validator = Validator::make($request->all(),[
+            'id'=> 'required|integer|exists:roles,id',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+        $data = $this->role_repository->getRoleById($request->id);
+        return $data;
+    }
+
     public function DeleteRoleService($id)
     {
         $validator = Validator::make($id->all(),[

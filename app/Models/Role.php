@@ -17,4 +17,7 @@ class Role extends Model
         'laporan'
     ];
 
+    public function roleRelasiUser(){
+        return $this->hasMany(User::class,'id_roles');
+    }
 }

@@ -100,8 +100,9 @@ Route::controller(UserController::class)->group(function(){
 });
 
 Route::controller(RoleController::class)->group(function(){
-    Route::post('/role-add','store');
+    Route::post('/role-add','store')->name('role-add');
     Route::get('/role-list','index');
     Route::get('/role-byid/{id}','detail');
-    Route::post('/role-delete','remove');
+    Route::post('/role-detail','detailPost')->name('role-detail');
+    Route::post('/role-delete','remove')->name('role-delete');
 });

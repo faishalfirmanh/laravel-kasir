@@ -35,6 +35,12 @@ class RoleController extends Controller
         return $this->responseSucess($data);
     }
 
+    public function detailPost(Request $request)
+    {
+        $data = $this->service->GetRoleByIdServicePost($request);
+        return $this->responseSucess($data);
+    }
+
     public function remove(Request $request)
     {
         $data = $this->service->DeleteRoleService($request);
