@@ -32,4 +32,10 @@ class NewStruckController extends Controller
     {
 
     }
+
+    public function getProductByIdStruck(Request $request)
+    {
+        $data = $this->service->getProductByIdStruckService($request);
+        return $this->responseSucess($data);
+    }
 }
