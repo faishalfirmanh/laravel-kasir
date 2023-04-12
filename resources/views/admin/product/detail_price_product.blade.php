@@ -108,6 +108,10 @@ const idnya = $("#id_prd").val()
             input_end_kg.value = '';
             input_start_kg.value = '';
 
+            if (document.getElementById('id_product_jual_hidden')) {
+                document.getElementById("id_product_jual_hidden").outerHTML = "";
+            }
+
             navbar_atas_id.style.position = "initial";
             navbar_samping_id.style.position = "initial";
 
@@ -133,7 +137,7 @@ const idnya = $("#id_prd").val()
 
         const cek_id_for_update = document.getElementById('id_product_jual_hidden');
         if (cek_id_for_update) {
-            input_data.id_product_jual = cek_id_for_update.value
+            input_data.id = localStorage.getItem('id_product_jual')//cek_id_for_update.value
         }
 
         $.ajax({
@@ -201,10 +205,44 @@ const idnya = $("#id_prd").val()
                 input.setAttribute('id', 'id_product_jual_hidden');
                 input.setAttribute('value', id);
                 document.getElementById('form-product-price').appendChild(input); 
+                localStorage.setItem("id_product_jual",id);
                 //add input hidden id
             }
         });
         //ajax get
+     }
+
+     function deleteProductPrice(id){
+        Swal.fire({
+            title: "Yakin ingin menghapus price product ini ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `{{route('product-jual-remove')}}`,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'post',
+                    data:{'id_product_jual':id},
+                    success: function(response){
+                        $('.product-price-yajra').DataTable().ajax.reload(null, true);
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    },
+                    error: function(err){
+                        console.log('error',err);
+                    }
+                })                
+            }
+        })
      }
 </script>
 @endpush

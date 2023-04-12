@@ -60,8 +60,10 @@ class ProductServerSideController extends Controller
                 })
                 ->addColumn('action', function($data){
                     $actionBtn = '<i onclick="editProduct('.$data->id_product.')" title="edit-product" class="far fa-edit" style="margin-right:5px;"></i>';
-                    //$actionBtn .= '<i onclick="editProductPrice('.$data->id_product.')" class="fas fa-money-bill" style="background:#3FD12E" title="edit-price-product"></i>';
-                    $actionBtn .= '<a href="' . route('detail-price-product', $data->id_product) . '" class="fas fa-money-bill" style="background:#b4a2fb" title="edit-price-product"></a>';
+                    $actionBtn .= '<a href="' . route('detail-price-product', $data->id_product) . '" class="fas fa-money-bill" style="background:#b4a2fb;margin-right:5px;" title="edit-price-product"></a>';
+                    if (count($data->priceSellProduct) < 1) {
+                        $actionBtn .= '<i onclick="deleteProduct('.$data->id_product.')" class="far fa-trash-alt" style="background:red" title="delete-product"></i>';
+                    }
                     return $actionBtn;
                 })
                 ->rawColumns(['action','harga_jual'])
@@ -101,7 +103,7 @@ class ProductServerSideController extends Controller
         })
         ->addColumn('action', function($data){
             $actionBtn = '<i onclick="editProductJual('.$data->id_product_jual.')" title="edit-price-product" class="far fa-edit" style="margin-right:5px;"></i>';
-            // $actionBtn .= '<i onclick="editProductPrice('.$data->id_product_jual.')" class="fas fa-money-bill" style="background:#3FD12E" title="edit-price-product"></i>';
+            $actionBtn .= '<i onclick="deleteProductPrice('.$data->id_product_jual.')" class="far fa-trash-alt" style="background:red" title="edit-price-product"></i>';
             return $actionBtn;
         })
         ->rawColumns(['action'])

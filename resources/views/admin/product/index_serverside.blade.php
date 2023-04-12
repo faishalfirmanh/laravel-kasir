@@ -356,8 +356,37 @@ $('#form-product').on("submit", function(e) {
       //ajax getbyid
    }
 
-   function deleteKategori(id){
-     
+   function deleteProduct(id){
+      Swal.fire({
+            title: "Yakin ingin menghapus product ini ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `{{route('product-delete')}}`,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'post',
+                    data:{'id_product':id},
+                    success: function(response){
+                        $('.product-yajra').DataTable().ajax.reload(null, true);
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    },
+                    error: function(err){
+                        console.log('error',err);
+                    }
+                })                
+            }
+      })
    }
 
 

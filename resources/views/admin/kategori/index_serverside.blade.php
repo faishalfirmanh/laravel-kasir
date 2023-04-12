@@ -144,7 +144,7 @@
                     }
                 })                
             }
-        })
+      })
    }
 
    $("#add_kategori").click(function(){
