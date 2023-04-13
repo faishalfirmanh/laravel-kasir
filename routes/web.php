@@ -4,6 +4,7 @@ use App\Http\Controllers\API\KategoriController;
 use App\Http\Controllers\WEB\TokoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WEB\AdminController;
+use App\Http\Controllers\WEB\KasirController;
 use App\Http\Controllers\WEB\KategoriServerSideController;
 use App\Http\Controllers\WEB\ProductServerSideController;
 use App\Http\Controllers\WEB\RoleController;
@@ -43,3 +44,6 @@ Route::get('/server-side-toko',[TokoController::class, 'getToko'])->name('server
 //role
 Route::get('/view-role',[RoleController::class,'viewRole'])->name('view-role');
 Route::get('/server-side-role',[RoleController::class, 'getRole'])->name('server-side-role');
+
+//Kasir
+Route::get('/view-kasir',[KasirController::class,'viewKasir'])->name('view-kasir');

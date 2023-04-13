@@ -35,11 +35,19 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
         
     }
 
+    public function updateStruckPlusMins1($req)
+    {
+        $model = $this->model->find($req->id)->first();
+        $model->total_harga_dibayar = $req->total_harga_dibayar;
+        $model->save();
+        return $model->fresh();
+    }
+
     public function getProductByIdStruck($id)
     {
     
         $data = $this->model
-        ->select('new_strucks.id_struck','products.nama_product','products.is_kg','keranjang_kasirs.harga_tiap_item','keranjang_kasirs.jumlah_item_dibeli','keranjang_kasirs.total_harga_item')
+        ->select('keranjang_kasirs.id_keranjang_kasir','new_strucks.id_struck','products.nama_product','products.is_kg','keranjang_kasirs.harga_tiap_item','keranjang_kasirs.jumlah_item_dibeli','keranjang_kasirs.total_harga_item')
         ->join('keranjang_kasirs','new_strucks.id_struck','=','keranjang_kasirs.struck_id')
         ->join('product_juals','keranjang_kasirs.product_jual_id','=','product_juals.id_product_jual')
         ->join('products','product_juals.product_id','=','products.id_product')

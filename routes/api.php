@@ -83,6 +83,12 @@ Route::controller(KeranjangKasirController::class)->group(function(){
     Route::post('/kerajang-create','CreateNewKerajangProduct')->name('kerajang-create');
     Route::post('/get-keranjang-product','CreateNewKerajangProduct')->name('get-keranjang-product');
     //meanmpilkan respon tiap2 barang, berisi nama, total barang, total  beli barang ->progres
+
+    //addProductKeranjang+1->ok
+    Route::post('/add-keranjang-product-plus1','add1JumlahProductKerajang')->name('add-keranjang-product-plus1');
+    //removeProductKeranjang-1
+    Route::post('/remove-keranjang-product-min1','reduce1JumlahProductKerajang')->name('remove-keranjang-product-min1');
+
 });
 
 

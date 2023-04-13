@@ -36,12 +36,16 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         
     }
 
-    public function Add1JumlahKerajang($id)
+    public function Add1JumlahKerajang($id,$item_dibeli,$total_harga_item)
     {
-        
+        $modal_save = $this->model->query()->where('id_keranjang_kasir',$id)->first();
+        $modal_save->jumlah_item_dibeli = $item_dibeli;
+        $modal_save->total_harga_item = $total_harga_item;
+        $modal_save->save();
+        return $modal_save->fresh();
     }
 
-    public function ReduceJumlahKerajang($id)
+    public function Reduce1JumlahKerajang($id,$item_dibeli,$total_harga_item)
     {
         
     }

@@ -9,4 +9,5 @@ interface NewStruckRepository{
     public function updateStatusNewStruck($id,$total_harga_harus_dibayar,$status = 0, $pembeli_bayar =0);
 
     public function getProductByIdStruck($id);
+    public function updateStruckPlusMins1($request);
 }

@@ -6,6 +6,8 @@ use App\Repository\KeranjangKasir\KeranjangKasirRepository;
 use App\Repository\NewStruck\NewStruckRepository;
 use App\Repository\ProductJual\ProductJualRepository;
 use Illuminate\Support\Facades\Validator;
+use stdClass;
+
 class KeranjangKasirServiceImplement implements KeranjangKasirService{
 
     protected $repository;
@@ -29,6 +31,58 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
        
         $data = $this->repository->getKeranjangById($request->id_keranjang_kasir);
         return $data;
+    }
+
+    public function Add1ProductKeranjangServiceById($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'id_keranjang_kasir' => 'required|exists:keranjang_kasirs,id_keranjang_kasir'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        //get db
+        $data_keranjang = $this->repository->getKeranjangById($request->id_keranjang_kasir);
+        $data_struck = $this->repo_struck->getStruckById($data_keranjang->struck_id);
+        $total_product_each_item = $data_struck->total_harga_dibayar + $data_keranjang->harga_tiap_item; //harga yang harus diupdate pada data struck;   
+        //get db
+        //save db
+        $update_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
+                                                                (int) $data_keranjang->jumlah_item_dibeli + 1,
+                                                                (int) $data_keranjang->total_harga_item + $data_keranjang->harga_tiap_item);                         
+        $req_struck = new stdClass();
+        $req_struck->id = $data_keranjang->struck_id;
+        $req_struck->total_harga_dibayar = $total_product_each_item;                                                        
+        $update_struck = $this->repo_struck->updateStruckPlusMins1($req_struck);
+        //save db
+        return $update_keranjang;
+
+    }
+
+    public function Remove1ProductKeranjangServiceById($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'id_keranjang_kasir' => 'required|exists:keranjang_kasirs,id_keranjang_kasir'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        //get db
+        $data_keranjang = $this->repository->getKeranjangById($request->id_keranjang_kasir);
+        $data_struck = $this->repo_struck->getStruckById($data_keranjang->struck_id);
+        $total_product_each_item = $data_struck->total_harga_dibayar - $data_keranjang->harga_tiap_item; //harga yang harus diupdate pada data struck;   
+        //get db
+        //save db
+        $update_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
+                                                                (int) $data_keranjang->jumlah_item_dibeli - 1,
+                                                                (int) $data_keranjang->total_harga_item - $data_keranjang->harga_tiap_item);                         
+        $req_struck = new stdClass();
+        $req_struck->id = $data_keranjang->struck_id;
+        $req_struck->total_harga_dibayar = $total_product_each_item;                                                        
+        $update_struck = $this->repo_struck->updateStruckPlusMins1($req_struck);
+        //save db
+        return $update_keranjang;
+
     }
 
     public function CreateKeranjangServiceById($request)

@@ -65,7 +65,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{route('view-kasir')}}">
                         <i class="fa fa-microchip" aria-hidden="true"></i>
                         <div class="title">Kasir</div>
                     </a>
@@ -119,6 +119,7 @@
             @yield('dashboard')
             <div style="margin-bottom: 90px;"></div>
             @yield('table_content')
+            @yield('content-no-table')
         </div>
         <!-- content --->
         <!--modal start-->
