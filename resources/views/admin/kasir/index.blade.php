@@ -76,6 +76,7 @@
         <input type="text" disabled id="id_struck" style="margin-bottom: 10px">  
         <br> <button onclick="generateNewStruck()" style="margin-bottom:20px;">Generate</button> 
         <p id="msg_response" class="msg-generate-struck" style="display: none">Success generate new struck</p>
+        <input type="hidden" id="value_id_struck_php" value="{{$last_id_struck}}">
     </div>
     <div style="margin-bottom: 15px;">2. Enter Product Name </div>
     <div>
@@ -86,6 +87,10 @@
 
     <div class="clear"></div>
     <div id="userDetail"></div>
+
+    <div id="keranjang_struck" style="margin-bottom: 230px;">
+       <ul id="parrent-keranjang"></ul>
+    </div>
 
     <div id="response_struck_print" class="struc-display">
         <ul>
@@ -103,7 +108,8 @@
 $("#txt_search").keyup(function(){
     setTimeout(() => {
         var input_keyword = $(this).val();
-        console.log('input keyword',input_keyword);
+        //console.log('input keyword',input_keyword);
+        $("#searchResult").css({'display' : 'block'})
         if(input_keyword != ""){
             $.ajax({
                 type: "post",
@@ -116,7 +122,7 @@ $("#txt_search").keyup(function(){
                         $("#searchResult").empty();
                         $('#msg_search').css({'display': 'none'})
                         data_tes.forEach(element => {
-                            console.log(element.nama_product);
+                            //console.log(element.nama_product);
                             $("#searchResult").append("<li value='"+element.id_product_jual+"'>"+element.nama_product+"</li>");
                         });
 
@@ -152,32 +158,53 @@ $("#txt_search").keyup(function(){
     }, 800);
 })
 
+
+
 function saveProductToKeranjang(element){
-    var value = $(element).text();
-    var userid = $(element).val();
 
-    $("#txt_search").val(value);
-    $("#searchResult").empty();
+    let nama_product = element.firstChild.data;
+    document.getElementById('txt_search').value = nama_product
+
+    $("#searchResult").css({'display' : 'none'})
+
+    let id_product = element.value;
+    let id_struck = document.getElementById("id_struck").value
+    let id_struck_php = document.getElementById("value_id_struck_php").value
+    let final_id = id_struck == "" ? id_struck_php : id_struck
+    let input_data = {
+        'struck_id': final_id,
+        'status' : 0,
+        'product_jual_id' : id_product,
+        'jumlah_item_dibeli' : 1
+    }
+   
+    const div_keranjang_struck = document.getElementById('keranjang_struck');
+    const ul_parent = document.getElementById('parrent-keranjang');
     
+    //1 buat response html buat keranjang ,dengan button
+    //2 implementasi response tadi ke route ajax keranajng
+    //3 saat route keranjang success panggil api get kerajang
+
     // Request User Details
-    $.ajax({
-        url: '{{route("kerajang-create")}}',
-        type: 'post',
-        data: {userid:userid, type:2},
-        dataType: 'json',
-        success: function(response){
+    // $.ajax({
+    //     url: '{{route("kerajang-create")}}',
+    //     type: 'post',
+    //     data: input_data,
+    //     success: function(response){
+    //         const data_res = response.data;
+    //         console.log(response);
+            
+    //     },
+    //     error: function(xhr, status, error){
+    //         if (status == 'error') {
+    //             let msg_error = JSON.parse(xhr.responseText);
+    //             if (msg_error.data.struck_id) {
+    //                 alert("Tolong generate ulang struck")
+    //             }
+    //         }
+    //     }
 
-            var len = response.length;
-            $("#userDetail").empty();
-            if(len > 0){
-                var username = response[0]['username'];
-                var email = response[0]['email'];
-                $("#userDetail").append("Username : " + username + "<br/>");
-                $("#userDetail").append("Email : " + email);
-            }
-        }
-
-    });
+    // });
 }
 
 function generateNewStruck(){

@@ -11,6 +11,7 @@ class KasirController extends Controller
 
     public function viewKasir(Request $request)
     {
-        return view('admin.kasir.index');
+        $last_id = cek_last_id_struck();
+        return view('admin.kasir.index',['last_id_struck'=>$last_id]);
     }
 }
