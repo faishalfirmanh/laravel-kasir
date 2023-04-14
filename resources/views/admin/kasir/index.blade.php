@@ -161,7 +161,7 @@ function saveProductToKeranjang(element){
     
     // Request User Details
     $.ajax({
-        url: '{{route('kerajang-create')}}',
+        url: '{{route("kerajang-create")}}',
         type: 'post',
         data: {userid:userid, type:2},
         dataType: 'json',

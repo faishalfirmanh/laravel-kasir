@@ -56,4 +56,10 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         return $data;
     }
 
+    public function CekIdProductAndSturckIdInKeranjang($id_product, $id_struck)
+    {
+        $data = $this->model->where('product_jual_id',$id_product)->where('struck_id', $id_struck)->first();
+        return $data;
+    }
+
 }

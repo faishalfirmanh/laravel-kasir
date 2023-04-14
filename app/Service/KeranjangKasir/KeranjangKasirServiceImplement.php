@@ -103,9 +103,19 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         //keranjang
         $request->total_harga_item = $total_price_item;
         $request->harga_tiap_item = $find_data_product_jual->price_sell;
+        //cek if product & struc id eksis
+        $data_keranjang = $this->repository->CekIdProductAndSturckIdInKeranjang($request->product_jual_id,$request->struck_id);
         
         //save to db
-        $data_add_keranjang = $this->repository->addKeranjang($request);
+        if ($data_keranjang != NULL) {
+            $id_keranjang_kasir = $data_keranjang->id_keranjang_kasir;
+            $data_add_keranjang = $this->repository->Add1JumlahKerajang($id_keranjang_kasir,
+                                                (int) $data_keranjang->jumlah_item_dibeli + (int) $request->jumlah_item_dibeli,
+                                                (int) $data_keranjang->total_harga_item + ($data_keranjang->harga_tiap_item * $request->jumlah_item_dibeli));                         
+        }else{
+            $data_add_keranjang = $this->repository->addKeranjang($request);
+        }
+        
         if ((int)$find_data_struck->total_harga_dibayar > 0) {
             $must_pay = $this->repository->getAllTotalPriceMustPayByIdStruck($request->struck_id);
             $data_update_struck = $this->repo_struck->updateStatusNewStruck($request->struck_id,$must_pay,1);
@@ -113,7 +123,7 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
             $data_update_struck = $this->repo_struck->updateStatusNewStruck($request->struck_id,$total_price_item,0);
         }
        
-        return $data_add_keranjang;
+        return $data_add_keranjang;//response bisa diganti paggil api get-view-struck-barang
     }
 
     
