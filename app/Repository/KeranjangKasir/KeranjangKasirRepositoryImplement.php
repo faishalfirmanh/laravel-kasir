@@ -45,6 +45,12 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         return $modal_save->fresh();
     }
 
+    public function DeleteKeranjangStruck($id_keranjang)
+    {
+        $model = $this->model->find($id_keranjang);
+        return $model->delete();
+    }
+
     public function Reduce1JumlahKerajang($id,$item_dibeli,$total_harga_item)
     {
         

@@ -126,6 +126,23 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         return $data_add_keranjang;//response bisa diganti paggil api get-view-struck-barang
     }
 
-    
+    public function DeleteKeranjangServiceById($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'id_keranjang_kasir' => 'required|exists:keranjang_kasirs,id_keranjang_kasir',
+        ]);
+
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+
+        $get_keranjang = $this->repository->getKeranjangById($request->id_keranjang_kasir);
+        $price_delete = $get_keranjang->total_harga_item;
+        $must_pay = $this->repository->getAllTotalPriceMustPayByIdStruck($get_keranjang->struck_id);
+        //save db
+        $delete_keranjang = $this->repository->DeleteKeranjangStruck($request->id_keranjang_kasir);
+        $update_total_price_struck = $this->repo_struck->updateStatusNewStruck($get_keranjang->struck_id,$must_pay-$price_delete,1);
+        return $update_total_price_struck;
+    }
 
 }

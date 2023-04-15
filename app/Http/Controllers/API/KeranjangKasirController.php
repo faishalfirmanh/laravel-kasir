@@ -45,4 +45,10 @@ class KeranjangKasirController extends Controller
         return $this->responseSucess($data);
     }
 
+    public function deleteKeranjang(Request $request)
+    {
+        $data = $this->service->DeleteKeranjangServiceById($request);
+        return $this->responseSucess($data);
+    }
+
 }

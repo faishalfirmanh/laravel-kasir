@@ -94,9 +94,25 @@
 
     <div id="response_struck_print" class="struc-display">
         <ul>
-            <li>Sampo &nbsp &nbsp  1x12000  &nbsp | &nbsp 24.000</li>
-            <li>Sabon &nbsp &nbsp  1x2000  &nbsp  | &nbsp 2.000</li>
-            <li>Garam &nbsp &nbsp  2x3000  &nbsp  | &nbsp 6.000</li>
+            <li>
+                <span style="margin-right:15px" id="nama_barang">Sampo</span>
+                <span style="margin-right: 10px" id="item_barang">1x12000</span>
+                <span style="margin-right: 10px" id="total_harga_barang">12.000</span>
+            </li>
+            <li>
+                <span style="margin-right:15px" id="nama_barang">Garam</span>
+                <span style="margin-right: 10px" id="item_barang">3x3000</span>
+                <span style="margin-right: 10px" id="total_harga_barang">9.000</span>
+            </li>
+            <li>
+                <span style="margin-right:15px" id="nama_barang">Jeruk</span>
+                <span style="margin-right: 10px" id="item_barang">1x5000</span>
+                <span style="margin-right: 10px" id="total_harga_barang">5.000</span>
+            </li>
+           
+            <li>Total &nbsp;&nbsp;&nbsp;  28.000</li>
+            <li>Bayar &nbsp;&nbsp;&nbsp;  30.000</li>
+            <li>Kembali &nbsp;&nbsp;&nbsp; 2.000</li>
         </ul>
     </div>
 </div>

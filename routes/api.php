@@ -86,8 +86,10 @@ Route::controller(KeranjangKasirController::class)->group(function(){
 
     //addProductKeranjang+1->ok
     Route::post('/add-keranjang-product-plus1','add1JumlahProductKerajang')->name('add-keranjang-product-plus1');
-    //removeProductKeranjang-1
+    //removeProductKeranjang->ok
     Route::post('/remove-keranjang-product-min1','reduce1JumlahProductKerajang')->name('remove-keranjang-product-min1');
+    //delete keranjang dan update total struck
+    Route::post('/delete-keranjang','deleteKeranjang')->name('delete-keranjang');
 
 });
 
