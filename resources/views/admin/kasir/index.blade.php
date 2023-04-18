@@ -67,6 +67,36 @@
         margin: 0;
         padding: 0;
     }
+    
+    /*style dom*/
+   .style-li-dom{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        margin-right: 100px;
+   }
+
+   .btn-plus-dom{
+      margin-left: 5px;
+      margin-right: 3px;
+   }
+
+   .btn-min-dom{
+        margin-left: 5px;
+        margin-right: 3px;
+      
+   }
+   .btn-hapus-dom{
+        margin-left: 5px;
+        margin-right: 3px;
+        margin-bottom: 5px;
+   }
+
+   .hr-dom{
+    margin-top: 10px;
+    width: 120%;
+   }
+
 </style>
 
 @section('content-no-table')
@@ -88,8 +118,11 @@
     <div class="clear"></div>
     <div id="userDetail"></div>
 
-    <div id="keranjang_struck" style="margin-bottom: 230px;">
-       <ul id="parrent-keranjang"></ul>
+    <div id="keranjang_struck" style="margin-bottom: 230px;border-style: dotted ;">
+       <ul id="parrent-keranjang" style="margin-left:10px;">
+            <li class="style-li-dom">Total harga: <span id="total_harga">0</span></li>
+            <hr>
+       </ul>
     </div>
 
     <div id="response_struck_print" class="struc-display">
@@ -175,6 +208,18 @@ $("#txt_search").keyup(function(){
 })
 
 
+function reqAjaxMin1Keranjang(idKeranjang){
+
+}
+
+function reqAjaxPlus1Keranjang(idKeranjang){
+
+}
+
+function reqAjaxRemoveKeranjang(id){
+
+}
+
 
 function saveProductToKeranjang(element){
 
@@ -194,33 +239,77 @@ function saveProductToKeranjang(element){
         'jumlah_item_dibeli' : 1
     }
    
+    //dom-create tampilan keranjang
     const div_keranjang_struck = document.getElementById('keranjang_struck');
     const ul_parent = document.getElementById('parrent-keranjang');
     
-    //1 buat response html buat keranjang ,dengan button
+    const list_item = document.createElement("li");
+    list_item.className = "styleLidom";
+    list_item.textContent = nama_product;
+    list_item.className = "style-li-dom";
+
+    const button_plus = document.createElement("BUTTON");
+    var plus = document.createTextNode("+");
+    button_plus.className = "btn-plus-dom";
+    button_plus.setAttribute('onclick', 'reqAjaxPlus1Keranjang(id)');
+    button_plus.appendChild(plus)
+
+    const input_total = document.createElement('input')
+    input_total.setAttribute('value',1);
+    input_total.setAttribute('disabled', true)
+
+    const button_min = document.createElement("BUTTON");
+    var min = document.createTextNode("-");
+    button_min.className = "btn-min-dom";
+    button_min.setAttribute('onclick', 'reqAjaxMin1Keranjang(id)');
+    button_min.appendChild(min)
+
+    const button_hapus = document.createElement("BUTTON");
+    var hapus = document.createTextNode("hapus");
+    button_hapus.className = "btn-hapus-dom";
+    button_hapus.setAttribute('onclick','reqAjaxRemoveKeranjang(id)')
+    button_hapus.appendChild(hapus)
+
+    const hr = document.createElement("hr")
+    hr.className = "hr-dom"
+
+    ul_parent.appendChild(list_item);
+    list_item.appendChild(button_plus);
+    list_item.appendChild(button_min);
+    list_item.appendChild(button_hapus);
+    list_item.appendChild(input_total)
+    list_item.appendChild(hr)
+  
+    //dom-create tampilan keranjang
+    
+    //1 buat response html buat keranjang ,dengan button->ok
     //2 implementasi response tadi ke route ajax keranajng
     //3 saat route keranjang success panggil api get kerajang
 
     // Request User Details
-    // $.ajax({
-    //     url: '{{route("kerajang-create")}}',
-    //     type: 'post',
-    //     data: input_data,
-    //     success: function(response){
-    //         const data_res = response.data;
-    //         console.log(response);
+    $.ajax({
+        url: '{{route("kerajang-create")}}',
+        type: 'post',
+        data: input_data,
+        success: function(response){
+            const data_res = response.data;
+            let keranjang_id = data_res.id_keranjang_kasir;
+            let total_product = data_res.jumlah_item_dibeli;
             
-    //     },
-    //     error: function(xhr, status, error){
-    //         if (status == 'error') {
-    //             let msg_error = JSON.parse(xhr.responseText);
-    //             if (msg_error.data.struck_id) {
-    //                 alert("Tolong generate ulang struck")
-    //             }
-    //         }
-    //     }
+            console.log(total_product);
+            console.log(keranjang_id);
+            
+        },
+        error: function(xhr, status, error){
+            if (status == 'error') {
+                let msg_error = JSON.parse(xhr.responseText);
+                if (msg_error.data.struck_id) {
+                    alert("Tolong generate ulang struck")
+                }
+            }
+        }
 
-    // });
+    });
 }
 
 function generateNewStruck(){
