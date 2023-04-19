@@ -75,6 +75,12 @@
         font-size: 14px;
         margin-right: 100px;
    }
+   .style-li-dom-fix{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        margin-right: 100px;
+   }
 
    .btn-plus-dom{
       margin-left: 5px;
@@ -120,7 +126,7 @@
 
     <div id="keranjang_struck" style="margin-bottom: 230px;border-style: dotted ;">
        <ul id="parrent-keranjang" style="margin-left:10px;">
-            <li class="style-li-dom">Total harga: <span id="total_harga">0</span></li>
+            <li class="style-li-dom-fix">Total harga: <span id="total_harga">0</span></li>
             <hr>
        </ul>
     </div>
@@ -243,48 +249,10 @@ function saveProductToKeranjang(element){
     const div_keranjang_struck = document.getElementById('keranjang_struck');
     const ul_parent = document.getElementById('parrent-keranjang');
     
-    const list_item = document.createElement("li");
-    list_item.className = "styleLidom";
-    list_item.textContent = nama_product;
-    list_item.className = "style-li-dom";
-
-    const button_plus = document.createElement("BUTTON");
-    var plus = document.createTextNode("+");
-    button_plus.className = "btn-plus-dom";
-    button_plus.setAttribute('onclick', 'reqAjaxPlus1Keranjang(id)');
-    button_plus.appendChild(plus)
-
-    const input_total = document.createElement('input')
-    input_total.setAttribute('value',1);
-    input_total.setAttribute('disabled', true)
-
-    const button_min = document.createElement("BUTTON");
-    var min = document.createTextNode("-");
-    button_min.className = "btn-min-dom";
-    button_min.setAttribute('onclick', 'reqAjaxMin1Keranjang(id)');
-    button_min.appendChild(min)
-
-    const button_hapus = document.createElement("BUTTON");
-    var hapus = document.createTextNode("hapus");
-    button_hapus.className = "btn-hapus-dom";
-    button_hapus.setAttribute('onclick','reqAjaxRemoveKeranjang(id)')
-    button_hapus.appendChild(hapus)
-
-    const hr = document.createElement("hr")
-    hr.className = "hr-dom"
-
-    ul_parent.appendChild(list_item);
-    list_item.appendChild(button_plus);
-    list_item.appendChild(button_min);
-    list_item.appendChild(button_hapus);
-    list_item.appendChild(input_total)
-    list_item.appendChild(hr)
-  
-    //dom-create tampilan keranjang
-    
     //1 buat response html buat keranjang ,dengan button->ok
-    //2 implementasi response tadi ke route ajax keranajng
-    //3 saat route keranjang success panggil api get kerajang
+    //2 implementasi response tadi ke route ajax keranajng->ok
+    //3 saat route keranjang success panggil api get kerajang->ok
+    //4 perbaiki saat product sudah ada (update keranjang) tidak create element lagi->
 
     // Request User Details
     $.ajax({
@@ -304,8 +272,49 @@ function saveProductToKeranjang(element){
                     const list_data = resStruck.data;
                     const total_price_must_pay = list_data.total_bayar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                     $("#total_harga").text(total_price_must_pay);
+                    const list_item = list_data.list;
                      //create element html
-                    
+                     list_item.map((item)=>{
+
+                        console.log(item);
+                        const list_item = document.createElement("li");
+                        list_item.className = "styleLidom";
+                        const cek_pcs = item.is_kg == 1 ? 'kg' : 'pcs';
+                        list_item.textContent = `${item.nama_product} | ${item.start_kg} - ${item.end_kg} ${cek_pcs}`;
+                        list_item.className = "style-li-dom";
+                        ul_parent.appendChild(list_item);
+                        //btn-plus
+                        const button_plus = document.createElement("BUTTON");
+                        const plus = document.createTextNode("+");
+                        button_plus.className = "btn-plus-dom";
+                        button_plus.setAttribute('onclick', `reqAjaxPlus1Keranjang(${item.id_keranjang_kasir})`);
+                        button_plus.appendChild(plus)
+                        list_item.appendChild(button_plus);
+                        //btn-min
+                        const button_min = document.createElement("BUTTON");
+                        const min = document.createTextNode("-");
+                        button_min.className = "btn-min-dom";
+                        button_min.setAttribute('onclick', `reqAjaxMin1Keranjang(${item.id_keranjang_kasir})`);
+                        button_min.appendChild(min)
+                        list_item.appendChild(button_min)
+                        //btn-remove
+                        const button_hapus = document.createElement("BUTTON");
+                        var hapus = document.createTextNode("hapus");
+                        button_hapus.className = "btn-hapus-dom";
+                        button_hapus.setAttribute('onclick',`reqAjaxRemoveKeranjang(${item.id_keranjang_kasir})`)
+                        button_hapus.appendChild(hapus)
+                        list_item.appendChild(button_hapus)
+                        //total item
+                        const input_total = document.createElement('input')
+                        input_total.setAttribute('value',item.jumlah_item_dibeli);
+                        input_total.setAttribute('disabled', true)
+                        list_item.appendChild(input_total)
+                        //hr
+                        const hr = document.createElement("hr")
+                        hr.className = "hr-dom"
+                        list_item.appendChild(hr)
+
+                     })
                     
                 },
                 error: function(xhr, status, error){
@@ -338,6 +347,8 @@ function generateNewStruck(){
             if (response.msg == 'success') {
                 document.getElementById("id_struck").value = response.data.id_struck;
                 document.getElementById("msg_response").removeAttribute("style");
+                $('.style-li-dom').remove();
+                $("#total_harga").text(0)
             }
             console.log(response.msg);
             console.log(response.data);
