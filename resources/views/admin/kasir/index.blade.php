@@ -295,10 +295,28 @@ function saveProductToKeranjang(element){
             const data_res = response.data;
             let keranjang_id = data_res.id_keranjang_kasir;
             let total_product = data_res.jumlah_item_dibeli;
-            
-            console.log(total_product);
-            console.log(keranjang_id);
-            
+            //ajax get struck start
+            $.ajax({
+                url: '{{route("get-view-struck-barang")}}',
+                type: 'post',
+                data: {'id_struck' : data_res.struck_id},
+                success: function(resStruck){
+                    const list_data = resStruck.data;
+                    const total_price_must_pay = list_data.total_bayar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    $("#total_harga").text(total_price_must_pay);
+                     //create element html
+                    
+                    
+                },
+                error: function(xhr, status, error){
+                    if (status == 'error') {
+                        let msg_error = JSON.parse(xhr.responseText);
+                        console.log(msg_error);
+                    }
+                }
+            })
+            //ajax get struck end
+
         },
         error: function(xhr, status, error){
             if (status == 'error') {

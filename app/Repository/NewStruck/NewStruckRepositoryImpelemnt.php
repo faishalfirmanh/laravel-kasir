@@ -12,7 +12,7 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
     }
 
     public function getStruckById($id){
-        $data = $this->model->find($id)->first();
+        $data = $this->model->find($id);
         return $data;
     }
 
@@ -47,10 +47,13 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
     {
     
         $data = $this->model
-        ->select('keranjang_kasirs.id_keranjang_kasir','new_strucks.id_struck','products.nama_product','products.is_kg','keranjang_kasirs.harga_tiap_item','keranjang_kasirs.jumlah_item_dibeli','keranjang_kasirs.total_harga_item')
+        ->select('keranjang_kasirs.id_keranjang_kasir','new_strucks.id_struck',
+        'products.nama_product','products.is_kg','product_juals.start_kg','product_juals.end_kg',
+        'keranjang_kasirs.harga_tiap_item','keranjang_kasirs.jumlah_item_dibeli','keranjang_kasirs.total_harga_item')
         ->join('keranjang_kasirs','new_strucks.id_struck','=','keranjang_kasirs.struck_id')
         ->join('product_juals','keranjang_kasirs.product_jual_id','=','product_juals.id_product_jual')
         ->join('products','product_juals.product_id','=','products.id_product')
+        ->where('keranjang_kasirs.struck_id',$id)
         ->get();
         return $data;
     }

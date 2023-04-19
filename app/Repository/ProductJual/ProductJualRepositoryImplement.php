@@ -47,10 +47,11 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
        }
         $data_val = [];
         foreach ($data as $key) {
+            $cek_kg_or_pcs = $key->is_kg == '0' ? 'pcs' : 'kg';
             $coll = new stdClass();
             $coll->idProduct = $key->id_product;
             $coll->id_product_jual = $key->id_product_jual;
-            $coll->nama_product = $key->nama_product." | ".$key->start_kg."-".$key->end_kg."kg";
+            $coll->nama_product = $key->nama_product." | ".$key->start_kg."-".$key->end_kg." ".$cek_kg_or_pcs;
             $coll->harga_jual = $key->price_sell;
             array_push($data_val,$coll);
         }
