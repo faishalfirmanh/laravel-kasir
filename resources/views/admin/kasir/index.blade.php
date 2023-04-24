@@ -45,6 +45,8 @@
         width: 100%;
         letter-spacing: 1px;
     }
+
+    /* class stuck */
     .msg-generate-struck{
         width: 200px;
         height: 20px;
@@ -82,6 +84,7 @@
         margin-right: 100px;
    }
 
+   /* buton */
    .btn-plus-dom{
       margin-left: 5px;
       margin-right: 3px;
@@ -96,6 +99,7 @@
         margin-left: 5px;
         margin-right: 3px;
         margin-bottom: 5px;
+        margin-top: 7px;
    }
 
    .hr-dom{
@@ -103,6 +107,13 @@
     width: 120%;
    }
 
+   /*clas loading*/
+   .loading-p-class{
+        margin-top: 12px;
+        margin-bottom: 13px;
+        font-size: 17px;
+        color: red;
+   }
 </style>
 
 @section('content-no-table')
@@ -124,14 +135,25 @@
     <div class="clear"></div>
     <div id="userDetail"></div>
 
-    <div id="keranjang_struck" style="margin-bottom: 230px;border-style: dotted ;">
+    <div id="keranjang_struck" style="margin-bottom: 80px;border-style: dotted ;">
        <ul id="parrent-keranjang" style="margin-left:10px;">
             <li class="style-li-dom-fix">Total harga: <span id="total_harga">0</span></li>
             <hr>
        </ul>
     </div>
 
+    <div style="margin-bottom: 15px;">
+        <p>3. User Bayar</p> <br>
+        <input type="number" min="1" id="user_bayar_id"> 
+        <div style="margin-bottom: 20px;margin-top: 15px;">
+            <button id="btn-cetak-struck-id">Cetak Struck</button>
+        </div>
+    </div>
+    
+
     <div id="response_struck_print" class="struc-display">
+        <h4>Tampilan struck</h4>
+        <br><br>
         <ul>
             <li>
                 <span style="margin-right:15px" id="nama_barang">Sampo</span>
@@ -160,6 +182,16 @@
 
 @push('scripts')
 <script>
+//js cek total bayar start
+const text_total_harga = document.getElementById('total_harga')
+if (text_total_harga.textContent < 1) {
+    let btn_cetak_struck = document.getElementById('btn-cetak-struck-id');
+    btn_cetak_struck.setAttribute("disabled", true);
+    let input_harga_bayar_user = document.getElementById('user_bayar_id')
+    input_harga_bayar_user.setAttribute("disabled",true)
+}
+//js cek total bayar end
+
 $("#txt_search").keyup(function(){
     setTimeout(() => {
         var input_keyword = $(this).val();
@@ -245,9 +277,7 @@ function saveProductToKeranjang(element){
         'jumlah_item_dibeli' : 1
     }
    
-    //dom-create tampilan keranjang
-    const div_keranjang_struck = document.getElementById('keranjang_struck');
-    const ul_parent = document.getElementById('parrent-keranjang');
+    
     
     //1 buat response html buat keranjang ,dengan button->ok
     //2 implementasi response tadi ke route ajax keranajng->ok
@@ -263,69 +293,28 @@ function saveProductToKeranjang(element){
             const data_res = response.data;
             let keranjang_id = data_res.id_keranjang_kasir;
             let total_product = data_res.jumlah_item_dibeli;
-            //ajax get struck start
-            $.ajax({
-                url: '{{route("get-view-struck-barang")}}',
-                type: 'post',
-                data: {'id_struck' : data_res.struck_id},
-                success: function(resStruck){
-                    const list_data = resStruck.data;
-                    const total_price_must_pay = list_data.total_bayar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                    $("#total_harga").text(total_price_must_pay);
-                    const list_item = list_data.list;
-                     //create element html
-                     list_item.map((item)=>{
+            let id_keranjang_kasir = data_res.id_keranjang_kasir
+            console.log('create-keranjang',data_res);
+            const ul_parent = document.getElementById('parrent-keranjang');
 
-                        console.log(item);
-                        const list_item = document.createElement("li");
-                        list_item.className = "styleLidom";
-                        const cek_pcs = item.is_kg == 1 ? 'kg' : 'pcs';
-                        list_item.textContent = `${item.nama_product} | ${item.start_kg} - ${item.end_kg} ${cek_pcs}`;
-                        list_item.className = "style-li-dom";
-                        ul_parent.appendChild(list_item);
-                        //btn-plus
-                        const button_plus = document.createElement("BUTTON");
-                        const plus = document.createTextNode("+");
-                        button_plus.className = "btn-plus-dom";
-                        button_plus.setAttribute('onclick', `reqAjaxPlus1Keranjang(${item.id_keranjang_kasir})`);
-                        button_plus.appendChild(plus)
-                        list_item.appendChild(button_plus);
-                        //btn-min
-                        const button_min = document.createElement("BUTTON");
-                        const min = document.createTextNode("-");
-                        button_min.className = "btn-min-dom";
-                        button_min.setAttribute('onclick', `reqAjaxMin1Keranjang(${item.id_keranjang_kasir})`);
-                        button_min.appendChild(min)
-                        list_item.appendChild(button_min)
-                        //btn-remove
-                        const button_hapus = document.createElement("BUTTON");
-                        var hapus = document.createTextNode("hapus");
-                        button_hapus.className = "btn-hapus-dom";
-                        button_hapus.setAttribute('onclick',`reqAjaxRemoveKeranjang(${item.id_keranjang_kasir})`)
-                        button_hapus.appendChild(hapus)
-                        list_item.appendChild(button_hapus)
-                        //total item
-                        const input_total = document.createElement('input')
-                        input_total.setAttribute('value',item.jumlah_item_dibeli);
-                        input_total.setAttribute('disabled', true)
-                        list_item.appendChild(input_total)
-                        //hr
-                        const hr = document.createElement("hr")
-                        hr.className = "hr-dom"
-                        list_item.appendChild(hr)
+            //create element loading
+            const loading_p = document.createElement("p");
+            var text_loading = document.createTextNode("Loading......");
+            loading_p.className = "loading-p-class";
+            loading_p.appendChild(text_loading)
+            loading_p.setAttribute('id', 'text-loading-p-id')
+            ul_parent.appendChild(loading_p) 
+            //loading end
 
-                     })
-                    
-                },
-                error: function(xhr, status, error){
-                    if (status == 'error') {
-                        let msg_error = JSON.parse(xhr.responseText);
-                        console.log(msg_error);
-                    }
-                }
-            })
-            //ajax get struck end
-
+            const  cek_class_child_exsis = document.getElementsByClassName('style-li-dom');
+            if (cek_class_child_exsis.length > 0) {
+                document.querySelectorAll('.style-li-dom').forEach(e => e.remove());
+            }
+           
+            setTimeout(() => {
+                document.getElementById("text-loading-p-id").remove();//remove loading
+                getStruckFunction(data_res.struck_id);
+            }, 800);
         },
         error: function(xhr, status, error){
             if (status == 'error') {
@@ -339,6 +328,104 @@ function saveProductToKeranjang(element){
     });
 }
 
+function getStruckFunction(id_struck){
+    //dom-create tampilan keranjang
+    const div_keranjang_struck = document.getElementById('keranjang_struck');
+    const ul_parent = document.getElementById('parrent-keranjang');
+    //ajax get struck start
+    $.ajax({
+        url: '{{route("get-view-struck-barang")}}',
+        type: 'post',
+        data: {'id_struck' : id_struck},
+        success: function(resStruck){
+            //enabled button save and input price money from user
+            let btn_cetak_struck = document.getElementById('btn-cetak-struck-id');
+            btn_cetak_struck.removeAttribute("disabled");
+            let input_harga_bayar_user = document.getElementById('user_bayar_id')
+            input_harga_bayar_user.removeAttribute("disabled");
+            //enabled button save and input price money from user
+            const list_data = resStruck.data;
+            const total_price_must_pay = list_data.total_bayar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            $("#total_harga").text(total_price_must_pay);
+            const list_item = list_data.list;
+            console.log('api-call struck',list_item);
+                //create element html
+                list_item.map((item)=>{
+                
+                    const cek_element_exsist_list = $('li').hasClass('style-li-dom')
+                    const id_product_jual = item.id_product_jual;
+                    
+                    //nama product
+                    const list_item = document.createElement("li");
+                    const cek_pcs = item.is_kg == 1 ? 'kg' : 'pcs';
+                    const name_prd = `${item.nama_product} | ${item.start_kg} - ${item.end_kg} ${cek_pcs}`;
+                    list_item.textContent = name_prd;
+                    list_item.className = "style-li-dom";
+                    
+                  
+
+                    //btn-plus
+                    const button_plus = document.createElement("BUTTON");
+                    const plus = document.createTextNode("+");
+                    button_plus.className = "btn-plus-dom";
+                    button_plus.setAttribute('onclick', `reqAjaxPlus1Keranjang(${item.id_keranjang_kasir})`);
+                    
+                    //btn-min
+                    const button_min = document.createElement("BUTTON");
+                    const min = document.createTextNode("-");
+                    button_min.className = "btn-min-dom";
+                    button_min.setAttribute('onclick', `reqAjaxMin1Keranjang(${item.id_keranjang_kasir})`);
+                    
+                    //btn-remove
+                    const button_hapus = document.createElement("BUTTON");
+                    var hapus = document.createTextNode("hapus");
+                    button_hapus.className = "btn-hapus-dom";
+                    button_hapus.setAttribute('onclick',`reqAjaxRemoveKeranjang(${item.id_keranjang_kasir})`)
+                    
+                    //price each item 
+                    const element_price_item = document.createElement("p")
+                    const price_each_item = item.harga_tiap_item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                    const text_price = document.createTextNode(`harga item : ${price_each_item}`)
+                    element_price_item.className = 'text-price-item'
+
+                    //total item
+                    const input_total = document.createElement('input')
+                    input_total.setAttribute('value',item.jumlah_item_dibeli);
+                    input_total.setAttribute('disabled', true)
+                    let id_value_jumlah = `id-input-${item.id_keranjang_kasir}`
+                    input_total.setAttribute('id',id_value_jumlah)
+                    //hr
+                    const hr = document.createElement("hr")
+                    hr.className = "hr-dom"
+                    //for create element implements
+
+                    console.log('create element');
+                    ul_parent.appendChild(list_item);
+                    button_plus.appendChild(plus)
+                    list_item.appendChild(button_plus);
+                    button_min.appendChild(min)
+                    list_item.appendChild(button_min)
+                    list_item.appendChild(input_total)
+                    button_hapus.appendChild(hapus)
+                    list_item.appendChild(button_hapus)
+                    element_price_item.appendChild(text_price)
+                    list_item.appendChild(element_price_item)
+                    list_item.appendChild(hr)
+                
+                })
+            
+        },
+        error: function(xhr, status, error){
+            if (status == 'error') {
+                let msg_error = JSON.parse(xhr.responseText);
+                console.log(msg_error);
+            }
+        }
+    })
+    //ajax get struck end
+
+}
+
 function generateNewStruck(){
     $.ajax({
         url: '{{route("generate-new-struck")}}',
@@ -349,9 +436,9 @@ function generateNewStruck(){
                 document.getElementById("msg_response").removeAttribute("style");
                 $('.style-li-dom').remove();
                 $("#total_harga").text(0)
+                document.getElementById('txt_search').value = ''
             }
-            console.log(response.msg);
-            console.log(response.data);
+           
         },
         error: function(err){
             console.log(err);

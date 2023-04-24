@@ -36,7 +36,7 @@
                 </li>
                 <li>
                     <a href="{{route('view-toko')}}">
-                        <i class="fa fa-shopping-bag"></i>
+                        <i class="fa fa-home"></i>
                         <div class="title">Toko</div>
                     </a>
                 </li>
@@ -60,13 +60,13 @@
                 </li>
                 <li>
                     <a href="{{route('view-product')}}">
-                        <i class="fas fa-puzzle-piece"></i>
+                        <i class="fa fa-desktop"></i>
                         <div class="title">Product</div>
                     </a>
                 </li>
                 <li>
                     <a href="{{route('view-kasir')}}">
-                        <i class="fa fa-microchip" aria-hidden="true"></i>
+                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
                         <div class="title">Kasir</div>
                     </a>
                 </li>
