@@ -388,6 +388,11 @@ function getStruckFunction(id_struck){
                     const text_price = document.createTextNode(`harga item : ${price_each_item}`)
                     element_price_item.className = 'text-price-item'
 
+                    //price total each item
+                    const element_total_item = document.createElement("p")
+                    const price_total_item = item.total_harga_item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                    const text_total_item = document.createTextNode(`total item ${price_total_item}`)
+
                     //total item
                     const input_total = document.createElement('input')
                     input_total.setAttribute('value',item.jumlah_item_dibeli);
@@ -410,6 +415,8 @@ function getStruckFunction(id_struck){
                     list_item.appendChild(button_hapus)
                     element_price_item.appendChild(text_price)
                     list_item.appendChild(element_price_item)
+                    element_total_item.appendChild(text_total_item)
+                    list_item.appendChild(element_total_item)
                     list_item.appendChild(hr)
                 
                 })

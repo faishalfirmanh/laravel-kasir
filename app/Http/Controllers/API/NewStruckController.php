@@ -33,6 +33,12 @@ class NewStruckController extends Controller
 
     }
 
+    public function InputPriceUserBayar(Request $request)
+    {
+        $data = $this->service->UpdateDataStruckService($request);
+        return $this->responseSucess($data);
+    }
+
     public function getProductByIdStruck(Request $request)
     {
         $data = $this->service->getProductByIdStruckService($request);

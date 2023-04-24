@@ -18,6 +18,18 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         return $data;
     }
 
+    public function getAllKeranjangById($id)
+    {
+        $data = $this->model->where('id_keranjang_kasir', $id)->get();
+        return $data;
+    }
+
+    public function getAllKeranjangByIdKasir($id_kasir)
+    {
+        $data = $this->model->where('struck_id', $id_kasir)->get();
+        return $data;
+    }
+
     public function addKeranjang($request)
     {
         $modal_save = $this->model;

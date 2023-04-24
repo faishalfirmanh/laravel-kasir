@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\KeranjangKasir;
 use App\Models\NewStruck;
+use App\Models\Product;
+use App\Models\ProductJual;
 
 if(!function_exists('getObject')){
     function getObject($data,$isIndex = null){//jika index bernilai 1
@@ -52,5 +55,61 @@ if (!function_exists('cek_last_id_struck')) {
         return $cek;
     }
 }
+
+if (!function_exists('cekPriceTotalStruck')) {
+    function cekPriceTotalStruck($id_struck){
+        $data = NewStruck::query()->where('id_struck',$id_struck)->first();
+       if ($data != NULL) {
+            return $data;
+       }else{
+            return null;
+       } 
+    }
+}
+
+if (!function_exists('getFirstProductById')) {
+    function getFirstProductById($id_product){
+       $data = Product::query()->where('id_product',$id_product)->first();
+       if ($data != NULL) {
+            return $data;
+       }else{
+            return null;
+       } 
+    }
+}
+
+if (!function_exists('getAllProductJaulByProductId')) {
+    function getAllProductJaulByProductId($id_product){
+       $data = ProductJual::query()->where('product_id',$id_product)->get();
+       if ($data != NULL) {
+            return $data;
+       }else{
+            return null;
+       } 
+    }
+}
+
+if (!function_exists('getAllProductJaulById')) {
+    function getAllProductJaulById($id){
+       $data = ProductJual::query()->where('id_product_jual',$id)->get();
+       if ($data != NULL) {
+            return $data;
+       }else{
+            return null;
+       } 
+    }
+}
+
+if (!function_exists('getAllKeranjangByStruckId')) {
+    function getAllKeranjangByStruckId($struck_id){
+       $data = KeranjangKasir::query()->where('struck_id',$struck_id)->get();
+       if ($data != NULL) {
+            return $data;
+       }else{
+            return null;
+       } 
+    }
+}
+
 
 }
