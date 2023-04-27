@@ -2,6 +2,7 @@
 
 namespace App\Repository\NewStruck;
 use App\Models\NewStruck;
+use Illuminate\Support\Facades\DB;
 
 class NewStruckRepositoryImpelemnt implements NewStruckRepository{
 
@@ -69,5 +70,19 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
         return $data;
     }
 
+    public function QueryMySqlGetKeuntungan($id_struck)
+    {
+        $query = DB::select('
+        select s.id_struck,
+        prod.nama_product,
+        k.jumlah_item_dibeli,
+        ABS((k.jumlah_item_dibeli * prod.harga_beli) - k.total_harga_item) as "TotalKeuntungan", 
+        ROUND(ABS((k.jumlah_item_dibeli * prod.harga_beli) - k.total_harga_item) / k.jumlah_item_dibeli) as "keuntungan_1_item"
+        FROM `new_strucks` s JOIN keranjang_kasirs k on s.id_struck = k.struck_id 
+        JOIN product_juals p on k.product_jual_id = p.id_product_jual 
+        JOIN products prod on p.product_id = prod.id_product 
+        WHERE s.id_struck = '.$id_struck.' and k.status = 2');
+        return $query;
+    }
    
 }

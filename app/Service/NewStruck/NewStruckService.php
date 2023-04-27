@@ -7,4 +7,5 @@ interface NewStruckService{
     public function generateNewStruckService();
     public function UpdateDataStruckService($request);
     public function getProductByIdStruckService($request);
+    public function getKeuntunganByIdStruckService($request);
 }

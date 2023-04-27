@@ -76,7 +76,8 @@ Route::controller(NewStruckController::class)->group(function(){
     Route::post('/get-view-struck-barang','getProductByIdStruck')->name('get-view-struck-barang');//menampilkan data struck belum bayar ->progres->done
     Route::post('/get-view-strukc-barang-final','UpdateStruck')->name('get-view-strukc-barang-final');//menampilkan data struck sudah  bayar (final) ->progres
 
-    Route::post('/input-price-user-bayar','InputPriceUserBayar')->name('input-price-user-bayar');
+    Route::post('/input-price-user-bayar','InputPriceUserBayar')->name('input-price-user-bayar');//ok
+    Route::post('/get-keuntungan-by-struck-id', 'getKeuntunganByIdStruckCon')->name('get-keuntungan-by-struck-id');
 });
 
 //keranjang

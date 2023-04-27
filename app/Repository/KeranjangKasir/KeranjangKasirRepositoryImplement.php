@@ -48,6 +48,21 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         
     }
 
+    public function UpdateStatusKeranjangByStruckId($struck_id,$status)
+    {
+        $get_data = $this->model->query()->where('struck_id',$struck_id)->get();
+        $param_save = array();
+        foreach ($get_data as $key => $value) {
+            $id_keranjang = $value->id_keranjang_kasir;
+            $get_first_data = $this->model->query()->where('id_keranjang_kasir',$id_keranjang)->first();
+            $get_first_data->status = $status;
+            $get_first_data->save();
+            $saved_ = $get_first_data->fresh();
+            array_push($param_save,$saved_);
+        }
+        return $param_save;
+    }
+
     public function Add1JumlahKerajang($id,$item_dibeli,$total_harga_item)
     {
         $modal_save = $this->model->query()->where('id_keranjang_kasir',$id)->first();

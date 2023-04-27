@@ -44,4 +44,10 @@ class NewStruckController extends Controller
         $data = $this->service->getProductByIdStruckService($request);
         return $this->responseSucess($data);
     }
+
+    public function getKeuntunganByIdStruckCon(Request $request)
+    {
+        $data = $this->service->getKeuntunganByIdStruckService($request);
+        return $this->responseSucess($data);
+    }
 }
