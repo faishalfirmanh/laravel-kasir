@@ -245,17 +245,80 @@ $("#txt_search").keyup(function(){
     }, 800);
 })
 
+function domLoading(){
+    const ul_parent = document.getElementById('parrent-keranjang');
+    const loading_p = document.createElement("p");
+    var text_loading = document.createTextNode("Loading......");
+    loading_p.className = "loading-p-class";
+    loading_p.appendChild(text_loading)
+    loading_p.setAttribute('id', 'text-loading-p-id')
+    ul_parent.appendChild(loading_p) 
+    //remove loading
+    const  cek_class_child_exsis = document.getElementsByClassName('style-li-dom');
+    if (cek_class_child_exsis.length > 0) {
+        document.querySelectorAll('.style-li-dom').forEach(e => e.remove());
+    }
+}
 
 function reqAjaxMin1Keranjang(idKeranjang){
-
+    $.ajax({
+        type: "post",  
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        url:"{{ route('remove-keranjang-product-min1') }}",
+        data:{'id_keranjang_kasir': idKeranjang},
+        success: function(response){
+            domLoading();
+            const id_struck = response.data.struck_id;
+            setTimeout(() => {
+                document.getElementById("text-loading-p-id").remove();
+                getStruckFunction(id_struck);
+            }, 800);
+        },
+        error: function (err){
+            console.log('err',err);
+        }
+    })
 }
 
 function reqAjaxPlus1Keranjang(idKeranjang){
-
+    $.ajax({
+        type: "post",  
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        url:"{{ route('add-keranjang-product-plus1') }}",
+        data:{'id_keranjang_kasir': idKeranjang},
+        success: function(response){
+            domLoading();
+            const id_struck = response.data.struck_id;
+            setTimeout(() => {
+                document.getElementById("text-loading-p-id").remove();
+                getStruckFunction(id_struck);
+            }, 800);
+        },
+        error: function (err){
+            console.log('err',err);
+        }
+    })
 }
 
-function reqAjaxRemoveKeranjang(id){
-
+function reqAjaxRemoveKeranjang(id){ //belum
+    $.ajax({
+        type: "post",  
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        url:"{{ route('delete-keranjang') }}",
+        data:{'id_keranjang_kasir': id},
+        success: function(response){
+            domLoading();
+            const id_struck = response.data.id_struck;
+            console.log('remove keranjang',id_struck);
+            setTimeout(() => {
+                document.getElementById("text-loading-p-id").remove();
+                getStruckFunction(id);
+            }, 800);
+        },
+        error: function (err){
+            console.log('err',err);
+        }
+    })
 }
 
 
@@ -295,21 +358,11 @@ function saveProductToKeranjang(element){
             let total_product = data_res.jumlah_item_dibeli;
             let id_keranjang_kasir = data_res.id_keranjang_kasir
             console.log('create-keranjang',data_res);
-            const ul_parent = document.getElementById('parrent-keranjang');
+           
 
             //create element loading
-            const loading_p = document.createElement("p");
-            var text_loading = document.createTextNode("Loading......");
-            loading_p.className = "loading-p-class";
-            loading_p.appendChild(text_loading)
-            loading_p.setAttribute('id', 'text-loading-p-id')
-            ul_parent.appendChild(loading_p) 
+            domLoading();
             //loading end
-
-            const  cek_class_child_exsis = document.getElementsByClassName('style-li-dom');
-            if (cek_class_child_exsis.length > 0) {
-                document.querySelectorAll('.style-li-dom').forEach(e => e.remove());
-            }
            
             setTimeout(() => {
                 document.getElementById("text-loading-p-id").remove();//remove loading
@@ -345,6 +398,7 @@ function getStruckFunction(id_struck){
             input_harga_bayar_user.removeAttribute("disabled");
             //enabled button save and input price money from user
             const list_data = resStruck.data;
+            console.log(list_data.total_bayar);
             const total_price_must_pay = list_data.total_bayar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             $("#total_harga").text(total_price_must_pay);
             const list_item = list_data.list;
