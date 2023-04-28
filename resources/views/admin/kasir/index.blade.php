@@ -309,10 +309,9 @@ function reqAjaxRemoveKeranjang(id){ //belum
         success: function(response){
             domLoading();
             const id_struck = response.data.id_struck;
-            console.log('remove keranjang',id_struck);
             setTimeout(() => {
                 document.getElementById("text-loading-p-id").remove();
-                getStruckFunction(id);
+                getStruckFunction(id_struck);
             }, 800);
         },
         error: function (err){
@@ -357,8 +356,6 @@ function saveProductToKeranjang(element){
             let keranjang_id = data_res.id_keranjang_kasir;
             let total_product = data_res.jumlah_item_dibeli;
             let id_keranjang_kasir = data_res.id_keranjang_kasir
-            console.log('create-keranjang',data_res);
-           
 
             //create element loading
             domLoading();
@@ -398,7 +395,6 @@ function getStruckFunction(id_struck){
             input_harga_bayar_user.removeAttribute("disabled");
             //enabled button save and input price money from user
             const list_data = resStruck.data;
-            console.log(list_data.total_bayar);
             const total_price_must_pay = list_data.total_bayar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             $("#total_harga").text(total_price_must_pay);
             const list_item = list_data.list;
@@ -458,7 +454,7 @@ function getStruckFunction(id_struck){
                     hr.className = "hr-dom"
                     //for create element implements
 
-                    console.log('create element');
+                    
                     ul_parent.appendChild(list_item);
                     button_plus.appendChild(plus)
                     list_item.appendChild(button_plus);
