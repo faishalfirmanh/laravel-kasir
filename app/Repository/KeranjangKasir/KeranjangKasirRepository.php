@@ -4,6 +4,7 @@ namespace App\Repository\KeranjangKasir;
 
 interface KeranjangKasirRepository{
     public function getKeranjangById($id);
+    public function getKeranjangByStruckId($id);
     public function getAllKeranjangById($id);
     public function getAllKeranjangByIdKasir($id_kasir);
     public function addKeranjang($request);

@@ -268,11 +268,19 @@ function reqAjaxMin1Keranjang(idKeranjang){
         data:{'id_keranjang_kasir': idKeranjang},
         success: function(response){
             domLoading();
-            const id_struck = response.data.struck_id;
-            setTimeout(() => {
-                document.getElementById("text-loading-p-id").remove();
-                getStruckFunction(id_struck);
-            }, 800);
+            if (response.data == null) {
+                document.getElementById("total_harga").innerHTML = 0;
+                setTimeout(() => {
+                    document.getElementById("text-loading-p-id").remove();
+                }, 800);
+            }else{
+                const id_struck = response.data.struck_id;
+                setTimeout(() => {
+                    document.getElementById("text-loading-p-id").remove();
+                    getStruckFunction(id_struck);
+                }, 800);
+            }
+           
         },
         error: function (err){
             console.log('err',err);
@@ -300,7 +308,7 @@ function reqAjaxPlus1Keranjang(idKeranjang){
     })
 }
 
-function reqAjaxRemoveKeranjang(id){ //belum
+function reqAjaxRemoveKeranjang(id){ 
     $.ajax({
         type: "post",  
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -308,11 +316,18 @@ function reqAjaxRemoveKeranjang(id){ //belum
         data:{'id_keranjang_kasir': id},
         success: function(response){
             domLoading();
-            const id_struck = response.data.id_struck;
-            setTimeout(() => {
-                document.getElementById("text-loading-p-id").remove();
-                getStruckFunction(id_struck);
-            }, 800);
+            if (response.data == null) {
+                document.getElementById("total_harga").innerHTML = 0;
+                setTimeout(() => {
+                    document.getElementById("text-loading-p-id").remove();
+                }, 800);
+            }else{
+                const id_struck = response.data.id_struck;
+                setTimeout(() => {
+                    document.getElementById("text-loading-p-id").remove();
+                    getStruckFunction(id_struck);
+                }, 800);
+            }
         },
         error: function (err){
             console.log('err',err);
@@ -398,7 +413,6 @@ function getStruckFunction(id_struck){
             const total_price_must_pay = list_data.total_bayar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             $("#total_harga").text(total_price_must_pay);
             const list_item = list_data.list;
-            console.log('api-call struck',list_item);
                 //create element html
                 list_item.map((item)=>{
                 

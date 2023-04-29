@@ -55,6 +55,20 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
         return $model->fresh();
     }
 
+    public function updateStatusStruck($id_struck,$status)
+    {
+        $model = $this->model->find($id_struck)->first();
+        $model->status = $status;
+        $model->save();
+        return $model->fresh();
+    }
+
+    public function deleteStruckByIdStruck($id_struck)
+    {
+        $model = $this->model->find($id_struck);
+        return $model->delete();
+    }
+
     public function getProductByIdStruck($id)
     {
     

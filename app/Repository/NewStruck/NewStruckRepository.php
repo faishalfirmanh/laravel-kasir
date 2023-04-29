@@ -13,4 +13,6 @@ interface NewStruckRepository{
     public function updateInputPriceUserBayar($id, $status = 0, $pembeli_bayar = 0, $keuntungan_bersih = 0);
 
     public function QueryMySqlGetKeuntungan($id_struck);
+    public function updateStatusStruck($id_struck, $status);
+    public function deleteStruckByIdStruck($id_struck);
 }

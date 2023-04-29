@@ -18,6 +18,12 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         return $data;
     }
 
+    public function getKeranjangByStruckId($id_struck)
+    {
+        $data = $this->model->where('struck_id', $id_struck)->first();
+        return $data;
+    }
+
     public function getAllKeranjangById($id)
     {
         $data = $this->model->where('id_keranjang_kasir', $id)->get();
