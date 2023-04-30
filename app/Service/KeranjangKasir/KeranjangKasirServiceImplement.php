@@ -44,7 +44,7 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         //get db
         $data_keranjang = $this->repository->getKeranjangById($request->id_keranjang_kasir);
         $data_struck = $this->repo_struck->getStruckById($data_keranjang->struck_id);
-        $total_product_each_item = $data_struck->total_harga_dibayar + $data_keranjang->harga_tiap_item; //harga yang harus diupdate pada data struck;   
+      
         
         if ($data_struck->status == 4) {
            $msg_err = ['status_struck' => 'id struck '.$data_keranjang->struck_id. ' tidak dapat digunakan, generate struck baru'];
@@ -55,6 +55,8 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         $update_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
                                                                 (int) $data_keranjang->jumlah_item_dibeli + 1,
                                                                 (int) $data_keranjang->total_harga_item + $data_keranjang->harga_tiap_item);                         
+        
+        $total_product_each_item = $data_struck->total_harga_dibayar + $data_keranjang->harga_tiap_item; //harga yang harus diupdate pada data struck;   
         $req_struck = new stdClass();
         $req_struck->id = $data_keranjang->struck_id;
         $req_struck->total_harga_dibayar = $total_product_each_item;                                                        

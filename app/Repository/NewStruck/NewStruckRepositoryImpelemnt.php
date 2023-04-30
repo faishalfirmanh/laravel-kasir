@@ -49,7 +49,7 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
 
     public function updateStruckPlusMins1($req)
     {
-        $model = $this->model->find($req->id)->first();
+        $model = $this->model->query()->where('id_struck',$req->id)->first();
         $model->total_harga_dibayar = $req->total_harga_dibayar;
         $model->save();
         return $model->fresh();
