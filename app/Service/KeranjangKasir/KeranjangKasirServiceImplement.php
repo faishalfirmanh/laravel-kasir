@@ -45,6 +45,11 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         $data_keranjang = $this->repository->getKeranjangById($request->id_keranjang_kasir);
         $data_struck = $this->repo_struck->getStruckById($data_keranjang->struck_id);
         $total_product_each_item = $data_struck->total_harga_dibayar + $data_keranjang->harga_tiap_item; //harga yang harus diupdate pada data struck;   
+        
+        if ($data_struck->status == 4) {
+           $msg_err = ['status_struck' => 'id struck '.$data_keranjang->struck_id. ' tidak dapat digunakan, generate struck baru'];
+           return $msg_err;
+        }
         //get db
         //save db
         $update_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
@@ -72,6 +77,10 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         $data_struck = $this->repo_struck->getStruckById($data_keranjang->struck_id);
         $total_product_each_item = $data_struck->total_harga_dibayar - $data_keranjang->harga_tiap_item; //harga yang harus diupdate pada data struck;
         $total_dibeli_setelah_dikurangi = (int) $data_keranjang->jumlah_item_dibeli - 1;  
+        if ($data_struck->status == 4) {
+            $msg_err = ['status_struck' => 'id struck '.$data_keranjang->struck_id. ' tidak dapat digunakan, generate struck baru'];
+           return $msg_err;
+        }
         //get db
         //save db
         if ($total_dibeli_setelah_dikurangi < 1) {
@@ -112,6 +121,13 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         if ($validated->fails()) {
             return $validated->errors();
         }
+
+        $cekDataStruck = $this->repo_struck->getStruckById($request->struck_id);
+        if ($cekDataStruck->status == 4) {
+            $msg_err = ['status_struck' => 'id struck '.$request->struck_id. ' tidak dapat digunakan, generate struck baru'];
+           return $msg_err;
+        }
+
         $find_data_product_jual = $this->repo_product_jual->getProductJualById($request->product_jual_id);
         $find_data_struck = $this->repo_struck->getStruckById($request->struck_id);
         $total_price_item = (int)$find_data_product_jual->price_sell * (int)$request->jumlah_item_dibeli;
