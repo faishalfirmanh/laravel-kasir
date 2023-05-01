@@ -350,8 +350,8 @@ function saveProductToKeranjang(element){
     let input_data = {
         'struck_id': final_id,
         'status' : 0,
-        'product_jual_id' : id_product,
-        'jumlah_item_dibeli' : 1
+        'product_jual_id' : id_product
+        // 'jumlah_item_dibeli' : 1
     }
    
     
@@ -386,6 +386,9 @@ function saveProductToKeranjang(element){
                 let msg_error = JSON.parse(xhr.responseText);
                 if (msg_error.data.struck_id) {
                     alert("Tolong generate ulang struck")
+                }
+                if (msg_error.data.id_keranjang_kasir) {
+                    alert(msg_error.data.id_keranjang_kasir)
                 }
             }
         }

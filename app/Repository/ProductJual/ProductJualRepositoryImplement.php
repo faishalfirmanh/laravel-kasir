@@ -51,7 +51,7 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
             $coll = new stdClass();
             $coll->idProduct = $key->id_product;
             $coll->id_product_jual = $key->id_product_jual;
-            $coll->nama_product = $key->nama_product." | ".$key->start_kg."-".$key->end_kg." ".$cek_kg_or_pcs;
+            $coll->nama_product = $key->nama_product." | ".$key->start_kg."-".$key->end_kg." ".$cek_kg_or_pcs .' | '.number_format($key->price_sell);
             $coll->harga_jual = $key->price_sell;
             array_push($data_val,$coll);
         }
