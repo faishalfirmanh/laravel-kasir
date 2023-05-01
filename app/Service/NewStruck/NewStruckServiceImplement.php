@@ -63,9 +63,12 @@ class NewStruckServiceImplement implements NewStruckService{
         if ($validated->fails()) {
             return $validated->errors();
         }
-        $total_bayar = $this->repository->getStruckById($request->id_struck)->total_harga_dibayar;
+        $get_data_struck = $this->repository->getStruckById($request->id_struck);
         $list = $this->repository->getProductByIdStruck($request->id_struck);
-        $data = array('list'=> $list, 'total_bayar'=>$total_bayar);
+        $data = array('list'=> $list, 
+                    'dibayar'=> number_format($get_data_struck->pembeli_bayar),
+                    'total_harga'=>number_format($get_data_struck->total_harga_dibayar),
+                    'kembalian'=>number_format($get_data_struck->kembalian));
         return $data;
     }
 

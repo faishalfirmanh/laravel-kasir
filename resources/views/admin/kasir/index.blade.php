@@ -146,7 +146,7 @@
         <p>3. User Bayar</p> <br>
         <input type="number" min="1" id="user_bayar_id"> 
         <div style="margin-bottom: 20px;margin-top: 15px;">
-            <button id="btn-cetak-struck-id">Cetak Struck</button>
+            <button id="btn-hitung-transaksi">Hitung transaksi</button>
         </div>
     </div>
     
@@ -185,7 +185,7 @@
 //js cek total bayar start
 const text_total_harga = document.getElementById('total_harga')
 if (text_total_harga.textContent < 1) {
-    let btn_cetak_struck = document.getElementById('btn-cetak-struck-id');
+    let btn_cetak_struck = document.getElementById('btn-hitung-transaksi');
     btn_cetak_struck.setAttribute("disabled", true);
     let input_harga_bayar_user = document.getElementById('user_bayar_id')
     input_harga_bayar_user.setAttribute("disabled",true)
@@ -259,6 +259,29 @@ function domLoading(){
         document.querySelectorAll('.style-li-dom').forEach(e => e.remove());
     }
 }
+
+$("#btn-hitung-transaksi").click(function(){
+    let struck_id = document.getElementById('id_struck').value
+    let input_price = document.getElementById('user_bayar_id').value
+    let input_data = { 'id_struck' : struck_id, 'user_bayar' : input_price }
+    $.ajax({
+        type: "post",  
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        url:"{{ route('input-price-user-bayar') }}",
+        data: input_data,
+        success: function(response){
+            // console.log('response suskes',response);
+        },
+        error: function (xhr,status,response){
+            if (status == 'error') {
+                let msg_error = JSON.parse(xhr.responseText);
+                if (msg_error.data.user_bayar) {
+                    alert(msg_error.data.user_bayar)
+                }
+            }
+        }
+    });
+});
 
 function reqAjaxMin1Keranjang(idKeranjang){
     $.ajax({
@@ -375,9 +398,9 @@ function saveProductToKeranjang(element){
             //create element loading
             domLoading();
             //loading end
-           
             setTimeout(() => {
                 document.getElementById("text-loading-p-id").remove();//remove loading
+                document.getElementById('user_bayar_id').value = ''
                 getStruckFunction(data_res.struck_id);
             }, 800);
         },
@@ -407,13 +430,13 @@ function getStruckFunction(id_struck){
         data: {'id_struck' : id_struck},
         success: function(resStruck){
             //enabled button save and input price money from user
-            let btn_cetak_struck = document.getElementById('btn-cetak-struck-id');
+            let btn_cetak_struck = document.getElementById('btn-hitung-transaksi');
             btn_cetak_struck.removeAttribute("disabled");
             let input_harga_bayar_user = document.getElementById('user_bayar_id')
             input_harga_bayar_user.removeAttribute("disabled");
             //enabled button save and input price money from user
             const list_data = resStruck.data;
-            const total_price_must_pay = list_data.total_bayar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            const total_price_must_pay = list_data.total_harga.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             $("#total_harga").text(total_price_must_pay);
             const list_item = list_data.list;
                 //create element html
@@ -511,6 +534,7 @@ function generateNewStruck(){
                 $('.style-li-dom').remove();
                 $("#total_harga").text(0)
                 document.getElementById('txt_search').value = ''
+                document.getElementById('user_bayar_id').value = ''
             }
            
         },
