@@ -21,7 +21,7 @@
             <label id="id_label_jumlah" class="text-label-modal" min="1" for="jumlah_berat" style="margin-left: 5px;">Jumlah berat / kg</label>
             <input class="input-modal-global" required type="number" id="total_satuan" style="margin-top:5px;" name="jumlah_berat" placeholder="Jumlah berat">
             <label id="" class="text-label-modal" for="expired" style="margin-left: 5px;">tanggal expired <label id="id_label_expired" style="color:red"></label> </label>
-            <input class="input-modal-global" required type="date" id="expired" style="margin-top:5px;" name="expired" placeholder="Tanggal expired">
+            <input class="input-modal-global" type="date" id="expired" style="margin-top:5px;" name="expired" placeholder="Tanggal expired">
             <div class="btn-group-modal2">
                 <button type="submit" class="btn-modal2 btn-blue">Submit</button>
                 <button class="btn-modal2 btn-light-modal2 modal__close_2">Cancel</button>

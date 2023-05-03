@@ -10,6 +10,8 @@ use App\Repository\NewStruck\NewStruckRepository;
 use App\Repository\NewStruck\NewStruckRepositoryImpelemnt;
 use App\Repository\Product\ProductRepository;
 use App\Repository\Product\ProductRepositoryImplement;
+use App\Repository\ProductBeli\ProductBeliRepository;
+use App\Repository\ProductBeli\ProductBeliRepositoryImplement;
 use App\Repository\ProductJual\ProductJualRepository;
 use App\Repository\ProductJual\ProductJualRepositoryImplement;
 use App\Repository\Role\RoleRepository;
@@ -26,6 +28,8 @@ use App\Service\NewStruck\NewStruckService;
 use App\Service\NewStruck\NewStruckServiceImplement;
 use App\Service\Product\ProductService;
 use App\Service\Product\ProductServiceImplement;
+use App\Service\ProductBeli\ProductBeliService;
+use App\Service\ProductBeli\ProductBeliServiceImplement;
 use App\Service\ProductJual\ProductJualService;
 use App\Service\ProductJual\ProductJualServiceImplement;
 use App\Service\Role\RoleService;
@@ -54,6 +58,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ProductRepository::class, ProductRepositoryImplement::class);
         $this->app->bind(ProductService::class, ProductServiceImplement::class);
+        $this->app->bind(ProductBeliService::class, ProductBeliServiceImplement::class);
+        $this->app->bind(ProductBeliRepository::class, ProductBeliRepositoryImplement::class);
         $this->app->bind(ProductJualRepository::class, ProductJualRepositoryImplement::class);
         $this->app->bind(ProductJualService::class,ProductJualServiceImplement::class);
         //

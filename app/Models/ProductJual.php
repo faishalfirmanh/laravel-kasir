@@ -14,7 +14,8 @@ class ProductJual extends Model
         'product_id ',
         'start_kg',
         'end_kg',
-        'price_sell'
+        'price_sell',
+        'id_product_beli'
     ];
 
     public function productName(){

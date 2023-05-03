@@ -8,6 +8,7 @@ interface ProductJualRepository{
     public function getAllProductPriceSearch($keyword);
     public function getProductJualById($id);
     public function getProductJualByIdProduct($id);
+    public function getProductJualByIdProducBeli($id_product_beli);
     public function postProductJual($data,$id);
     public function deleteProductJual($id);
 }

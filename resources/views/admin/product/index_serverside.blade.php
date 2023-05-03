@@ -307,7 +307,7 @@ $('#form-product').on("submit", function(e) {
             response.data.is_kg == 0 ? is_kg_check.checked = false : is_kg_check.checked =true;
             selectElement('kategori_select',response.data.kategori_id)
             let dd = new Date(Date.parse(response.data.expired));
-            expired.value = dd.toDateInputValue();
+            expired.value = response.data.expired != null ? dd.toDateInputValue() : '';
             //get
             const h3_title = document.getElementById('title_modal').textContent = 'Update Product';
             var input = document.createElement("input");

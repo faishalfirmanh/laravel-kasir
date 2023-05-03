@@ -45,10 +45,11 @@ class NewStruckServiceImplement implements NewStruckService{
            $msg_status = ['status_struck' => 'id struck '.$request->id_struck. ' tidak dapat digunakan, generate struck baru'];
            return  $msg_status;
         }
+        $update_status_keranjang = $this->repository_keranjang->UpdateStatusKeranjangByStruckId($request->id_struck,2);
         $get_keuntungan = $this->getKeuntunganByIdStruckService($request);
         $save_db = $this->repository->updateInputPriceUserBayar($request->id_struck,2,$request->user_bayar,$get_keuntungan['total_semua_keuntungan']);
-        $update_status_keranjang = $this->repository_keranjang->UpdateStatusKeranjangByStruckId($request->id_struck,2);
-        //get value price beli
+       
+        //get value price beli->ok
         //isi value pada kolumn keuntungan bersih ditabel new strucks (price beli - price jual)->ok
         //kurangi stock
       

@@ -6,6 +6,7 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\KeranjangKasirController;
+use App\Http\Controllers\API\ProductBeliController;
 use App\Http\Controllers\API\TokoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -66,6 +67,14 @@ Route::controller(ProductController::class)->group(function(){
     //serach product price
     Route::post('/product-list-jual-price-search','getProdcutPriceSearch')->name('product-list-jual-price-search');
     
+});
+
+//Product Beli
+Route::controller(ProductBeliController::class)->group(function(){
+    Route::post('/get-all-product-beli','getAllProductBeliCon')->name('get-all-product-beli');
+    Route::post('/get-product-beliById','getProductBeliConById')->name('get-product-beliById');
+    Route::post('/save-product-beli','saveProductBeliCon')->name('save-product-beli');
+    Route::post('/delete-product-beli','deleteProductBeliCon')->name('delete-product-beli');
 });
 
  //struct 

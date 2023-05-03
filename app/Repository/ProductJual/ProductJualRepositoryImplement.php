@@ -96,4 +96,9 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
         $model = $this->model->find($id);
         return $model->delete();
     }
+
+    public function getProductJualByIdProducBeli($id_product_beli){
+        $data = $this->model->where('product_beli_id',$id_product_beli)->first();
+        return $data;
+    }
 }

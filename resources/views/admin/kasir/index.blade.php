@@ -270,7 +270,7 @@ $("#btn-hitung-transaksi").click(function(){
         url:"{{ route('input-price-user-bayar') }}",
         data: input_data,
         success: function(response){
-            // console.log('response suskes',response);
+            console.log('response suskes transaksi',response);
         },
         error: function (xhr,status,response){
             if (status == 'error') {
