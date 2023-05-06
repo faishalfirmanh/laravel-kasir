@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\KategoriController;
 use App\Http\Controllers\WEB\TokoController;
+use App\Http\Controllers\WEB\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WEB\AdminController;
 use App\Http\Controllers\WEB\KasirController;
@@ -24,8 +25,10 @@ use App\Http\Controllers\WEB\RoleController;
 //     return view('welcome');
 // });
 
+Route::get('/',[HomeController::class ,'pageHome'])->name('home');
+
 Route::get('/api-kategori',[KategoriController::class,'index'])->name('api-kategori');
-Route::get('/',[AdminController::class, 'dashboardView'])->name('dashboard');
+Route::get('/dashboard',[AdminController::class, 'dashboardView'])->name('dashboard');
 Route::get('/kategori',[AdminController::class, 'kategoriView'])->name('kategori');
 Route::get('/product',[AdminController::class, 'productView'])->name('product');
 
