@@ -30,7 +30,7 @@ Route::post('login',[UserController::class,'loginUser'])->name('login');
 Route::post('logout-api',[UserController::class,'logouttess'])->name('logout-api');
 
 
-// Route::group(['middleware' => ['jwt.verify']], function() {
+Route::group(['middleware' => ['jwt.verify']], function() {
     //--use jwt--
     Route::controller(KategoriController::class)->group(function () {
         Route::get('/kategori-byid/{id}', 'detail')->name('kategori-details-byId'); 
@@ -42,7 +42,7 @@ Route::post('logout-api',[UserController::class,'logouttess'])->name('logout-api
         Route::post('/kategori-delete', 'remove')->name('kategori-delete');
     });
     //--use jwt--
-// });
+});
 
 
 

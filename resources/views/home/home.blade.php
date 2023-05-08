@@ -283,15 +283,34 @@
             console.log('modal login');
             Swal.fire({
                 title: 'Login',
-                html: `<input type="text" id="login" class="swal2-input" placeholder="Username">
+                html: `<input type="text" id="email" class="swal2-input" placeholder="Username">
                 <input type="password" id="password" class="swal2-input" placeholder="Password">`,
                 confirmButtonText: 'Login',
                 showCancelButton: true,
                 cancelButtonColor: '#d33',
                 focusConfirm: true,
             }).then((result) => {
-                console.log(result);
+                if (result.isConfirmed) {
+                    let email = $("#email").val();
+                    let pass = $("#password").val();
+                    $.ajax({
+                        url: `{{route('login')}}`,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        type: 'post',
+                        data:{'email':email, 'password' : pass},
+                        success: function(response){
+                             localStorage.setItem("token", response.jwt_token);
+                             window.location.href = '{{route("kategori-url")}}'
+                        },
+                        error: function(xhr,status,res){
+                            console.log('error',res);
+                        }
+                    })
+                }
             })
+               
         })
     </script>
 @endpush

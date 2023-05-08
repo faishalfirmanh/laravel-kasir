@@ -64,7 +64,7 @@ class UserController extends Controller
     {
         $email = $request->email;
         $pass = $request->password;
-        $search_data = User::query()->where('email',$email)->first();
+        $search_data = User::query()->with(['getToko'])->where('email',$email)->first();
         $credentials = $request->only('email', 'password');
         $validator = Validator::make($credentials, [
             'email' => 'required|email|exists:users,email',
@@ -101,7 +101,8 @@ class UserController extends Controller
                     'jwt_token'=>$token,
                     'token_type' => 'Bearer',
                     'id_user'=> $search_data->id,
-                    'role'=> $search_data->getRole
+                    'role'=> $search_data->getRole,
+                    'toko'=>$search_data->getToko,
                 ],200);    
             }else{
                 return response()->json([

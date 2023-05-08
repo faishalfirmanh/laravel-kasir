@@ -20,7 +20,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','id_roles',
+        'name', 'email', 'password','id_roles','toko_id'
     ];
 
     public function getJWTIdentifier()
@@ -52,5 +52,9 @@ class User extends Authenticatable implements JWTSubject
 
     public function getRole(){
         return $this->belongsTo(Role::class,'id_roles','id');
+    }
+
+    public function getToko(){
+        return $this->belongsTo(Toko::class,'toko_id','id_toko');
     }
 }

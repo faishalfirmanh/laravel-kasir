@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
         if ($find == NULL) {
             $admin = new User;
             $admin->id_roles = env('user_login_id_role');
+            $admin->toko_id = 1;
             $admin->name = env('user_login_name');
             $admin->email = env('user_login_email');
             $admin->password = bcrypt(env('user_login_pass'));

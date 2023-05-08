@@ -26,27 +26,31 @@ use App\Http\Controllers\WEB\RoleController;
 // });
 
 Route::get('/',[HomeController::class ,'pageHome'])->name('home');
+Route::group(['middleware' => ['jwt.auth']], function() {
+    Route::get('/dashboard',[AdminController::class, 'dashboardView'])->name('dashboard');
+});
+
 
 Route::get('/api-kategori',[KategoriController::class,'index'])->name('api-kategori');
-Route::get('/dashboard',[AdminController::class, 'dashboardView'])->name('dashboard');
-Route::get('/kategori',[AdminController::class, 'kategoriView'])->name('kategori');
-Route::get('/product',[AdminController::class, 'productView'])->name('product');
+   
+    Route::get('/kategori-url',[AdminController::class, 'kategoriView'])->name('kategori-url');
+    Route::get('/product',[AdminController::class, 'productView'])->name('product');
 
-//serverside
-Route::get('/server-kategori',[KategoriServerSideController::class,'getKategori'])->name('server-side-kategori');
-Route::get('/view-kategori', [KategoriServerSideController::class, 'viewKategori'])->name('view-kategori');
-Route::get('/server-product',[ProductServerSideController::class,'getProduct'])->name('server-side-product');
-Route::get('/detail-price-product/{id_product}',[ProductServerSideController::class,'detailPriceProduct'])->name('detail-price-product');
-Route::get('/server-price-product/{id}',[ProductServerSideController::class,'getPriceListProductDetail'])->name('server-price-product');
-Route::get('/view-product', [ProductServerSideController::class, 'viewProduct'])->name('view-product');
+    //serverside
+    Route::get('/server-kategori',[KategoriServerSideController::class,'getKategori'])->name('server-side-kategori');
+    Route::get('/view-kategori', [KategoriServerSideController::class, 'viewKategori'])->name('view-kategori');
+    Route::get('/server-product',[ProductServerSideController::class,'getProduct'])->name('server-side-product');
+    Route::get('/detail-price-product/{id_product}',[ProductServerSideController::class,'detailPriceProduct'])->name('detail-price-product');
+    Route::get('/server-price-product/{id}',[ProductServerSideController::class,'getPriceListProductDetail'])->name('server-price-product');
+    Route::get('/view-product', [ProductServerSideController::class, 'viewProduct'])->name('view-product');
 
-//toko
-Route::get('/view-toko',[TokoController::class,'viewToko'])->name('view-toko');
-Route::get('/server-side-toko',[TokoController::class, 'getToko'])->name('server-side-toko');
+    //toko
+    Route::get('/view-toko',[TokoController::class,'viewToko'])->name('view-toko');
+    Route::get('/server-side-toko',[TokoController::class, 'getToko'])->name('server-side-toko');
 
-//role
-Route::get('/view-role',[RoleController::class,'viewRole'])->name('view-role');
-Route::get('/server-side-role',[RoleController::class, 'getRole'])->name('server-side-role');
+    //role
+    Route::get('/view-role',[RoleController::class,'viewRole'])->name('view-role');
+    Route::get('/server-side-role',[RoleController::class, 'getRole'])->name('server-side-role');
 
-//Kasir
-Route::get('/view-kasir',[KasirController::class,'viewKasir'])->name('view-kasir');
+    //Kasir
+    Route::get('/view-kasir',[KasirController::class,'viewKasir'])->name('view-kasir');
