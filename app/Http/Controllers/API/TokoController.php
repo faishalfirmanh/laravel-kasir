@@ -21,7 +21,7 @@ class TokoController extends Controller
     public function store(Request $request)
     {
         $data = $this->service->PostTokoService($request,$request->id_toko);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,4);
     }
 
     public function index(Request $request)

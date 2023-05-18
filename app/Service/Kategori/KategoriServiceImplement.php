@@ -13,9 +13,21 @@ class KategoriServiceImplement implements KategoriService{
     }
 
     public function getAllKategoryService($request){
-        //$page_input = $request->page == null ? 1 : $request->page;
-        $limit = 10;
-        $data = $this->kategoriRepository->getAllKategoryPaginate($limit,$request->keyword);
+       
+        $validated = Validator::make($request->all(),[
+            'limit' => 'required|integer',
+            'page' => 'integer|nullable',
+            'keyword' => 'string|nullable'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        if (empty($request->page)) {
+            $request->page = 1;
+        }
+
+        $data = $this->kategoriRepository->getAllDataPaginateWithSearch($request);
+
         return $data;
     }
 

@@ -30,8 +30,7 @@ class KategoriController extends Controller
     public function index(Request $request)
     {
         $data = $this->kategori_service->getAllKategoryService($request);
-        $helper = getObject($data,1); //1
-        return $this->getResponse($data, $helper);
+        return $this->generalResponseV2($data,1);
     }
 
     public function allKategori(Request $request)

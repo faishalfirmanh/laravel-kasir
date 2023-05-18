@@ -42,8 +42,9 @@ kategori tess
       //    }
       // });
       $.ajax({
-         type: "get",
+         type: "post",
          url:"{{ route('kategori-list') }}",
+         data: {'limit' : 10, 'page' : 1, 'keyword' : ''},
          beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
          },
@@ -53,8 +54,8 @@ kategori tess
                 window.location.href = '{{route("home")}}'
             }else{
                console.log(response);
-               let data_json = response.data
-               console.log('sukses',data_json.data);
+               let data_json = response.data[0].data
+               console.log('sukses',data_json);
                var tbody = $('#kategori_id tbody');
                $.each(data_json.data, function(i, item) {
                   var row = $('<tr>').appendTo(tbody);
