@@ -21,10 +21,12 @@ class RoleRepositoryImplement implements RoleRepository{
     {
         if (!empty($keyword)) {
             $data = $this->model
+            ->with(['roleRelasiUser'])
             ->where('name_role','like','%'.$keyword .'%')
             ->limit($limit)->get();
         }else{
             $data = $this->model
+            ->with(['roleRelasiUser'])
             ->limit($limit)->paginate($limit);
         }
         return $data;

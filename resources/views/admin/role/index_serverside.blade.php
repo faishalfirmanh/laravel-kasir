@@ -22,7 +22,7 @@
       <a href="#" id="add_role" class="btn">Tambah Role</a>
    </div>
    <section class="table__body">
-      <table class="role-yajra">
+      <table class="" id="role-ajax-list">
          <thead>
             <tr>
                <th>No</th>
@@ -44,29 +44,78 @@
 
 @push('scripts')
 <script type="text/javascript">
-   $(function () { 
-       var table = $('.role-yajra').DataTable({
-          responsive: true,
-          processing: true,
-          serverSide: true,
-          ajax: "{{ route('server-side-role') }}",
-          columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                {data: 'name_role', name: 'name_role'},
-                {data: 'total_user', name: 'total_user'},
-                {
-                   data: 'action', 
-                   name: 'action', 
-                   orderable: false, 
-                   searchable: false
-                },
-          ]
-       });
+   // $(function () { 
+   //     var table = $('.role-yajra').DataTable({
+   //        responsive: true,
+   //        processing: true,
+   //        serverSide: true,
+   //        ajax: "{{ route('server-side-role') }}",
+   //        columns: [
+   //              {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+   //              {data: 'name_role', name: 'name_role'},
+   //              {data: 'total_user', name: 'total_user'},
+   //              {
+   //                 data: 'action', 
+   //                 name: 'action', 
+   //                 orderable: false, 
+   //                 searchable: false
+   //              },
+   //        ]
+   //     });
        
-    });
+   //  });
 </script>
 <script type="text/javascript">
    
+   $(document).ready(function() {
+      $('#role-ajax-list').DataTable({
+         "ajax": {
+            "url": "{{ route('role-list') }}",
+            "dataSrc": "data.data",
+            "beforeSend": function (xhr) {
+               xhr.setRequestHeader('Authorization',
+                     "Bearer " + `${localStorage.getItem("token")}`);
+            },
+         },
+         "columns": [
+            { "data": "id" }, 
+            { "data": "name_role"},
+            { "data" : `role_relasi_user.length`}
+         ]
+      });
+   });
+
+   function getRoleAjax() {
+      $.ajax({
+         type: "get",
+         url:"{{ route('role-list') }}",
+         // data: {'limit' : 10, 'page' : 1, 'keyword' : ''},
+         beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+         },
+         success: function(response){
+            if (response.status  == 'Authorization Token not found') {
+                  alert("tidak ada hak akses");
+                  window.location.href = '{{route("home")}}'
+            }else{
+               let data_json = response.data
+               var tbody = $('#role-ajax-list tbody');
+               $.each(data_json.data, function(i, item) {
+                  // let html_button = `<i onclick="editRole(${item.id})" class="far fa-edit" style="margin-right:5px;"></i>`;
+                  // let html_button_delete = item.user_relasi_toko.length < 1 ? `<i onclick="deleteToko(${item.id_toko})" class="far fa-trash-alt" style="background:red" title="delete-product"></i>` : '';
+                  var row = $('<tr>').appendTo(tbody);
+                  $('<td>').text(item.id).appendTo(row);
+                  $('<td>').text(item.name_role).appendTo(row);
+                  $('<td>').text(item.role_relasi_user.length).appendTo(row);
+                  // $('<td>').append(html_button, html_button_delete).appendTo(row)
+               });  
+            }
+         }
+      })
+   }
+
+   // getRoleAjax();
+
    const input_nama = document.getElementById('nama_role');
    const all_toogle = document.querySelectorAll('[data-toggle="modalrole"]')
    let navbar_atas_id = document.getElementById('top-bar');

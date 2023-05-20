@@ -50,6 +50,15 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::post('/get-all-toko','index')->name('get-all-toko');//no paginate
         Route::post('/delete-toko','remove')->name('delete-toko');
     });
+
+    //role
+    Route::controller(RoleController::class)->prefix('role')->group(function(){
+        Route::post('/role-add','store')->name('role-add');
+        Route::get('/role-list','index')->name('role-list'); //paging bawaan laravel
+        Route::get('/role-byid/{id}','detail');
+        Route::post('/role-detail','detailPost')->name('role-detail');
+        Route::post('/role-delete','remove')->name('role-delete');
+    });
     
     //--use jwt--
 });
@@ -125,10 +134,3 @@ Route::controller(UserController::class)->group(function(){
     Route::post('/user-delete','remove')->name('user-delete');
 });
 
-Route::controller(RoleController::class)->group(function(){
-    Route::post('/role-add','store')->name('role-add');
-    Route::get('/role-list','index');
-    Route::get('/role-byid/{id}','detail');
-    Route::post('/role-detail','detailPost')->name('role-detail');
-    Route::post('/role-delete','remove')->name('role-delete');
-});
