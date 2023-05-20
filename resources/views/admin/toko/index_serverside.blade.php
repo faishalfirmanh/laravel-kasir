@@ -22,11 +22,12 @@
       <a href="#" id="add_toko" class="btn">Tambah Toko</a>
    </div>
    <section class="table__body">
-      <table class="toko-yajra">
+      <table class="toko-yajra" id="toko-ajax-list">
          <thead>
             <tr>
                <th>No</th>
                <th>Name Toko</th>
+               <th>Jumlah user</th>
                <th>Action</th>
             </tr>
          </thead>
@@ -43,27 +44,61 @@
 
 @push('scripts')
 <script type="text/javascript">
-    $(function () { 
-        var table = $('.toko-yajra').DataTable({
-           responsive: true,
-           processing: true,
-           serverSide: true,
-           ajax: "{{ route('server-side-toko') }}",
-           columns: [
-                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                 {data: 'nama_toko', name: 'nama_toko'},
-                 {
-                    data: 'action', 
-                    name: 'action', 
-                    orderable: false, 
-                    searchable: false
-                 },
-           ]
-        });
+   //  $(function () { 
+   //      var table = $('.toko-yajra').DataTable({
+   //         responsive: true,
+   //         processing: true,
+   //         serverSide: true,
+   //         ajax: "{{ route('server-side-toko') }}",
+   //         columns: [
+   //               {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+   //               {data: 'nama_toko', name: 'nama_toko'},
+   //               {
+   //                  data: 'action', 
+   //                  name: 'action', 
+   //                  orderable: false, 
+   //                  searchable: false
+   //               },
+   //         ]
+   //      });
         
-     });
+   //   });
+
+   
 </script>
 <script>
+
+function getTokoAjax() {
+   $.ajax({
+      type: "post",
+      url:"{{ route('toko-list') }}",
+      data: {'limit' : 10, 'page' : 1, 'keyword' : ''},
+      beforeSend: function (xhr) {
+         xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+      },
+      success: function(response){
+         if (response.status  == 'Authorization Token not found') {
+               alert("tidak ada hak akses");
+               window.location.href = '{{route("home")}}'
+         }else{
+            let data_json = response.data[0].data
+            var tbody = $('#toko-ajax-list tbody');
+            $.each(data_json.data, function(i, item) {
+               let html_button = `<i onclick="editToko(${item.id_toko})" class="far fa-edit" style="margin-right:5px;"></i>`;
+               let html_button_delete = item.user_relasi_toko.length < 1 ? `<i onclick="deleteToko(${item.id_toko})" class="far fa-trash-alt" style="background:red" title="delete-product"></i>` : '';
+               var row = $('<tr>').appendTo(tbody);
+               $('<td>').text(item.id_toko).appendTo(row);
+               $('<td>').text(item.nama_toko).appendTo(row);
+               $('<td>').text(item.user_relasi_toko.length).appendTo(row);
+               $('<td>').append(html_button, html_button_delete).appendTo(row)
+            });  
+         }
+      }
+   })
+}
+
+getTokoAjax();
+
    const input_toko = document.getElementById("nama_toko")
    const all_toogle = document.querySelectorAll('[data-toggle="modaltoko"]')
    let navbar_atas_id = document.getElementById('top-bar');
@@ -107,6 +142,9 @@
       console.log();
       $.ajax({
          type:'post',
+         beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+         },
          data:data_input,
          headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -114,7 +152,8 @@
          url:`{{route('post-toko')}}`,
          success:function(res){
             if (res.status == 'ok') {
-               $('.toko-yajra').DataTable().ajax.reload(null, true);
+               // $('.toko-yajra').DataTable().ajax.reload(null, true);
+                  // 
                   Swal.fire(
                            'Add',
                            'Save data toko berhasil',
@@ -124,9 +163,13 @@
                               modal.classList.remove('show-modal')
                               navbar_atas_id.style.position = "fixed";
                               navbar_samping_id.style.position = "fixed";
+                              location.reload();
                            } 
                         }) 
+                  
+                 
                }
+               console.log('ress sucesse save',res);
          }
       })
       
@@ -144,6 +187,9 @@
       //ajax
       $.ajax({
          type:'post',
+         beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+         },
          data:{'id_toko':id},
          headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -194,15 +240,18 @@ function deleteToko(id){
                   headers: {
                      'X-CSRF-TOKEN': '{{ csrf_token() }}'
                   },
+                  beforeSend: function (xhr) {
+                     xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                  },
                   type: 'post',
                   data:{'id_toko':id},
                   success: function(response){
-                     $('.toko-yajra').DataTable().ajax.reload(null, true);
                      Swal.fire(
                            'Deleted!',
                            'Your file has been deleted.',
                            'success'
                      )
+                     location.reload();
                   },
                   error: function(err){
                      console.log('error',err);

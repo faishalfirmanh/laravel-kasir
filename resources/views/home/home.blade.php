@@ -301,11 +301,27 @@
                         type: 'post',
                         data:{'email':email, 'password' : pass},
                         success: function(response){
-                             localStorage.setItem("token", response.jwt_token);
-                             window.location.href = '{{route("kategori-url")}}'
+                            if (response.hasOwnProperty('error')) {
+                               if (response.error.hasOwnProperty('email')) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: response.error.email[0],
+                                    })
+                               }
+                            }
+                            if (response.hasOwnProperty('message') && response.message == 'success login') {
+                                localStorage.setItem("token", response.jwt_token);
+                                window.location.href = '{{route("kategori-url")}}'
+                            }
+                            
                         },
                         error: function(xhr,status,res){
-                            console.log('error',res);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'password salah',
+                            })
                         }
                     })
                 }
