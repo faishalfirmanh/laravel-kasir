@@ -77,4 +77,10 @@ class RoleServiceImplement implements RoleService{
         return $data;
     }
 
+    public function GetAllRoleServiceWithoutPaginate($request)
+    {
+        $data = $this->role_repository->getAllRole();
+        return $data;
+    }
+
 }

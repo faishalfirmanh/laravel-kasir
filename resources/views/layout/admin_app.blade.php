@@ -137,7 +137,7 @@
                 {{-- <img src="{{asset('css/img/setting2.png')}}" class="modal__img"> --}}
                 {{-- <h1 class="modal__title">Good Boy</h1> --}}
                 {{-- <p class="modal__description">Click to the button for close</p> --}}
-                <button class="modal_button modal__button-width">
+                <button class="modal_button modal__button-width" id="btn-logout-aj">
                    Logout
                 </button>
                 {{-- <a href="" style="text-decoration:none;" class="modal_button modal__button-width">Logout</a> --}}
@@ -154,6 +154,35 @@
 <script src="{{ asset('css/js/modal_custom.js') }}"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script>
+    $("#btn-logout-aj").on('click',function(){
+        $.ajax({
+         type:'post',
+         beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+         },
+         headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+         },
+         url:`{{route('logout-api')}}`,
+         success:function(res){
+            console.log(res);
+            if (res.message == 'Logout Berhasil!') {
+                    Swal.fire(
+                            'Saved',
+                            'Berhasil logut',
+                            'success'
+                            ).then((result) => {
+                            if (result.isConfirmed) {
+                                    modal.classList.remove('show-modal')
+                                    navbar_atas_id.style.position = "fixed";
+                                    navbar_samping_id.style.position = "fixed";
+                                } 
+                            }) 
+                    window.location.href = '{{route("home")}}'
+                }
+            }
+         })
+    })
 </script>
 </body>
 </html>

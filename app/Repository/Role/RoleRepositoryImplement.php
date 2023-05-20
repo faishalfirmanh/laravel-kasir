@@ -13,7 +13,7 @@ class RoleRepositoryImplement implements RoleRepository{
 
     public function getAllRole()
     {
-        $data = $this->model->get();
+        $data = $this->model->with(['roleRelasiUser'])->get();
         return $data;
     }
 

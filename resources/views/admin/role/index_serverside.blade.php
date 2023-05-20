@@ -22,7 +22,7 @@
       <a href="#" id="add_role" class="btn">Tambah Role</a>
    </div>
    <section class="table__body">
-      <table class="" id="role-ajax-list">
+      <table class="" id="role-ajax-list" style="width: 100%">
          <thead>
             <tr>
                <th>No</th>
@@ -70,21 +70,46 @@
    $(document).ready(function() {
       $('#role-ajax-list').DataTable({
          "ajax": {
-            "url": "{{ route('role-list') }}",
-            "dataSrc": "data.data",
+            "url": "{{ route('get-all-role') }}",
+            "dataSrc": "data",/*response data*/
             "beforeSend": function (xhr) {
                xhr.setRequestHeader('Authorization',
                      "Bearer " + `${localStorage.getItem("token")}`);
             },
+            // "success" :function(res){
+            //    if (res.status == 'Token is Invalid') {
+            //       Swal.fire({
+            //                   icon: 'error',
+            //                   title: 'Token invalid',
+            //                   text: 'harap login kembali',
+            //             }).then((result) => {
+            //                   if (result.isConfirmed) {
+            //                      window.location.href = '{{route("home")}}'
+            //                   }
+            //             })
+            //    }
+            // },
+            "error": function(xhr, error, thrown) {
+               console.log('An error occurred: ' + error);
+               alert('An error occurred. Please try again later.');
+            }
          },
          "columns": [
             { "data": "id" }, 
             { "data": "name_role"},
-            { "data" : `role_relasi_user.length`}
+            { "data" : `role_relasi_user.length`},
+            {
+               render: function(data, type, row) {
+                  const cek = row.role_relasi_user.length < 1 ? `<i onclick="deleteRole(${row.id})" class="far fa-trash-alt" style="background:red" title="delete-product"></i>` : '';
+                  return `<i onclick="editRole(${row.id})" class="far fa-edit" style="margin-right:5px;"></i>` + cek;
+               }
+            }
          ]
       });
    });
 
+
+   //get jquery table native
    function getRoleAjax() {
       $.ajax({
          type: "get",
@@ -114,6 +139,7 @@
       })
    }
 
+   //get jquery table native
    // getRoleAjax();
 
    const input_nama = document.getElementById('nama_role');
@@ -176,13 +202,16 @@
       $.ajax({
          type:'post',
          data:data_input,
+         beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+         },
          headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
          },
          url:`{{route('role-add')}}`,
          success:function(res){
             if (res.status == 'ok') {
-               $('.role-yajra').DataTable().ajax.reload(null, true);
+               // $('.role-yajra').DataTable().ajax.reload(null, true);
                   Swal.fire(
                            'Saved',
                            'Save data role berhasil',
@@ -194,6 +223,7 @@
                               navbar_samping_id.style.position = "fixed";
                            } 
                         }) 
+                  location.reload();
                }
          }
       })
@@ -214,6 +244,9 @@
          data:{'id':id},
          headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+         },
+         beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
          },
          url:`{{route('role-detail')}}`,
          success:function(res){
@@ -264,15 +297,19 @@ function deleteRole(id){
                   headers: {
                      'X-CSRF-TOKEN': '{{ csrf_token() }}'
                   },
+                  beforeSend: function (xhr) {
+                     xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                  },
                   type: 'post',
                   data:{'id':id},
                   success: function(response){
-                     $('.role-yajra').DataTable().ajax.reload(null, true);
+                     // $('.role-yajra').DataTable().ajax.reload(null, true);
                      Swal.fire(
                            'Deleted!',
                            'Your role has been deleted.',
                            'success'
                      )
+                     location.reload();
                   },
                   error: function(err){
                      console.log('error',err);

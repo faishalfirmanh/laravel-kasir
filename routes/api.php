@@ -53,6 +53,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     //role
     Route::controller(RoleController::class)->prefix('role')->group(function(){
+        Route::get('/','indexGetAllCon')->name('get-all-role');// all data without paging
         Route::post('/role-add','store')->name('role-add');
         Route::get('/role-list','index')->name('role-list'); //paging bawaan laravel
         Route::get('/role-byid/{id}','detail');
