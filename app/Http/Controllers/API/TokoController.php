@@ -30,6 +30,12 @@ class TokoController extends Controller
         return $this->responseSucess($data);
     }
 
+    public function getAllTokoPaginateSearchCon(Request $request)
+    {
+        $data = $this->service->GetAllTokoServicePaginateAndSearch($request);
+        return $this->generalResponseV2($data,1);
+    }
+
     public function allToko(Request $request)
     {
         $data = $this->kategori_service->getAllKategroyServiceNoPaginate($request);

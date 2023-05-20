@@ -52,13 +52,6 @@ class KategoriRepositoryImplement implements KategoriRepository{
         return $model->delete();
     }
 
-    public function getCountAllData($request)
-    {
-        $data = $this->model->get();
-        return $data->count();
-    }
-
-
     //all data ketika ada keyword offset dan limit diabaikan, ketika tidak ada baru pake offset limit
     public function getAllDataPaginateWithSearch($request)
     {
@@ -67,9 +60,9 @@ class KategoriRepositoryImplement implements KategoriRepository{
         $data_next_prev =( $request->limit * $page) - $request->limit;
         $limit = $request->limit;
         if (!empty($request->keyword)) {
-            $count = $this->getCoutDataSearch($request->keyword);
+            $count = cekCountAllData($this->model); //$this->getCoutDataSearch($request->keyword);
         }else{
-            $count = $this->getCountAllData($request);
+            $count = cekCoutAllDataSearch($this->model, 'nama_kategori', $keyword);
         }
        
         $offset = $page == 1 ? 0 : $data_next_prev;
@@ -112,9 +105,4 @@ class KategoriRepositoryImplement implements KategoriRepository{
         return $ress;
     }
 
-    public function getCoutDataSearch($keyword)
-    {
-        $data = $this->model->where('nama_kategori','like','%'.$keyword .'%')->get();
-        return $data->count();
-    }
 }

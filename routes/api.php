@@ -32,15 +32,25 @@ Route::post('logout-api',[UserController::class,'logouttess'])->name('logout-api
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     //--use jwt--
-    Route::controller(KategoriController::class)->group(function () {
+    Route::controller(KategoriController::class)->prefix('kategori')->group(function () {
+        Route::post('/', 'index')->name('kategori-list');
         Route::get('/kategori-byid/{id}', 'detail')->name('kategori-details-byId'); 
         Route::get('/kategori-detail', 'detail2')->name('kategori-details'); 
         Route::get('/kategori-details-input','detailKategori')->name('kategori-details-input');
-        Route::post('/kategori-list', 'index')->name('kategori-list');
         Route::get('/kategori-all', 'allKategori')->name('kategori-all');
         Route::post('/kategori-add', 'store')->name('kategori-add');
         Route::post('/kategori-delete', 'remove')->name('kategori-delete');
     });
+
+    //toko
+    Route::controller(TokoController::class)->prefix('toko')->group(function(){
+        Route::post('/','getAllTokoPaginateSearchCon')->name('toko-list');//paginate - search
+        Route::post('/post-toko','store')->name('post-toko');
+        Route::post('/detail-toko','detail')->name('detail-toko');
+        Route::post('/get-all-toko','index')->name('get-all-toko');//no paginate
+        Route::post('/delete-toko','remove')->name('delete-toko');
+    });
+    
     //--use jwt--
 });
 
@@ -105,13 +115,6 @@ Route::controller(KeranjangKasirController::class)->group(function(){
 
 });
 
-
-Route::controller(TokoController::class)->group(function(){
-    Route::post('/post-toko','store')->name('post-toko');
-    Route::post('/detail-toko','detail')->name('detail-toko');
-    Route::post('/get-all-toko','index')->name('get-all-toko');//no paginate
-    Route::post('/delete-toko','remove')->name('delete-toko');
-});
 
 Route::controller(UserController::class)->group(function(){
     Route::post('/user-add','store');

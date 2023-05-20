@@ -18,6 +18,27 @@ class TokoServiceImplement implements TokoService{
         return $data;
     }
 
+    public function GetAllTokoServicePaginateAndSearch($request)
+    {
+        
+        $validated = Validator::make($request->all(),[
+            'limit' => 'required|integer',
+            'page' => 'integer|nullable',
+            'keyword' => 'string|nullable'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        if (empty($request->page)) {
+            $request->page = 1;
+        }
+
+        $data = $this->repository->getAllDataTokoPaginateWithSearch($request);
+
+        return $data;
+
+    }
+
     public function GetTokoByIdService($request)
     {
         $validated = Validator::make($request->all(),[
@@ -64,6 +85,14 @@ class TokoServiceImplement implements TokoService{
         if ($validated->fails()) {
             return $validated->errors();
         }
+        $cek  = $this->repository->getTokoById($request->id_toko)->userRelasiToko;
+        
+        if (count($cek) > 0) {
+            return [
+                'msg' => 'gagal hapus',
+                'id_toko' => 'id toko '. $request->id_toko . ' ada relasi (digunakan user lain)'];
+        }
+
         $delete = $this->repository->deleteToko($request->id_toko);
         return $delete;
     }

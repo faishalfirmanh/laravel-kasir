@@ -111,5 +111,18 @@ if (!function_exists('getAllKeranjangByStruckId')) {
     }
 }
 
+if (!function_exists('cekCountAllData')) {
+    function cekCountAllData($name_table){
+        $data = $name_table->get();
+        return $data->count();
+    }
+}
+
+if (!function_exists('cekCountAllDataSearch')) {
+    function cekCoutAllDataSearch($name_table, $column, $keyword){
+        $data = $name_table->where($column,'like','%'.$keyword .'%')->get();
+        return $data->count();
+    }
+}
 
 }

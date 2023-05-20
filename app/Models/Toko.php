@@ -12,4 +12,8 @@ class Toko extends Model
     protected $fillable = [
         'nama_toko'
     ];
+
+    public function userRelasiToko(){
+        return $this->hasMany(User::class,'toko_id');
+    }
 }
