@@ -90,8 +90,18 @@
             //    }
             // },
             "error": function(xhr, error, thrown) {
-               console.log('An error occurred: ' + error);
-               alert('An error occurred. Please try again later.');
+               const toJson = JSON.parse(xhr.responseText);
+               if (toJson.status === 'Token is Invalid') {
+                  Swal.fire({
+                              icon: 'error',
+                              title: 'Oops...',
+                              text: 'Harap login kembali',
+                           }).then((result) => {
+                              if (result.isConfirmed) {
+                                 window.location.href = '{{route("home")}}'
+                              }
+                           })
+               }
             }
          },
          "columns": [

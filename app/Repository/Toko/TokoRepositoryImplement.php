@@ -14,7 +14,7 @@ class TokoRepositoryImplement implements TokoRepository{
 
     public function getAllToko()
     {
-        $data = $this->model->get();
+        $data = $this->model->with(['userRelasiToko'])->get();
         return $data;
     }
 

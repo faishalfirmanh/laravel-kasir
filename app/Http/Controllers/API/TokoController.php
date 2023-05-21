@@ -27,7 +27,7 @@ class TokoController extends Controller
     public function index(Request $request)
     {
         $data = $this->service->GetAllTokoService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,5);
     }
 
     public function getAllTokoPaginateSearchCon(Request $request)

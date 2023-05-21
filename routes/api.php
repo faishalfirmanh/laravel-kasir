@@ -47,7 +47,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::post('/','getAllTokoPaginateSearchCon')->name('toko-list');//paginate - search
         Route::post('/post-toko','store')->name('post-toko');
         Route::post('/detail-toko','detail')->name('detail-toko');
-        Route::post('/get-all-toko','index')->name('get-all-toko');//no paginate
+        Route::get('/get-all-toko','index')->name('get-all-toko');//no paginate. jquery datatables ajax
         Route::post('/delete-toko','remove')->name('delete-toko');
     });
 
