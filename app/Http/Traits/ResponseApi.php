@@ -65,11 +65,27 @@ trait ResponseApi{
         return $final_convert;
     }
 
-    public function generalResponseV2($data, $total_kolom)
+    public function cekTotalColumDataBaseTipeData($json_data)
     {
-        $final_data_convert = $this->convertDataToArrayObject($data);
-        $total_result_kolom = count(json_decode(json_encode($final_data_convert), true));
-        if ((int)$total_kolom == $total_result_kolom) {
+        if (is_object($json_data)) {
+            $p = array($json_data);
+            $total_column_response = count(get_object_vars($p[0]));
+        }else{
+            $total_column_response = count(get_object_vars($json_data[0]));
+        }
+        return $total_column_response;
+    }
+
+   
+     //property didalam data []->ada berapa, final used, param 
+     //total_kolom_set_param -> total didalam data data[ ], kalau 
+     //index data [ data { }] / 2 atau 3 nested
+    public function generalResponseV2($data, $total_kolom_set_param)
+    {
+        $final_data_convert = $this->convertDataToArrayObject($data);//cek
+        $json_data_ =  json_decode(json_encode($data),false);
+        $final_res_column = $this->cekTotalColumDataBaseTipeData($json_data_);
+        if ((int)$total_kolom_set_param == $final_res_column) {
             return $this->responseSucess($final_data_convert);
         }else{
             return $this->responseError($final_data_convert);
