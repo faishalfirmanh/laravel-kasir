@@ -61,41 +61,45 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::post('/role-delete','remove')->name('role-delete');
     });
     
+
+    /**----product */
+    Route::controller(ProductController::class)->group(function(){
+        Route::get('/product-byid/{id}', 'detail')->name('product-detail'); 
+        // Route::get('/product-byid-input', 'detailRequestId')->name('product-detail-input'); 
+        Route::post('porudct-detailById','detailRequestId')->name('porudct-detailById');
+        Route::get('/product-list', 'index')->name('product-list'); 
+        Route::get('/product-all-no-paginate','getAllProductController')->name('product-all-no-paginate');
+        Route::post('/product-add', 'store')->name('product-add');
+        Route::post('/product-delete', 'remove')->name('product-delete');
+    
+        Route::post('/product-jual-byid-product','getProductJualByIdProduct')->name('product-jual-byid-product');
+        Route::get('/product-jualById/{id}','detailProductJual')->name('product-jual-detail');
+        Route::post('/product-jual-byid','detailProductJual2')->name('product-jual-byid');
+        Route::post('/product-jual-save','save_price_sell_product')->name('product-jual-save');
+        Route::post('/product-jual-delete','remove_price_sell_product')->name('product-jual-remove');
+    
+        Route::post('/product-list-jual-price-set','getAllProductPriceSet')->name('product-list-jual-price-set');
+        Route::post('/product-list-jual-price-not-set','getAllProductPriceNotSet')->name('product-list-jual-price-not-set');
+    
+        //serach product price
+        Route::post('/product-list-jual-price-search','getProdcutPriceSearch')->name('product-list-jual-price-search');
+        
+    });
+    
+    //Product Beli set custom harga kulakan
+    Route::controller(ProductBeliController::class)->group(function(){
+        Route::post('/get-all-product-beli','getAllProductBeliCon')->name('get-all-product-beli');
+        Route::post('/get-product-beliById','getProductBeliConById')->name('get-product-beliById');
+        Route::post('/save-product-beli','saveProductBeliCon')->name('save-product-beli');
+        Route::post('/delete-product-beli','deleteProductBeliCon')->name('delete-product-beli');
+    });
+
     //--use jwt--
 });
 
 
 
-Route::controller(ProductController::class)->group(function(){
-    Route::get('/product-byid/{id}', 'detail')->name('product-detail'); 
-    // Route::get('/product-byid-input', 'detailRequestId')->name('product-detail-input'); 
-    Route::post('porudct-detailById','detailRequestId')->name('porudct-detailById');
-    Route::get('/product-list', 'index')->name('product-list'); 
-    Route::get('/product-all','getAllProductController')->name('product-all');
-    Route::post('/product-add', 'store')->name('product-add');
-    Route::post('/product-delete', 'remove')->name('product-delete');
 
-    Route::post('/product-jual-byid-product','getProductJualByIdProduct')->name('product-jual-byid-product');
-    Route::get('/product-jualById/{id}','detailProductJual')->name('product-jual-detail');
-    Route::post('/product-jual-byid','detailProductJual2')->name('product-jual-byid');
-    Route::post('/product-jual-save','save_price_sell_product')->name('product-jual-save');
-    Route::post('/product-jual-delete','remove_price_sell_product')->name('product-jual-remove');
-
-    Route::post('/product-list-jual-price-set','getAllProductPriceSet')->name('product-list-jual-price-set');
-    Route::post('/product-list-jual-price-not-set','getAllProductPriceNotSet')->name('product-list-jual-price-not-set');
-
-    //serach product price
-    Route::post('/product-list-jual-price-search','getProdcutPriceSearch')->name('product-list-jual-price-search');
-    
-});
-
-//Product Beli set custom harga kulakan
-Route::controller(ProductBeliController::class)->group(function(){
-    Route::post('/get-all-product-beli','getAllProductBeliCon')->name('get-all-product-beli');
-    Route::post('/get-product-beliById','getProductBeliConById')->name('get-product-beliById');
-    Route::post('/save-product-beli','saveProductBeliCon')->name('save-product-beli');
-    Route::post('/delete-product-beli','deleteProductBeliCon')->name('delete-product-beli');
-});
 
  //struct 
 Route::controller(NewStruckController::class)->group(function(){

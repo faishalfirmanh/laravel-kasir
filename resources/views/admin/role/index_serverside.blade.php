@@ -221,7 +221,7 @@
          url:`{{route('role-add')}}`,
          success:function(res){
             if (res.status == 'ok') {
-               // $('.role-yajra').DataTable().ajax.reload(null, true);
+                $('#role-ajax-list').DataTable().ajax.reload(null, true);
                   Swal.fire(
                            'Saved',
                            'Save data role berhasil',
@@ -233,7 +233,7 @@
                               navbar_samping_id.style.position = "fixed";
                            } 
                         }) 
-                  location.reload();
+                  // location.reload();
                }
          }
       })
