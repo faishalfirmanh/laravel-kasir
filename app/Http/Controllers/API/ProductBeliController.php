@@ -34,7 +34,7 @@ class ProductBeliController extends Controller
     public function saveProductBeliCon(Request $request)
     {
         $data = $this->service->saveProductBeliService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,6);
     }
 
     public function deleteProductBeliCon(Request $request)

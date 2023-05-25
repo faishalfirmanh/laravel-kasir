@@ -27,4 +27,8 @@ class Product extends Model
         return $this->hasMany(ProductJual::class,'product_id','id_product');
     }
 
+    public function priceBuyProductCustom(){
+        return $this->hasMany(ProductBeli::class,'product_id','id_product');
+    }
+
 }

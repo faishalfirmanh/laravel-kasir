@@ -89,7 +89,7 @@ Route::controller(ProductController::class)->group(function(){
     
 });
 
-//Product Beli
+//Product Beli set custom harga kulakan
 Route::controller(ProductBeliController::class)->group(function(){
     Route::post('/get-all-product-beli','getAllProductBeliCon')->name('get-all-product-beli');
     Route::post('/get-product-beliById','getProductBeliConById')->name('get-product-beliById');

@@ -4,6 +4,7 @@ namespace App\Service\ProductBeli;
 
 use App\Repository\ProductBeli\ProductBeliRepository;
 use App\Repository\ProductJual\ProductJualRepository;
+use App\Rules\RulesCekInputHargaBeliCustom;
 use Illuminate\Support\Facades\Validator;
 class ProductBeliServiceImplement implements ProductBeliService{
 
@@ -49,7 +50,7 @@ class ProductBeliServiceImplement implements ProductBeliService{
         $validated = Validator::make($request->all(),[
             'nama_product_variant' => $cek_,
             'product_id' => 'required|integer|exists:products,id_product',
-            'harga_beli_custom' => 'required|integer'
+            'harga_beli_custom' => ['required','integer', new RulesCekInputHargaBeliCustom($request->product_id)]
         ]);
         if ($validated->fails()) {
             return $validated->errors();
