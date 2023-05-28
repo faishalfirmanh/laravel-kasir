@@ -22,7 +22,7 @@ class ProductBeliController extends Controller
     public function getAllProductBeliCon(Request $request)
     {
         $data = $this->service->getAllProductBeliByIdProductService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,8);
     }
 
     public function getProductBeliConById(Request $request)

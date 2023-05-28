@@ -78,7 +78,7 @@ class ProductController extends Controller
     {
         $data = $this->product_jual_service->getProductJualByIdProductService($request);
         // $cek = count($data) > 0 ? $this->responseSucess($data) : $this->responseError($data);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,9);
 
     }
 

@@ -29,10 +29,11 @@ trait ResponseApi{
     }
 
     public function responseSucess($data){
+        $cekTipeCount = gettype($data) == 'object' ? count($data) : count(array($data));
         return response()->json([
             "status"=>"ok",
             "msg"=> "success",
-            "total_data"=>count(array($data)),
+            "total_data"=>$cekTipeCount,//aslinya count(array($data))
             "data"=> $data
         ],200);
     }

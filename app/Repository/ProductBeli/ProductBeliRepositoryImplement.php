@@ -14,7 +14,7 @@ class ProductBeliRepositoryImplement implements ProductBeliRepository{
 
     public function getAllProductBeli($product_id)
     {
-        $data = $this->model->with("getProduct")->where('product_id',$product_id)->get();
+        $data = $this->model->with(["getProduct",'getProductJual'])->where('product_id',$product_id)->get();
         return $data;
     }
 

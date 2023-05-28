@@ -50,7 +50,7 @@
             <button class="btn btn-blue" data-toggle="modal2" data-target="#modal2">Tambah product</button>
         </div>
         <section class="table__body">
-            <table class="product-yajra" id="id-table-product">
+            <table class="product-yajra" id="id-table-product" style="width: 100%">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -114,17 +114,23 @@ $(document).ready(function() {
                "data": `price_sell_product.length`
             },
             {
-               "data": `pcs`
+               "data": `kondisi_stock`, render: function(data, type, row) {
+                    var total = row.pcs == null ? row.total_kg : row.pcs;
+                    var satuan = row.pcs == null ? '(kg)' : '(pcs)';
+                    var  kondisi_stock = `${total} ${satuan}` 
+                    return kondisi_stock;
+                }
+            },
+            {
+               render: function(data, type, row) {
+                     const cek = row.price_sell_product.length < 1 ?
+                        `<i onclick="deleteProduct(${row.id_product})" class="far fa-trash-alt" style="background:red;margin-right:5px" title="delete-toko"></i>` :
+                        '';
+                    const btn_price_sell = `<a href="${row.route_url}" class="fas fa-money-bill" style="background:#b4a2fb;margin-right:10px;" title="price-product"></a>`;
+                     return `<i onclick="editProduct(${row.id_product})" class="far fa-edit" style="margin-right:5px;"></i>` +
+                        cek + btn_price_sell;
+                     }
             }
-            // {
-               // render: function(data, type, row) {
-               //       const cek = row.user_relasi_toko.length < 1 ?
-               //          `<i onclick="deleteToko(${row.id_toko})" class="far fa-trash-alt" style="background:red" title="delete-toko"></i>` :
-               //          '';
-               //       return `<i onclick="editToko(${row.id_toko})" class="far fa-edit" style="margin-right:5px;"></i>` +
-               //          cek;
-             // }
-            // }
          ]
    })
 })
@@ -443,6 +449,9 @@ $(document).ready(function() {
                         url: `{{ route('product-delete') }}`,
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
                         },
                         type: 'post',
                         data: {

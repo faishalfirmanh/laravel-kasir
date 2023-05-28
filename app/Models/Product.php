@@ -19,6 +19,15 @@ class Product extends Model
         'expired'
     ];
 
+    protected $appends = [
+        'route_url'
+    ];
+
+    public function getRouteUrlAttribute()
+    {
+        return route('detail-price-product',  $this->id_product);
+    }
+
     public function kategori(){
         return $this->belongsTo(Kategori::class,'kategori_id','id_kategori')->select('id_kategori','nama_kategori');
     }

@@ -63,7 +63,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     
 
     /**----product */
-    Route::controller(ProductController::class)->group(function(){
+    Route::controller(ProductController::class)->prefix('product')->group(function(){
         Route::get('/product-byid/{id}', 'detail')->name('product-detail'); 
         // Route::get('/product-byid-input', 'detailRequestId')->name('product-detail-input'); 
         Route::post('porudct-detailById','detailRequestId')->name('porudct-detailById');
@@ -72,6 +72,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::post('/product-add', 'store')->name('product-add');
         Route::post('/product-delete', 'remove')->name('product-delete');
     
+        //product jual
         Route::post('/product-jual-byid-product','getProductJualByIdProduct')->name('product-jual-byid-product');
         Route::get('/product-jualById/{id}','detailProductJual')->name('product-jual-detail');
         Route::post('/product-jual-byid','detailProductJual2')->name('product-jual-byid');
@@ -84,15 +85,15 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         //serach product price
         Route::post('/product-list-jual-price-search','getProdcutPriceSearch')->name('product-list-jual-price-search');
         
+        //Product Beli set custom harga kulakan
+        Route::controller(ProductBeliController::class)->group(function(){
+            Route::post('/get-all-product-beli','getAllProductBeliCon')->name('get-all-product-beli');
+            Route::post('/get-product-beliById','getProductBeliConById')->name('get-product-beliById');
+            Route::post('/save-product-beli','saveProductBeliCon')->name('save-product-beli');
+            Route::post('/delete-product-beli','deleteProductBeliCon')->name('delete-product-beli');
+        });
     });
     
-    //Product Beli set custom harga kulakan
-    Route::controller(ProductBeliController::class)->group(function(){
-        Route::post('/get-all-product-beli','getAllProductBeliCon')->name('get-all-product-beli');
-        Route::post('/get-product-beliById','getProductBeliConById')->name('get-product-beliById');
-        Route::post('/save-product-beli','saveProductBeliCon')->name('save-product-beli');
-        Route::post('/delete-product-beli','deleteProductBeliCon')->name('delete-product-beli');
-    });
 
     //--use jwt--
 });

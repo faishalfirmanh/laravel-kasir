@@ -19,4 +19,9 @@ class ProductBeli extends Model
     {
         return $this->belongsTo(Product::class,'product_id','id_product');
     }
+
+    public function getProductJual()
+    {
+        return $this->hasOne(ProductJual::class,'product_beli_id','id_product_beli');
+    }
 }
