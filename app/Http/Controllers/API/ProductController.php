@@ -22,12 +22,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $this->service->postProductService($request,$request->id_product);
-        $total_result_kolom = json_decode(json_encode($data), true);
-        if (count($total_result_kolom) == 10) {
-           return $this->responseSucess($data);
-        }else{
-            return $this->responseError($data);
-        }
+        return $this->generalResponseV2($data,11);
 
     }
 
@@ -96,7 +91,7 @@ class ProductController extends Controller
 
     public function save_price_sell_product(Request $request){
         $data = $this->product_jual_service->postProductJualService($request,$request->id);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,8);
     }
 
     public function remove_price_sell_product(Request $request){

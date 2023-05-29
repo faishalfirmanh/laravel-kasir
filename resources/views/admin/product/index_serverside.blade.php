@@ -234,7 +234,7 @@ $(document).ready(function() {
             e.preventDefault();
             let name = $("#name_product").val();
             let id_kategori = $("#kategori_select").val();
-            let harga_beli = $("#harga_beli").val();
+            let input_harga_beli = $("#harga_beli").val();
             let cek_satuan = $('.is_kg:checked').val() == undefined ? 0 : 1;
             let cek_box = $('.is_kg:checked').val();
             let berat = $("#total_satuan").val();
@@ -245,7 +245,9 @@ $(document).ready(function() {
 
             const cek_id_product = document.getElementById('id_product_hidden');
 
-
+            const harga_beli = input_harga_beli == '' ? 0 : input_harga_beli
+            console.log(harga_beli);
+            
             let data_pcs = {
                 'nama_product': name,
                 'kategori_id': id_kategori,

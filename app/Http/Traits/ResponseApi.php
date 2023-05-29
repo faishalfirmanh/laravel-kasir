@@ -30,10 +30,10 @@ trait ResponseApi{
 
     public function responseSucess($data){
         
-        if (gettype($data)) {
+        if (gettype($data) == 'object') {
             $to_str = (string) $data;
             if (strpos($to_str, '[') !== false) { //list
-                $count = count($data);
+                $count = count(array($data));
             }else{  
                 $count = count(array($data));
             }
@@ -52,12 +52,16 @@ trait ResponseApi{
     }
 
     public function responseError($data){
-        return response()->json([
-            "status"=>"no",
-            "msg"=> "no found or error",
-            "total_data"=>count(array($data)),
-            "data"=>$data
-        ],404);
+        if (count($data) > 0) { //hanya error saja
+            return response()->json([
+                "status"=>"no",
+                "msg"=> "error",
+                "total_data"=>count($data),
+                "data"=>$data
+            ],404);
+        }else{
+            return $this->responseSucess($data);
+        }
     }
 
     public function generalResponse($data,$total_kolom){
@@ -85,7 +89,8 @@ trait ResponseApi{
             $p = array($json_data);
             $total_column_response = count(get_object_vars($p[0]));
         }else{
-            $total_column_response = count(get_object_vars($json_data[0]));
+            $arr_empty = array();
+            $total_column_response = count( $json_data) < 1 ? count($arr_empty) : count(get_object_vars($json_data[0]));
         }
         return $total_column_response;
     }

@@ -6,6 +6,7 @@ use App\Repository\ProductJual\ProductJualRepository;
 use App\Rules\RulesCekPriceLessThan;
 use App\Service\ProductJual\ProductJualService;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 class ProductJualServiceImplement implements ProductJualService{
 
     protected $ProductJualRepository;
@@ -64,11 +65,18 @@ class ProductJualServiceImplement implements ProductJualService{
 
     public function postProductJualService($request,$id){
 
+        $productId = $request->product_id;
         $validated = Validator::make($request->all(),[
             'product_id' => 'required|integer|exists:products,id_product',
             'start_kg' => 'required|integer',
             'end_kg' => 'required|integer',
-            'price_sell' => ['required','integer', new RulesCekPriceLessThan($request->product_id)]
+            'price_sell' => ['required','integer', new RulesCekPriceLessThan($request->product_id)],
+            'price_buy'=>['integer',
+                            Rule::exists('product_belis')->where(function ($query) use ($productId) {
+                                $query->where('product_id', $productId);
+                            }),
+                            'nullable'
+                        ]
         ]);
         
         if ($validated->fails()) {

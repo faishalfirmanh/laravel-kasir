@@ -14,7 +14,7 @@
               
             </select>
             <label id="id_label_hargabeli" class="text-label-modal" for="harga_beli" style="margin-left: 5px;">Haraga Beli</label>
-            <input class="input-modal-global" id="harga_beli" min="1" required type="number" id="harga_beli" style="margin-top:5px;" name="harga_beli" placeholder="Harga beli">
+            <input class="input-modal-global" id="harga_beli"  type="number" id="harga_beli" style="margin-top:5px;" name="harga_beli" placeholder="Harga beli">
             <label id="id_label_satuan" class="text-label-modal" style="margin-left: 5px">Satuan kg, Uncheck bila pcs</label>
             <input  class="input-modal-global is_kg"  type="checkbox" id="is_kg" name="is_kg">
             <br>

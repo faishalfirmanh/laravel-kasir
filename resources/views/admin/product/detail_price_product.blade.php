@@ -432,7 +432,7 @@
                     },
                     "error": function(xhr, error, thrown) {
                         const toJson = JSON.parse(xhr.responseText);
-                        console.log(toJson);
+                        console.log('product-buy',toJson);
                         if (toJson.status === 'Token is Invalid') {
                             Swal.fire({
                                 icon: 'error',
