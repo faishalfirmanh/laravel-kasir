@@ -71,12 +71,9 @@ class ProductJualServiceImplement implements ProductJualService{
             'start_kg' => 'required|integer',
             'end_kg' => 'required|integer',
             'price_sell' => ['required','integer', new RulesCekPriceLessThan($request->product_id)],
-            'price_buy'=>['integer',
-                            Rule::exists('product_belis')->where(function ($query) use ($productId) {
-                                $query->where('product_id', $productId);
-                            }),
+            'product_beli_id'=>['integer','exists:product_belis,id_product_beli',
                             'nullable'
-                        ]
+                        ] //harusnya get by id_product terkait
         ]);
         
         if ($validated->fails()) {

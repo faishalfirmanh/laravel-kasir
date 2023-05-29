@@ -23,6 +23,12 @@
                 <label id="id_label_price_sell" class="text-label-modal" for="price_sell" style="margin-left: 5px;">Harga jual</label>
                 <input class="input-modal-global" id="price_sell" required type="text" style="margin-top:5px;" name="price_sell" placeholder="Harga jual">
             </div>
+            <div class="input-group">
+                <label id="id_label_price_beli" class="text-label-modal" for="price_buy" style="margin-left: 5px;">Price buy</label>
+                <select class="input-modal-global" id="price_buy" name="price_buy"  style="margin-top:5px;" required>
+                    <option value="0">0</option>
+                </select>
+            </div>
             <div class="btn-group-modal2">
                 <button type="submit" class="btn-modal2 btn-blue">Submit</button>
                 <button class="btn-modal2 btn-light-modal2 modal__close_2">Cancel</button>

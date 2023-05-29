@@ -228,6 +228,7 @@
         const input_price_sell = document.getElementById('price_sell');
         const input_start_kg = document.getElementById('start_kg');
         const input_end_kg = document.getElementById('end_kg');
+        const input_price_buy = document.getElementById('price_buy')
 
         all_toogle.forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -258,15 +259,66 @@
             })
         })
 
+        function selectElement(id, valueToSelect) {
+            let element = document.getElementById(id);
+            element.value = valueToSelect;
+        }
+
+        function getListPriceBeliCustom(id_product){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                url: `{{ route('get-all-product-beli') }}`,
+                data: { 'product_id' : id_product },
+                type: 'post',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                },
+                success: function(data) {
+                    if (data.status == 'ok'){
+                        let total_list = data.data.length;
+                        let html_opt = `<option value="0">- pilih variant harga-</option>`;
+                        if (total_list > 0) {
+                            data.data.forEach((e) => {
+                                html_opt +=
+                                    `<option value="${e.id_product_beli}">${e.nama_product_variant} ( ${e.harga_beli_custom.toLocaleString()} ) </option>`;
+                            });
+                        }else{
+                            html_opt +=
+                                    `<option value="0">Tidak di set custom</option>`;
+                        }
+                        if ($("#price_buy")) {
+                            $("#price_buy").html(html_opt);
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('error get list price beli custom',xhr);
+                }
+            });
+        }
+
+        getListPriceBeliCustom($("#id_prd").val());
+
+        // if (parseInt(input_price_buy.value) > 0) {
+        //     const input_price_buy_kondisi = parseInt(input_price_buy.value)
+        // }else{
+        //     const input_price_buy_kondisi = null;
+        // }
+       
+        //console.log(input_price_buy_kondisi);
         $('#form-product-price').on("submit", function(e) {
             e.preventDefault();
             let input_data = {
                 'product_id': parseInt($("#id_prd").val()),
                 'start_kg': input_start_kg.value,
                 'end_kg': input_end_kg.value,
-                'price_sell': input_price_sell.value
+                'price_sell': input_price_sell.value,
+                'product_beli_id' : input_price_buy.value
             }
 
+            //console.log(cek_input_price_buy);
             const cek_id_for_update = document.getElementById('id_product_jual_hidden');
             if (cek_id_for_update) {
                 input_data.id = localStorage.getItem('id_product_jual') //cek_id_for_update.value
@@ -300,14 +352,22 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.log('error save',xhr);
+                    const json_res_ajax =  JSON.parse(xhr.responseText);
+                    if (json_res_ajax.data.product_beli_id) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text:json_res_ajax.data.product_beli_id[0],
+                        })   
+                    }
+                  
                 }
             });
         })
 
         function editProductJual(id) {
-            console.log(id);
-            setTimeout(() => {
+          
+           // setTimeout(() => {
                 const modal = document.querySelector('#modalPrice')
                 const modal_close = modal.querySelector('.modal__close_2')
                 modal.classList.add('show-modal')
@@ -322,34 +382,42 @@
                     navbar_atas_id.style.position = "fixed";
                     navbar_samping_id.style.position = "fixed";
                 })
-            }, 500);
+            //}, 500);
 
             //ajax get
-            $.ajax({
-                type: "post",
-                url: `{{ route('product-jual-byid') }}`,
-                data: {
-                    'id_product_jual': id
-                },
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
-                },
-                success: function(response) {
+           setTimeout(() => {
+                $.ajax({
+                    type: "post",
+                    url: `{{ route('product-jual-byid') }}`,
+                    data: {
+                        'id_product_jual': id
+                    },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                    },
+                    success: function(response) {
+                        
+                        input_end_kg.value = response.data.end_kg;
+                        input_start_kg.value = response.data.start_kg;
+                        input_price_sell.value = response.data.price_sell;
+                        const cek_select_price_beli = response.data.product_beli_id == undefined ? 0 : response.data.product_beli_id
+                        if (cek_select_price_beli > 0) {
+                            selectElement('price_buy',cek_select_price_beli)
+                        }else{
+                            selectElement('price_buy',null)
+                        }
                     
-                    input_end_kg.value = response.data.end_kg;
-                    input_start_kg.value = response.data.start_kg;
-                    input_price_sell.value = response.data.price_sell;
-
-                    //add input hidden id
-                    var input = document.createElement("input");
-                    input.type = "hidden";
-                    input.setAttribute('id', 'id_product_jual_hidden');
-                    input.setAttribute('value', id);
-                    document.getElementById('form-product-price').appendChild(input);
-                    localStorage.setItem("id_product_jual", id);
-                    //add input hidden id
-                }
-            });
+                        //add input hidden id
+                        var input = document.createElement("input");
+                        input.type = "hidden";
+                        input.setAttribute('id', 'id_product_jual_hidden');
+                        input.setAttribute('value', id);
+                        document.getElementById('form-product-price').appendChild(input);
+                        localStorage.setItem("id_product_jual", id);
+                        //add input hidden id
+                    }
+                });
+           }, 400);
             //ajax get
         }
 

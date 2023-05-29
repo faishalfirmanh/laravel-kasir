@@ -75,16 +75,19 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
     public function postProductJual($data,$id)
     {
         $model_save = $this->model;
+        $input_product_beli_custom = !empty($data->product_beli_id) ? $data->product_beli_id : null;
         if ( intval($id) > 0 || $id != NULL) {
             $model_save = $this->model->where('id_product_jual',$id)->first();
             $model_save->product_id = $data->product_id;
             $model_save->start_kg = $data->start_kg;
             $model_save->end_kg =$data->end_kg;
+            $model_save->product_beli_id = $input_product_beli_custom;
             $model_save->price_sell = $data->price_sell;
         }else{
             $model_save->product_id = $data->product_id;
             $model_save->start_kg = $data->start_kg;
             $model_save->end_kg = $data->end_kg;
+            $model_save->product_beli_id = $input_product_beli_custom;
             $model_save->price_sell = $data->price_sell;
         }
         $model_save->save();
