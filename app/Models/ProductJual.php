@@ -22,4 +22,7 @@ class ProductJual extends Model
         return $this->belongsTo(Product::class,'product_id','id_product');
     }
 
+    public function productBeliKulak(){
+        return $this->belongsTo(ProductBeli::class,'product_beli_id');
+    }
 }

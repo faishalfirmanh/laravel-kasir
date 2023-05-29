@@ -40,6 +40,27 @@
             font-weight: bold;
             color: rgb(49, 49, 173);
         }
+
+        .bg-div{
+            text-align: center;
+            background: #53dfd1;
+            border-radius: 5px;
+            height: 25px;
+            width:100px;
+            color: black;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .bg-div-price-custom{
+            text-align: center;
+            background: #6ee637;
+            border-radius: 5px;
+            height: 25px;
+            width:auto;
+            color: black;
+            font-size: 13px;
+            font-weight: bold;
+        }
     </style>
 
     <h3 style="text-align: center;font-size:20px;">{{ $name }}</h3>
@@ -54,7 +75,7 @@
             <button class="btn btn-blue" data-toggle="modalPriceBuy" data-target="#modalPriceBuy">Tambah harga beli</button>
         </div>
         <section class="table__body" style=>
-            <table class="" id="price-buy-table">
+            <table class="" id="price-buy-table"  style="width: 100%">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -73,16 +94,17 @@
     <div class="tables" style="" id="table_sell_div">
         <div class="" style="margin-left:25px">
             {{-- <a href="#" id="add_product" class="btn">Tambah Product</a> --}}
-            <button class="btn btn-blue" data-toggle="modalPrice" data-target="#modalPrice">Tambah price</button>
+            <button class="btn btn-blue" data-toggle="modalPrice" data-target="#modalPrice">Tambah price Jual</button>
         </div>
         <section class="table__body">
-            <table class="product-price-yajra">
+            <table class="product-price-yajra"  style="width: 100%">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Start kg</th>
                         <th>End kg</th>
                         <th>Harga Jual</th>
+                        <th>Harga Beli</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -100,41 +122,101 @@
 
 @push('scripts')
     <script type="text/javascript">
-        const idnya = $("#id_prd").val()
-        $(function() {
-            var table = $('.product-price-yajra').DataTable({
-                responsive: true,
-                processing: true,
-                serverSide: true,
-                ajax: `{{ route('server-price-product', $id) }}`,
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'start_kg',
-                        name: 'start_kg'
-                    },
-                    {
-                        data: 'end_kg',
-                        name: 'end_kg'
-                    },
-                    {
-                        data: 'price_sell',
-                        name: 'price_sell'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    },
-                ]
-            });
+         const idnya = $("#id_prd").val()
+        // $(function() {
+        //     var table = $('.product-price-yajra').DataTable({
+        //         responsive: true,
+        //         processing: true,
+        //         serverSide: true,
+        //         ajax: `{{ route('server-price-product', $id) }}`,
+        //         columns: [{
+        //                 data: 'DT_RowIndex',
+        //                 name: 'DT_RowIndex',
+        //                 orderable: false,
+        //                 searchable: false
+        //             },
+        //             {
+        //                 data: 'start_kg',
+        //                 name: 'start_kg'
+        //             },
+        //             {
+        //                 data: 'end_kg',
+        //                 name: 'end_kg'
+        //             },
+        //             {
+        //                 data: 'price_sell',
+        //                 name: 'price_sell'
+        //             },
+        //             {
+        //                 data: 'action',
+        //                 name: 'action',
+        //                 orderable: false,
+        //                 searchable: false
+        //             },
+        //         ]
+        //     });
 
-        });
+        // });
+        $(document).ready(function() {
+            $('.product-price-yajra').DataTable({
+                "ajax": {
+                    "url": "{{ route('product-jual-byid-product') }}",
+                    "dataSrc": "data",
+                    "type" : 'post',
+                    "beforeSend": function(xhr) {
+                        xhr.setRequestHeader('Authorization',
+                            "Bearer " + `${localStorage.getItem("token")}`);
+                    },
+                    "data" : function(d) {
+                        d.id_product = idnya;
+                    },
+                    "error": function(xhr, error, thrown) {
+                        const toJson = JSON.parse(xhr.responseText);
+                        console.log(toJson);
+                        if (toJson.status === 'Token is Invalid') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Harap login kembali',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '{{ route('home') }}'
+                                }
+                            })
+                        }
+                    }
+                },
+                "columns": [{
+                        "data": "id_product_jual"
+                    },
+                    {
+                        "data": "start_kg"
+                    },
+                    {
+                        "data": `end_kg`
+                    },
+                    {
+                        "data" : "price_sell.toLocaleString()"
+                    },
+                    {
+                        "data": `kondisi_beli`,
+                        render: function(data, type, row) {
+                            var cek = row.product_beli_id == null ? `default - (${row.product_name.harga_beli.toLocaleString()})` : `<div class="bg-div-price-custom">${row.product_beli_kulak.harga_beli_custom.toLocaleString()}</div>`;
+                            var kondisi_beli = cek
+                            return kondisi_beli;
+                        }
+                    },
+                    {
+                        render: function(data, type, row) {
+                            const cek =  
+                                `<i onclick="deleteProductPrice(${row.id_product_jual})" class="far fa-trash-alt" style="background:red;margin-right:5px" title="delete-toko"></i>`;
+                               
+                            return `<i onclick="editProductJual(${row.id_product_jual})" class="far fa-edit" style="margin-right:5px;"></i>` + cek ;
+                        }
+                    }
+                ]
+            })
+        })
     </script>
     <script>
         const all_toogle = document.querySelectorAll('[data-toggle="modalPrice"]')
@@ -197,6 +279,9 @@
                 },
                 url: `{{ route('product-jual-save') }}`,
                 data: input_data,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                },
                 success: function(data) {
                     console.log(data);
                     if (data.status == 'ok') {
@@ -215,12 +300,13 @@
                     }
                 },
                 error: function(xhr, status, error) {
-
+                    console.log('error save',xhr);
                 }
             });
         })
 
         function editProductJual(id) {
+            console.log(id);
             setTimeout(() => {
                 const modal = document.querySelector('#modalPrice')
                 const modal_close = modal.querySelector('.modal__close_2')
@@ -249,7 +335,7 @@
                     xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
                 },
                 success: function(response) {
-                    console.log(response.data);
+                    
                     input_end_kg.value = response.data.end_kg;
                     input_start_kg.value = response.data.start_kg;
                     input_price_sell.value = response.data.price_sell;
@@ -372,7 +458,7 @@
                     {
                         "data": `kondisi_set`,
                         render: function(data, type, row) {
-                            var cek = row.get_product_jual == null ? 'tidak diset' : 'diset';
+                            var cek = row.get_product_jual == null ? 'tidak diset' : '<div class="bg-div">diset</div>';
                             var kondisi_set = cek
                             return kondisi_set;
                         }

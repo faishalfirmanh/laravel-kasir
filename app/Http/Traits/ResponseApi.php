@@ -29,11 +29,24 @@ trait ResponseApi{
     }
 
     public function responseSucess($data){
-        $cekTipeCount = gettype($data) == 'object' ? count($data) : count(array($data));
+        
+        if (gettype($data)) {
+            $to_str = (string) $data;
+            if (strpos($to_str, '[') !== false) { //list
+                $count = count($data);
+            }else{  
+                $count = count(array($data));
+            }
+        }else{
+            $count =  count(array($data));
+        }
+       
+       
+        //die();
         return response()->json([
             "status"=>"ok",
             "msg"=> "success",
-            "total_data"=>$cekTipeCount,//aslinya count(array($data))
+            "total_data"=>$count,//aslinya count(array($data))
             "data"=> $data
         ],200);
     }
