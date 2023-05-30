@@ -32,9 +32,15 @@ trait ResponseApi{
         
         if (gettype($data) == 'object') {
             $to_str = (string) $data;
-            if (strpos($to_str, '[') !== false) { //list
+            // if (strpos($to_str, '[') !== false) { //list
+            //     $count = count($data);
+            // }else{  
+            //     $count = count(array($data));
+            // }
+            $cek_first_character = substr($to_str, 0, 1);
+            if ($cek_first_character == '[') {
                 $count = count($data);
-            }else{  
+            }else{
                 $count = count(array($data));
             }
         }else{

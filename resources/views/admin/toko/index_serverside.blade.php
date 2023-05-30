@@ -183,7 +183,6 @@
                 url: `{{ route('post-toko') }}`,
                 success: function(res) {
                     if (res.status == 'ok') {
-                        // $('.toko-yajra').DataTable().ajax.reload(null, true);
                         // 
                         Swal.fire(
                             'Add',
@@ -194,13 +193,19 @@
                                 modal.classList.remove('show-modal')
                                 navbar_atas_id.style.position = "fixed";
                                 navbar_samping_id.style.position = "fixed";
-                                location.reload();
+                                $('#toko-ajax-list').DataTable().ajax.reload(null, true);
                             }
                         })
 
 
                     }
                     console.log('ress sucesse save', res);
+                },
+                error: function(xhr, status, error){
+                    const res_error = xhr.responseJSON;
+                    if (res_error.data.nama_toko) {
+                        alert('Gagal simpan ,nama sudah digunakan')   
+                    }
                 }
             })
 

@@ -46,7 +46,7 @@ class TokoController extends Controller
     {
       
         $data = $this->service->GetTokoByIdService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,5);
     }
 
  

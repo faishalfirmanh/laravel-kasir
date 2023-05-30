@@ -540,7 +540,7 @@
                     {
                         render: function(data, type, row) {
                             const cek =  row.get_product_jual == null ?
-                                `<i onclick="" class="far fa-trash-alt" style="background:red;margin-right:5px" title="delete-toko"></i>` :
+                                `<i onclick="deleteProductBeli(${row.id_product_beli})" class="far fa-trash-alt" style="background:red;margin-right:5px" title="delete-toko"></i>` :
                                 '';
                             return `<i onclick="editProductBeli(${row.id_product_beli})" class="far fa-edit" style="margin-right:5px;"></i>` + cek ;
                         }
@@ -580,13 +580,19 @@
             $('#form-product-price-buy').on("submit", function(e) {
                 e.preventDefault();
                 ajaxSaveHargaBeliCustom(id,field_name_variant.value,field_price_buy.value)
-                modal_price_beli.classList.remove('show-modal')
-                navbar_atas_id.style.position = "fixed";
-                navbar_samping_id.style.position = "fixed";
+                // modal_price_beli.classList.remove('show-modal')
+                // navbar_atas_id.style.position = "fixed";
+                // navbar_samping_id.style.position = "fixed";
             })
         }
 
         function ajaxSaveHargaBeliCustom(id_product_beli = 0, name, harga){
+
+            const modal_price_beli = document.querySelector("#modalPriceBuy")
+            const modal_close = modal_price_beli.querySelector('.modal__close_2_price_buy')
+            let navbar_atas_id = document.getElementById('top-bar');
+            const navbar_samping_id = document.getElementById('sidebar');
+
             const save_data  = {
                 'nama_product_variant' : name,
                 'harga_beli_custom' : harga,
@@ -610,12 +616,20 @@
                 data: save_data,
                 success: function(response) {
                    if (response.status == 'ok') {
-                        $('#price-buy-table').DataTable().ajax.reload(null, true);
                         Swal.fire(
                             'SAVE!',
                             'Your product beli has been Saved.',
                             'success'
-                        )
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                modal_price_beli.classList.remove('show-modal')
+                                navbar_atas_id.style.position = "fixed";
+                                navbar_samping_id.style.position = "fixed";
+                                //$('#price-buy-table').DataTable().ajax.reload(null, true);
+                                location.reload();
+                            }
+                        })
+                       
                    }
                   
                 },
@@ -624,6 +638,9 @@
                     if (xhr.responseJSON) {
                         if (xhr.responseJSON.data.nama_product_variant) {
                             alert("Gagal nama variatn sudah digunakan");
+                        }
+                        if (xhr.responseJSON.data.harga_beli_custom) {
+                            alert("Gagal, harga harus berupa angka");
                         }
                     }
                     
@@ -650,6 +667,48 @@
                       const name = response.data.nama_product_variant;
                       const harga = response.data.harga_beli_custom;
                       openModalProductBeliCustom(id,name,harga)
+                   }
+                },
+                error: function(err) {
+                    console.log('error detail', err);
+                }
+            })
+        }
+
+        function deleteProductBeli(id){
+            const modal_price_beli = document.querySelector("#modalPriceBuy")
+            const modal_close = modal_price_beli.querySelector('.modal__close_2_price_buy')
+            let navbar_atas_id = document.getElementById('top-bar');
+            const navbar_samping_id = document.getElementById('sidebar');
+            
+            $.ajax({
+                url: `{{ route('delete-product-beli') }}`,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization',
+                        `Bearer ${localStorage.getItem("token")}`);
+                },
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                type: 'post',
+                data: {
+                    'id_product_beli': id
+                },
+                success: function(response) {
+                   if (response.status == 'ok') {
+                        Swal.fire(
+                            'Deleted!',
+                            'Your product beli has been delete.',
+                            'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                modal_price_beli.classList.remove('show-modal')
+                                navbar_atas_id.style.position = "fixed";
+                                navbar_samping_id.style.position = "fixed";
+                                $('#price-buy-table').DataTable().ajax.reload(null, true);
+                                //location.reload();
+                            }
+                        })
                    }
                 },
                 error: function(err) {

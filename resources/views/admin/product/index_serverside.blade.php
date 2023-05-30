@@ -145,7 +145,12 @@ $(document).ready(function() {
                 }
             },
             {
-               "data": `price_sell_product.length`
+               "data": `kondisi_price_jual`, render: function(data,type, row){
+                    const total = row.price_sell_product.length < 1 
+                    ? '<div class="style-price-buy-problem" style="backgroud-color:red;color:white"> no set </div>' : row.price_sell_product.length;
+                    const kondisi_price_jual = total;
+                    return kondisi_price_jual;
+               }
             },
             {
                "data": `kondisi_stock`, render: function(data, type, row) {
