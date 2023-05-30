@@ -40,7 +40,7 @@
 <div class="modal2" id="modalPriceBuy">
     <div class="modal__wrapper">
         <div>
-            <h3 id="title_modal">Input Price Beli Product</h3>
+            <h3 id="title_modal">Input Harga Beli Custom</h3>
         </div>
         <p></p>
         <form action="" id="form-product-price-buy">
@@ -49,12 +49,12 @@
                 <input class="input-modal-global" id="nama_variant" required type="text" style="margin-top:5px;" name="nama_variant" placeholder="nama variant">
             </div>
             <div class="input-group">
-                <label id="id_label_price_buy" class="text-label-modal" for="price_buy" style="margin-left: 5px;">Harga beli custom</label>
-                <input class="input-modal-global" id="price_buy" required type="text" style="margin-top:5px;" name="price_buy" placeholder="Harga beli">
+                <label id="id_label_price_buy_custom" class="text-label-modal" for="price_buy" style="margin-left: 5px;">Harga beli custom</label>
+                <input class="input-modal-global" id="price_buy_custom" required type="text" style="margin-top:5px;" name="price_buy_custom" placeholder="Harga beli">
             </div>
             <div class="btn-group-modal2">
                 <button type="submit" class="btn-modal2 btn-blue">Submit</button>
-                <button class="btn-modal2 btn-light-modal2 modal__close_2">Cancel</button>
+                <button class="btn-modal2 btn-light-modal2 modal__close_2_price_buy">Cancel</button>
             </div>
         </form>
     </div>

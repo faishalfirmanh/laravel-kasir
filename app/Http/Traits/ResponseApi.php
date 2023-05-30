@@ -33,7 +33,7 @@ trait ResponseApi{
         if (gettype($data) == 'object') {
             $to_str = (string) $data;
             if (strpos($to_str, '[') !== false) { //list
-                $count = count(array($data));
+                $count = count($data);
             }else{  
                 $count = count(array($data));
             }

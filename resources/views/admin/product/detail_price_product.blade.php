@@ -72,7 +72,7 @@
     <div class="tables" id="table_buy_div" style="display: none">
         <div class="" style="margin-left:25px">
             {{-- <a href="#" id="add_product" class="btn">Tambah Product</a> --}}
-            <button class="btn btn-blue" data-toggle="modalPriceBuy" data-target="#modalPriceBuy">Tambah harga beli</button>
+            <button class="btn btn-blue" onclick="openModalProductBeliCustom(0,0,0)">Tambah harga beli</button>
         </div>
         <section class="table__body" style=>
             <table class="" id="price-buy-table"  style="width: 100%">
@@ -278,7 +278,7 @@
                 success: function(data) {
                     if (data.status == 'ok'){
                         let total_list = data.data.length;
-                        let html_opt = `<option value="0">- pilih variant harga-</option>`;
+                        let html_opt = `<option value="0">- pilih variant harga (set kosong)-</option>`;
                         if (total_list > 0) {
                             data.data.forEach((e) => {
                                 html_opt +=
@@ -310,12 +310,14 @@
         //console.log(input_price_buy_kondisi);
         $('#form-product-price').on("submit", function(e) {
             e.preventDefault();
+            let cek_input_price_buy = parseInt(input_price_buy.value) > 0 ? parseInt(input_price_buy.value) : null;
+           
             let input_data = {
                 'product_id': parseInt($("#id_prd").val()),
                 'start_kg': input_start_kg.value,
                 'end_kg': input_end_kg.value,
                 'price_sell': input_price_sell.value,
-                'product_beli_id' : input_price_buy.value
+                'product_beli_id' : cek_input_price_buy
             }
 
             //console.log(cek_input_price_buy);
@@ -324,6 +326,7 @@
                 input_data.id = localStorage.getItem('id_product_jual') //cek_id_for_update.value
             }
 
+    
             $.ajax({
                 type: 'post',
                 headers: {
@@ -499,18 +502,21 @@
                         d.product_id = id_prodd;
                     },
                     "error": function(xhr, error, thrown) {
-                        const toJson = JSON.parse(xhr.responseText);
-                        console.log('product-buy',toJson);
-                        if (toJson.status === 'Token is Invalid') {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Harap login kembali',
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = '{{ route('home') }}'
-                                }
-                            })
+                        console.log('get all',xhr);
+                        if (xhr.responseText) {
+                            const toJson = JSON.parse(xhr.responseText);
+                            console.log('product-buy',toJson);
+                            if (toJson.status === 'Token is Invalid') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Harap login kembali',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '{{ route('home') }}'
+                                    }
+                                })
+                            }   
                         }
                     }
                 },
@@ -536,11 +542,120 @@
                             const cek =  row.get_product_jual == null ?
                                 `<i onclick="" class="far fa-trash-alt" style="background:red;margin-right:5px" title="delete-toko"></i>` :
                                 '';
-                            return `<i onclick="" class="far fa-edit" style="margin-right:5px;"></i>` + cek ;
+                            return `<i onclick="editProductBeli(${row.id_product_beli})" class="far fa-edit" style="margin-right:5px;"></i>` + cek ;
                         }
                     }
                 ]
             })
         })
+
+        function openModalProductBeliCustom(id=0,name,harga){
+            const modal_price_beli = document.querySelector("#modalPriceBuy")
+            const modal_close = modal_price_beli.querySelector('.modal__close_2_price_buy')
+            let navbar_atas_id = document.getElementById('top-bar');
+            const navbar_samping_id = document.getElementById('sidebar');
+           
+            const field_name_variant = document.getElementById('nama_variant'); 
+            const field_price_buy = document.getElementById('price_buy_custom');
+
+            modal_price_beli.classList.add('show-modal')
+            navbar_atas_id.style.position = "initial";
+            navbar_samping_id.style.position = "initial";
+
+            modal_close.addEventListener('click', function(e) {
+                e.preventDefault()
+                modal_price_beli.classList.remove('show-modal')
+                navbar_atas_id.style.position = "fixed";
+                navbar_samping_id.style.position = "fixed";
+            })
+           
+            if (parseInt(id) > 0) {
+                field_name_variant.value = name;
+                field_price_buy.value = harga;
+            }else{
+                field_name_variant.value = '';
+                field_price_buy.value = '';
+            }
+            
+            $('#form-product-price-buy').on("submit", function(e) {
+                e.preventDefault();
+                ajaxSaveHargaBeliCustom(id,field_name_variant.value,field_price_buy.value)
+                modal_price_beli.classList.remove('show-modal')
+                navbar_atas_id.style.position = "fixed";
+                navbar_samping_id.style.position = "fixed";
+            })
+        }
+
+        function ajaxSaveHargaBeliCustom(id_product_beli = 0, name, harga){
+            const save_data  = {
+                'nama_product_variant' : name,
+                'harga_beli_custom' : harga,
+                'product_id' : id_prodd
+            }
+          
+            if (id_product_beli > 0) {
+                save_data.id = id_product_beli;
+            }
+            
+            $.ajax({
+                url: `{{ route('save-product-beli') }}`,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization',
+                        `Bearer ${localStorage.getItem("token")}`);
+                },
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                type: 'post',
+                data: save_data,
+                success: function(response) {
+                   if (response.status == 'ok') {
+                        $('#price-buy-table').DataTable().ajax.reload(null, true);
+                        Swal.fire(
+                            'SAVE!',
+                            'Your product beli has been Saved.',
+                            'success'
+                        )
+                   }
+                  
+                },
+                error: function(xhr, status, error) {
+                    console.log(error,xhr);
+                    if (xhr.responseJSON) {
+                        if (xhr.responseJSON.data.nama_product_variant) {
+                            alert("Gagal nama variatn sudah digunakan");
+                        }
+                    }
+                    
+                }
+            })
+        }
+
+        function editProductBeli(id){
+            $.ajax({
+                url: `{{ route('get-product-beliById') }}`,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization',
+                        `Bearer ${localStorage.getItem("token")}`);
+                },
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                type: 'post',
+                data: {
+                    'id_product_beli': id
+                },
+                success: function(response) {
+                   if (response.status == 'ok') {
+                      const name = response.data.nama_product_variant;
+                      const harga = response.data.harga_beli_custom;
+                      openModalProductBeliCustom(id,name,harga)
+                   }
+                },
+                error: function(err) {
+                    console.log('error detail', err);
+                }
+            })
+        }
     </script>
 @endpush

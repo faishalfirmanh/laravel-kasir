@@ -31,6 +31,28 @@
             font-weight: bold;
         }
 
+        .style-price-buy {
+            text-align: center;
+            background: #51ffe2;
+            border-radius: 5px;
+            height: 23px;
+            width: 70%;
+            color: rgb(17, 13, 4);
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .style-price-buy-problem{
+            text-align: center;
+            background: #e01b1b;
+            border-radius: 5px;
+            height: 23px;
+            width: 70%;
+            color: rgb(17, 13, 4);
+            font-size: 13px;
+            font-weight: bold;
+        }
+
         .style-total-price {
             text-align: center;
             background: #53dfd1;
@@ -108,7 +130,19 @@ $(document).ready(function() {
                "data": "nama_product"
             },
             {
-               "data": `harga_beli`
+               "data": `kk`, render: function(data, type, row) {
+                    if (row.price_buy_product_custom.length > 0 && row.harga_beli == 0) {
+                        const kondisi_beli = `<div class="style-price-buy">custom (total ${row.price_buy_product_custom.length})</div>`;
+                        return kondisi_beli;
+                    }else if(row.harga_beli > 0 && row.price_buy_product_custom.length < 1){
+                        const kondisi_beli = row.harga_beli;
+                        return kondisi_beli;
+                    }else{
+                        const kondisi_beli = '<div class="style-price-buy-problem" style="backgroud-color:red;color:white">data bermasalah</div>';
+                        return kondisi_beli;
+                    }
+                    
+                }
             },
             {
                "data": `price_sell_product.length`
