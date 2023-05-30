@@ -263,7 +263,7 @@ $(document).ready(function() {
                 element.appendChild(document.createTextNode(text));
             }, delayMs);
         }
-
+//tes
         $('#form-product').on("submit", function(e) {
             e.preventDefault();
             let name = $("#name_product").val();
