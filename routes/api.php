@@ -93,6 +93,18 @@ Route::group(['middleware' => ['jwt.verify']], function() {
             Route::post('/delete-product-beli','deleteProductBeliCon')->name('delete-product-beli');
         });
     });
+
+    /** ---- user ----- */
+    Route::controller(UserController::class)->prefix('user')->group(function(){
+        Route::post('/user-add','store');
+        Route::post('/user-change-password','changePassword')->name('user-change-password');
+        Route::post('/user-detail','detailParam')->name('user-detail');
+        Route::get('/user-list-get-all','index')->name('user-list-get-all');
+        Route::post('/user-get-all-paginate','indexAllPaginate')->name('user-get-all-paginate');
+        Route::get('/user-byid/{id}','detail');
+        Route::post('/user-delete','remove')->name('user-delete');
+    });
+    
     
 
     //--use jwt--
@@ -130,13 +142,4 @@ Route::controller(KeranjangKasirController::class)->group(function(){
 
 });
 
-
-Route::controller(UserController::class)->group(function(){
-    Route::post('/user-add','store');
-    Route::post('/user-change-password','changePassword')->name('user-change-password');
-    Route::post('/user-detail','detailParam')->name('user-detail');
-    Route::get('/user-list','index');
-    Route::get('/user-byid/{id}','detail');
-    Route::post('/user-delete','remove')->name('user-delete');
-});
 

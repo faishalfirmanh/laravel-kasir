@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{route('view-user')}}">
                         <i class="fa fa-users"></i>
                         <div class="title">User</div>
                     </a>

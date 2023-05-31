@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\KategoriController;
+use App\Http\Controllers\WEB\UserController as UserControllerWeb;
 use App\Http\Controllers\WEB\TokoController;
 use App\Http\Controllers\WEB\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -43,7 +44,7 @@ Route::get('/api-kategori',[KategoriController::class,'index'])->name('api-kateg
     Route::get('/detail-price-product/{id_product}',[ProductServerSideController::class,'detailPriceProduct'])->name('detail-price-product');
     Route::get('/server-price-product/{id}',[ProductServerSideController::class,'getPriceListProductDetail'])->name('server-price-product');
     Route::get('/view-product', [ProductServerSideController::class, 'viewProduct'])->name('view-product');
-
+    Route::get('/view-user',[UserControllerWeb::class,'index'])->name('view-user');
     //toko
     Route::get('/view-toko',[TokoController::class,'viewToko'])->name('view-toko');
     Route::get('/server-side-toko',[TokoController::class, 'getToko'])->name('server-side-toko');

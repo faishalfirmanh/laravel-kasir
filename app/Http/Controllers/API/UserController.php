@@ -35,6 +35,12 @@ class UserController extends Controller
         return $this->responseSucess($data);
     }
 
+    public function indexAllPaginate(Request $request)
+    {
+        $data = $this->service_user->GetAllUserServiceWithPaginate($request);
+        return $this->generalResponseV2($data,6);
+    }
+
     public function detailParam(Request $request)
     {
         $find = $this->service_user->GetUserByIdServicePost($request);

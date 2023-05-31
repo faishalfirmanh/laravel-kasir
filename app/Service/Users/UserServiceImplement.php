@@ -61,8 +61,26 @@ class UserServiceImplement implements UserService{
 
     public function GetAllUserService($request)
     {
-        $limit = 10;
-        $data = $this->user_repository->getAllUserPaginate($limit,$request->keyword);
+        $data = $this->user_repository->getAllUser();
+        return $data;
+    }
+
+    public function GetAllUserServiceWithPaginate($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'limit' => 'required|integer',
+            'page' => 'integer|nullable',
+            'keyword' => 'string|nullable'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        if (empty($request->page)) {
+            $request->page = 1;
+        }
+
+        $data = $this->user_repository->getAllUserPaginate($request);
+
         return $data;
     }
 

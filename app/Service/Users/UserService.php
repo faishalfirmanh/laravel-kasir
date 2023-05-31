@@ -8,5 +8,6 @@ interface UserService{
     public function UserChangePassByIdServicePost($request);
     public function DeleteUserService($id);
     public function GetAllUserService($request);
+    public function GetAllUserServiceWithPaginate($request);
     public function GetUserByIdService($id);
 }
