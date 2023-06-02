@@ -1,6 +1,6 @@
 @extends('layout.admin_app')
 @section('title')
-    Toko
+    User
 @endsection
 @section('table_content')
     <style>
@@ -15,8 +15,22 @@
         }
 
         .far.fa-edit,
-        .far.fa-trash-alt:hover {
+        .fas.fa-wrench,
+        .far.fa-trash-alt{
             cursor: pointer;
+        }
+
+        .danger-div {
+            width: 80%;
+            color: white;
+            background: red;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            /*-- center vertical --*/
+            height: 30px;
+            line-height: 30px;
         }
     </style>
     <div class="tables" style="margin-top:20px;">
@@ -31,6 +45,7 @@
                         <th>Email</th>
                         <th>Toko</th>
                         <th>Role</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,15 +56,15 @@
 @endsection
 
 @section('modal_global')
-    @include('admin.toko.modal')
+    @include('admin.user.modal')
 @endsection
 
 @push('scripts')
     <script>
       $(document).ready(function(){
-         $('#toko-ajax-list').DataTable({
+         $('#user-ajax-list').DataTable({
             "ajax": {
-                "url": "{{ route('get-all-toko') }}",
+                "url": "{{ route('user-list-get-all') }}",
                 "dataSrc": "data",
                 /*response data*/
                 "beforeSend": function(xhr) {
@@ -72,106 +87,152 @@
                 }
             },
             "columns": [{
-                    "data": "id_toko"
+                    "data": "id"
                 },
                 {
-                    "data": "nama_toko"
+                    "data": "email"
                 },
                 {
-                    "data": `user_relasi_toko.length`
+                    "data": 'toko', render : function(data,type, row){
+                        const toko = row.toko_id != null ? row.get_toko.nama_toko : '<div class="danger-div"> no set </div>'
+                        return toko;
+                    }
                 },
                 {
-                    render: function(data, type, row) {
-                        const cek = row.user_relasi_toko.length < 1 ?
-                            `<i onclick="deleteToko(${row.id_toko})" class="far fa-trash-alt" style="background:red" title="delete-toko"></i>` :
-                            '';
-                        return `<i onclick="editToko(${row.id_toko})" class="far fa-edit" style="margin-right:5px;"></i>` +
-                            cek;
+                    "data" : 'role', render: function(data, type, row) {
+                        const role = row.get_role.name_role;
+                        return role;
+                    }
+                },
+                {
+                    "data" : 'action', render:function(data, type, row){
+                        const delete_btn = `<i onclick="deleteUser(${row.id})" class="far fa-trash-alt" style="background:red" title="delete-user"></i>`
+                        const edit = `<i onclick="editUser(${row.id})" class="far fa-edit" style="margin-right:5px;" title="edit user"></i>`
+                        const action = edit + 
+                        `<i oncick="changePass(${row.id})" class="fas fa-wrench" style="background:blue;margin-right:5px" title="ubah-password"></i>`
+                                      + delete_btn
+                        return action;
                     }
                 }
             ]
         });
       })
 
+        function selectElement(id, valueToSelect) {
+            let element = document.getElementById(id);
+            element.value = valueToSelect;
+        }
 
-        function getTokoAjax() {
+
+        function getTokoAjax(){
             $.ajax({
-                type: "post",
-                url: "{{ route('toko-list') }}",
-                data: {
-                    'limit': 10,
-                    'page': 1,
-                    'keyword': ''
-                },
+                type: "get",
+                url: "{{ route('get-all-toko') }}",
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
                 },
                 success: function(response) {
-                    if (response.status == 'Authorization Token not found') {
-                        alert("tidak ada hak akses");
-                        window.location.href = '{{ route('home') }}'
-                    } else {
-                        let data_json = response.data[0].data
-                        var tbody = $('#toko-ajax-list tbody');
-                        $.each(data_json.data, function(i, item) {
-                            let html_button =
-                                `<i onclick="editToko(${item.id_toko})" class="far fa-edit" style="margin-right:5px;"></i>`;
-                            let html_button_delete = item.user_relasi_toko.length < 1 ?
-                                `<i onclick="deleteToko(${item.id_toko})" class="far fa-trash-alt" style="background:red" title="delete-product"></i>` :
-                                '';
-                            var row = $('<tr>').appendTo(tbody);
-                            $('<td>').text(item.id_toko).appendTo(row);
-                            $('<td>').text(item.nama_toko).appendTo(row);
-                            $('<td>').text(item.user_relasi_toko.length).appendTo(row);
-                            $('<td>').append(html_button, html_button_delete).appendTo(row)
-                        });
-                    }
+                    setTimeout(() => {
+                        if (response.data.length > 0) {
+                            let html_opt = `<option value="0">- pilih Toko -</option>`;
+                            response.data.forEach((e) => {
+                                html_opt +=
+                                    `<option value="${e.id_toko}">${e.nama_toko}</option>`;
+                                    if ($("#select_toko")) {
+                                        $("#select_toko").html(html_opt);
+                                    }
+                            });
+                        }
+                    }, 500);
                 }
             })
         }
 
+        getTokoAjax();
+
+        function getRolejax() {
+            $.ajax({
+                type: "get",
+                url: "{{ route('get-all-role') }}",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                },
+                success: function(response) {
+                    setTimeout(() => {
+                        if (response.data.length > 0) {
+                            let html_opt = `<option value="0">- pilih Role -</option>`;
+                            response.data.forEach((e) => {
+                                html_opt +=
+                                    `<option value="${e.id}">${e.name_role}</option>`;
+                                    if ($("#select_role")) {
+                                        $("#select_role").html(html_opt);
+                                    }
+                            });
+                        }
+                    }, 500);
+                }
+            })
+        }
+        getRolejax();
+
         // getTokoAjax();
 
-        const input_toko = document.getElementById("nama_toko")
-        const all_toogle = document.querySelectorAll('[data-toggle="modaltoko"]')
+        const input_name_user = document.getElementById("nama_user")
+        const input_email = document.getElementById("email")
+        const input_password = document.getElementById("password")
+        const select_role = document.getElementById("select_role")
+        const select_toko = document.getElementById("select_toko")
+        const all_toogle = document.querySelectorAll('[data-toggle="modalUser"]')
         let navbar_atas_id = document.getElementById('top-bar');
         const navbar_samping_id = document.getElementById('sidebar');
-        const modal = document.querySelector("#modaltoko")
+        const modal = document.querySelector("#modalUser")
 
-        $("#add_toko").on("click", function(e) {
+        $("#add_user").on("click", function(e) {
 
             const modal_close = modal.querySelector('.modal__close_2')
             modal.classList.add('show-modal')
             navbar_atas_id.style.position = "initial";
             navbar_samping_id.style.position = "initial";
-            input_toko.value = ""
+            input_name_user.value = ""
+            input_email.value = ""
+            input_password.value = ""
+            select_role.value = 0;
+            select_toko.value = 0;
             modal_close.addEventListener('click', function(e) {
                 e.preventDefault()
                 modal.classList.remove('show-modal')
                 navbar_atas_id.style.position = "fixed";
                 navbar_samping_id.style.position = "fixed";
             })
-
+            localStorage.removeItem("id_user_hidden");
             //ajax 
-            if (document.getElementById("id_toko_hidden")) {
-                document.getElementById("id_toko_hidden").removeAttribute("id")
+            if (document.getElementById("id_user")) {
+                document.getElementById("id_user").removeAttribute("id")
+               
             }
         })
-    </script>
-    <script>
-        $("#form-toko").on("submit", function(e) {
+   
+
+        $("#form-user").on("submit", function(e) {
             e.preventDefault()
-            const cek_id = document.getElementById('id_toko_hidden');
+            const cek_id = document.getElementById('id_user_hidden');
 
             let data_input = {
-                'nama_toko': input_toko.value
+                'name': input_name_user.value,
+                'email' : input_email.value,
+                'id_roles' : select_role.value,
+                'toko_id' : select_toko.value,
+                'passoword' : input_password.value
             }
             if (cek_id) {
-                data_input.id_toko = localStorage.getItem('id_toko_hidden')
+                data_input.id = localStorage.getItem('id_user_hidden')
+                console.log('edit');
             }
-
-            console.log();
+           
+            console.log(data_input);
+            
             $.ajax({
+                url: `{{ route('user-save') }}`,
                 type: 'post',
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
@@ -180,76 +241,90 @@
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                url: `{{ route('post-toko') }}`,
                 success: function(res) {
                     if (res.status == 'ok') {
                         // 
                         Swal.fire(
                             'Add',
-                            'Save data toko berhasil',
+                            'Save data user berhasil',
                             'success'
                         ).then((result) => {
                             if (result.isConfirmed) {
                                 modal.classList.remove('show-modal')
                                 navbar_atas_id.style.position = "fixed";
                                 navbar_samping_id.style.position = "fixed";
-                                $('#toko-ajax-list').DataTable().ajax.reload(null, true);
+                                $('#user-ajax-list').DataTable().ajax.reload(null, true);
                             }
                         })
 
-
                     }
-                    console.log('ress sucesse save', res);
                 },
                 error: function(xhr, status, error){
                     const res_error = xhr.responseJSON;
-                    if (res_error.data.nama_toko) {
-                        alert('Gagal simpan ,nama sudah digunakan')   
-                    }
+                    console.log(res_error);
+                    // if (res_error.data.nama_toko) {
+                    //     alert('Gagal simpan ,nama sudah digunakan')   
+                    // }
                 }
             })
 
         })
 
-        function editToko(id) {
-            const modal = document.querySelector("#modaltoko")
+
+        function changePass(id){
+
+        }
+
+        function editUser(id) {
+            const modal = document.querySelector("#modalUser")
             const modal_close = modal.querySelector('.modal__close_2')
             modal.classList.add('show-modal')
             navbar_atas_id.style.position = "initial";
             navbar_samping_id.style.position = "initial";
 
-            input_toko.value = ""
+            input_name_user.value = ""
 
             //ajax
             $.ajax({
-                type: 'post',
+                url: `{{ route('user-detail') }}`,
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
                 },
                 data: {
-                    'id_toko': id
+                    'id': id
                 },
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                url: `{{ route('detail-toko') }}`,
+                type: 'post',
                 success: function(res) {
                     let data = res.data;
-                    input_toko.value = data.nama_toko
-                    //create input tipe hidden for edit
+                    input_name_user.value = data.name
+                    input_email.value = data.email
+                    selectElement("select_role",data.id_roles);
+                    selectElement("select_toko",data.toko_id);
+                    
                     var input = document.createElement("input");
                     input.type = "hidden";
-                    input.setAttribute('id', 'id_toko_hidden');
-                    input.setAttribute('value', parseInt(id));
-                    document.getElementById('form-toko').appendChild(input);
-                    localStorage.setItem("id_toko_hidden", id);
-                    const idnya = localStorage.getItem("id_toko_hidden");
-                    console.log(idnya);
+                    input.setAttribute('id', 'id_user_hidden');
+                    input.setAttribute('value', id);
+                    document.getElementById('form-user').appendChild(input); 
+                    localStorage.setItem("id_user_hidden", id);
+                    // console.log('detail-',id);
+                    //create input tipe hidden for edit
+                    // var input = document.createElement("input");
+                    // input.type = "hidden";
+                    // input.setAttribute('id', 'id_toko_hidden');
+                    // input.setAttribute('value', parseInt(id));
+                    // document.getElementById('form-toko').appendChild(input);
+                    
+                    
+                    // console.log(idnya);
                     //create input tipe hidden for edit
 
                 },
                 error: function(xhr, status, msg) {
-
+                    alert("Error detail");
                 }
             })
             //ajax
@@ -263,9 +338,9 @@
             console.log(id);
         }
 
-        function deleteToko(id) {
+        function deleteUser(id) {
             Swal.fire({
-                title: "Yakin ingin menghapus toko ini ?",
+                title: "Yakin ingin menghapus user ini ?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -274,7 +349,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: `{{ route('delete-toko') }}`,
+                        url: `{{ route('user-delete') }}`,
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
@@ -284,15 +359,15 @@
                         },
                         type: 'post',
                         data: {
-                            'id_toko': id
+                            'id': id
                         },
                         success: function(response) {
                             Swal.fire(
                                 'Deleted!',
-                                'Your file has been deleted.',
+                                'User has been deleted.',
                                 'success'
                             )
-                            location.reload();
+                            $('#user-ajax-list').DataTable().ajax.reload(null, true);
                         },
                         error: function(err) {
                             console.log('error', err);

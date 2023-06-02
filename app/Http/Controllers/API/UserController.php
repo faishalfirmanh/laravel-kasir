@@ -26,13 +26,13 @@ class UserController extends Controller
     {
         $id = $request->id;
         $data = $this->service_user->PostUserService($request,$id);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,8);
     }
 
     public function index(Request $request)
     {
         $data = $this->service_user->GetAllUserService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,10);
     }
 
     public function indexAllPaginate(Request $request)

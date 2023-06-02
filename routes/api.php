@@ -96,7 +96,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     /** ---- user ----- */
     Route::controller(UserController::class)->prefix('user')->group(function(){
-        Route::post('/user-add','store');
+        Route::post('/user-add','store')->name('user-save');
         Route::post('/user-change-password','changePassword')->name('user-change-password');
         Route::post('/user-detail','detailParam')->name('user-detail');
         Route::get('/user-list-get-all','index')->name('user-list-get-all');

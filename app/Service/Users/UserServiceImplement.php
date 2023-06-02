@@ -47,9 +47,10 @@ class UserServiceImplement implements UserService{
     {
         $validated = Validator::make($request->all(),[
             'id_roles' => 'required|integer|exists:roles,id',
+            'toko_id' => 'required|integer|exists:tokos,id_toko',
             'name' => 'required|string',
             'email' => 'required|email',
-            'password' => 'required|string',
+            'password' => 'nullable|string',
             'id'=> 'integer|exists:users,id'
         ]);
         if ($validated->fails()) {

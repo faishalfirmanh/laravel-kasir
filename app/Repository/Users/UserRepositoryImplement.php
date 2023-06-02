@@ -13,7 +13,7 @@ class UserRepositoryImplement implements UserRepository{
 
     public function getAllUser()
     {
-        $data = $this->model->get();
+        $data = $this->model->with(['getRole','getToko'])->get();
         return $data;   
     }
 
@@ -74,7 +74,7 @@ class UserRepositoryImplement implements UserRepository{
 
     public function getUserById($id)
     {
-        $data = $this->model
+        $data = $this->model->with(['getRole','getToko'])
         ->where('id',$id)
         ->first();
         return $data;
@@ -88,12 +88,22 @@ class UserRepositoryImplement implements UserRepository{
             $model_save->id_roles = $data->id_roles;
             $model_save->name = $data->name;
             $model_save->email = $data->email;
-            $model_save->password = bcrypt($data->password);
+            $model_save->toko_id = $data->toko_id;
+            if (!empty($data->password)) {
+                $model_save->password = bcrypt($data->password);
+            }
+            
         }else{
             $model_save->name = strtolower($data->name);
             $model_save->id_roles = $data->id_roles;
             $model_save->email = strtolower($data->email);
-            $model_save->password = bcrypt($data->password);
+            $model_save->toko_id = $data->toko_id;
+            if (!empty($data->password)) {
+                $model_save->password = bcrypt($data->password);
+            }else{
+                $model_save->password = bcrypt(env('password_for_login'));
+            }
+            
         }
         $model_save->save();
         return $model_save->fresh();
