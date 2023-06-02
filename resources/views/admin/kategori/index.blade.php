@@ -42,11 +42,24 @@ kategori tess
       margin-left: 5px;
       border-radius: 10px;
    }
+  .pagination-mobile{
+    margin-left: 25px;
+  }
+
+   @media only screen and (max-width: 600px) {
+    .table-mobile{
+      width: 55%;
+    }
+    .pagination-mobile{
+      margin-left: 5px;
+    }
+  }
+   
 
 </style>
 
 <div class="tables" style="margin-top:20px;">
-	<div class="last-appointments">
+	<div class="last-appointments table-mobile">
 	<section class="table__body">
 			<div class="heading">
 				<h2>Kategori</h2>
@@ -76,13 +89,13 @@ kategori tess
 			</tbody>
 		</table>
 	</section>
-	<div class='pagination-container' style="margin-left: 25px;">
+	<div class='pagination-container pagination-mobile' style="">
 				<nav>
 				   <ul class="pagination" style="display: flex;margin-top: 30px;">
-                  <li data-page="prev" class="dt-page">
+                  <li data-page="prev" class="dt-page" id="btn_prev">
                      <span> < <span class="sr-only">(current)</span></span>
                   </li>
-				   <!--	Here the JS Function Will Add the Rows -->
+				   
                    <li data-page="next" id="prev" class="dt-page">
                      <span> > <span class="sr-only">(current)</span></span>
                   </li>
@@ -118,6 +131,7 @@ kategori tess
 
 
 		var xi = localStorage.getItem("pagess");
+    
 		var sec_limit = $('#maxRows').val;
     var lim = localStorage.getItem("maxRows");
     console.log('cek', lim);
@@ -141,12 +155,14 @@ kategori tess
                console.log(response);
                let data_json = response.data[0].data
                console.log('sukses',data_json);
+               localStorage.setItem("total_page", data_json.total_page);
                var tbody = $('#kategori_id tbody');
                $.each(data_json.data, function(i, item) {
                   var row = $('<tr>').appendTo(tbody);
                   $('<td>').text(item.id_kategori).appendTo(row);
                   $('<td>').text(item.nama_kategori).appendTo(row);
                   $('<td>').text(item.product_relasi_kategori.length).appendTo(row);
+                  $('<td>').appendTo(row);
                });
 				//for (var page = 0; page < data_json.total_page; page++) {
 					//console.log("button", page);
@@ -159,22 +175,18 @@ kategori tess
    //console.log('tess');
    //console.log(localStorage.getItem("token"));
 	
-   	function myFunction() {
-		localStorage.setItem("mytime", 1);
-		location.reload();
-	}
- 
-   	var xi = localStorage.getItem("mytime");
-	console.log('storek', xi);
-$("#maxRows").change(function(){
+   	
+
+   	
+	
+//$("#maxRows").change(function(){
   //alert("The text has been changed.");
   //tabletes.$.ajax.reload();
-});
+//});
 
    getPagination('#kategori_id');
 
 function getPagination(table) {
-  console.log('table', table);
   var lastPage = 1;
 
   $('#maxRows')
@@ -222,7 +234,7 @@ function getPagination(table) {
             .before(
               '<li data-page="' +
                 i +
-                '" class="dt-page" onclick="myFunctionnew()">\
+                '" class="dt-page" onclick="klickpage()">\
 								  <span>' +
                 i++ +
                 '<span class="sr-only">(current)</span></span>\
@@ -231,37 +243,72 @@ function getPagination(table) {
             .show();
         } // end for i
       } // end if row count > max rows
-	  $('.pagination [data-page=""]').addClass('active'); // add active class to the first li
+	  //$('.pagination [data-page=""]').addClass('active'); // add active class to the first li
       $('.pagination li').on('click', function(evt) {
         // on click each page
         evt.stopImmediatePropagation();
         evt.preventDefault();
         var pageNum = $(this).attr('data-page'); // get it's number
-		localStorage.setItem("pagess", pageNum);
-		console.log('pageNum',pageNum)
+		
+        if(pageNum == 'next'){
+           //console.log('total_pagennya', localStorage.getItem("total_page"));
+          var jumlahpage = localStorage.getItem("total_page")
+          var page_old = localStorage.getItem("pagess");
+
+          if(jumlahpage <= page_old){
+            localStorage.setItem("pagess", page_old);
+            console.log('batas');
+            location.reload();
+          }else{
+          console.log('pagesold', (parseInt(page_old) + parseInt(1)));
+          localStorage.setItem("pagess", (parseInt(page_old) + parseInt(1)));
+          location.reload();
+          }
+	        
+          //location.reload();
+        }else if(pageNum == 'prev'){
+          var page_old = localStorage.getItem("pagess");
+	        console.log('pagesold', (parseInt(page_old) + parseInt(1)));
+          if(page_old <=1){
+            localStorage.setItem("pagess", 1);
+            document.getElementById("btn_prev").display = true;
+            location.reload();
+          }else{
+            localStorage.setItem("pagess", (parseInt(page_old) - parseInt(1)));
+            location.reload();
+          }
+          
+          
+        }else{
+          localStorage.setItem("pagess", pageNum);
+          location.reload();
+        }
+        
+		      console.log('pageNum',pageNum)
         var maxRows = parseInt($('#maxRows').val()); // get Max Rows from select option
 
-        if (pageNum == 'prev') {
-          if (lastPage == 1) {
-            return;
-          }
-          pageNum = --lastPage;
-        }
-        if (pageNum == 'next') {
-          //location.reload();
-          var xi = localStorage.getItem("pagess");
-          console.log('klik next', xi);
+        // if (pageNum == 'prev') {
+        //   location.reload();
+        //   if (lastPage == 1) {
+        //     return;
+        //   }
+        //   pageNum = --lastPage;
+        // }
+        // if (pageNum == 'next') {
+        //   //location.reload();
+        //   var xi = localStorage.getItem("pagess");
+        //   console.log('klik', xi);
           
-          if (lastPage == $('.pagination li').length - 2) {
-            return;
-          }
-          pageNum = ++lastPage;
-        }
+        //   if (lastPage == $('.pagination li').length - 2) {
+        //     return;
+        //   }
+        //   pageNum = ++lastPage;
+        // }
 
         lastPage = pageNum;
         var trIndex = 0; // reset tr counter
         $('.pagination li').removeClass('active'); // remove active class from all li
-        $('.pagination [data-page="' + lastPage + '"]').addClass('active'); // add active class to the clicked
+        //$('.pagination [data-page="' + lastPage + '"]').addClass('active'); // add active class to the clicked
         // $(this).addClass('active');					// add active class to the clicked
 	  	limitPagging();
         $(table + ' tr:gt(0)').each(function() {
@@ -325,10 +372,9 @@ $(function() {
 
 
 var xi = localStorage.getItem("pagess");
-	console.log('storekww', xi);
-function myFunctionnew() {
+	console.log('pages', xi);
+function klickpage() {
 	
-        console.log("mbombo");
         location.reload();
         
     }
