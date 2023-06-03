@@ -2,7 +2,8 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\Rules\CekRulseToko;
+use App\Http\Middleware\Rules\CekRules;
+use App\Http\Middleware\Rules\CekRulesKategori;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,6 +71,7 @@ class Kernel extends HttpKernel
         'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
 
         //custom middleware rulse
-        'rules_toko' => CekRulseToko::class,
+        'rules_cek' => CekRules::class,
+        'rules_kategori' => CekRulesKategori::class,
     ];
 }

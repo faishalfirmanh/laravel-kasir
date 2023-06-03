@@ -48,6 +48,7 @@ class RoleRepositoryImplement implements RoleRepository{
            $model_save->name_role = $data->name_role;
            $model_save->kategori = $data->kategori;
            $model_save->toko = $data->toko;
+           $model_save->user = $data->user;
            $model_save->product = $data->product;
            $model_save->kasir = $data->kasir;
            $model_save->laporan = $data->laporan;
@@ -55,6 +56,7 @@ class RoleRepositoryImplement implements RoleRepository{
             $model_save->name_role = $data->name_role;
             $model_save->kategori = $data->kategori;
             $model_save->toko = $data->toko;
+            $model_save->user = $data->user;
             $model_save->product = $data->product;
             $model_save->kasir = $data->kasir;
             $model_save->laporan = $data->laporan;

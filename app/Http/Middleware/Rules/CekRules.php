@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-class CekRulseToko
+class CekRules
 {
     /**
      * Handle an incoming request.
@@ -34,7 +34,7 @@ class CekRulseToko
             if ($cek_roles->$name_access == 0) {
                 return response()->json([
                     "status"=>"not allowed",
-                    "msg"=> "tidak dapat akses menu toko",
+                    "msg"=> "tidak dapat akses menu ".$name_access,
                 ],403);
             }
 

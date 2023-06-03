@@ -15,6 +15,7 @@ class AlterAddColumnToko extends Migration
     {
         Schema::table('roles', function (Blueprint $table) {
             $table->enum('toko', ['0', '1'])->after('kategori')->nullable()->default('0');
+            $table->enum('user', ['0', '1'])->after('product')->nullable()->default('0');
         });
     }
 
@@ -27,6 +28,7 @@ class AlterAddColumnToko extends Migration
     {
         Schema::table('roles', function (Blueprint $table) {
             Schema::dropIfExists('toko');
+            Schema::dropIfExists('user');
         });
     }
 }

@@ -61,7 +61,9 @@ class RoleServiceImplement implements RoleService{
             'kategori'=> 'required|numeric|between:0,1',
             'product'=> 'required|numeric|between:0,1',
             'kasir'=> 'required|numeric|between:0,1',
-            'laporan'=> 'required|numeric|between:0,1'
+            'laporan'=> 'required|numeric|between:0,1',
+            'toko'=> 'required|numeric|between:0,1',
+            'user'=> 'required|numeric|between:0,1'
         ]);
         if ($validator->fails()) {
             return $validator->errors();

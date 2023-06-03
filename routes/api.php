@@ -43,7 +43,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     });
 
     //toko
-    Route::controller(TokoController::class)->middleware('rules_toko')->prefix('toko')->group(function(){
+    Route::controller(TokoController::class)->middleware('rules_cek')->prefix('toko')->group(function(){
         Route::post('/','getAllTokoPaginateSearchCon')->name('toko-list');//paginate - search
         Route::post('/post-toko','store')->name('post-toko');
         Route::post('/detail-toko','detail')->name('detail-toko');
@@ -63,7 +63,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     
 
     /**----product */
-    Route::controller(ProductController::class)->prefix('product')->group(function(){
+    Route::controller(ProductController::class)->middleware('rules_cek')->prefix('product')->group(function(){
         Route::get('/product-byid/{id}', 'detail')->name('product-detail'); 
         // Route::get('/product-byid-input', 'detailRequestId')->name('product-detail-input'); 
         Route::post('porudct-detailById','detailRequestId')->name('porudct-detailById');
