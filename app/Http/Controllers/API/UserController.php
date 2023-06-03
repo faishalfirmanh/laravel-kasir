@@ -101,6 +101,10 @@ class UserController extends Controller
                         ], 500);
                 }
                //jwt
+               //save token to db
+            //    $search_data->token_jwt = $token;
+            //    $search_data->save();
+
                 return response()->json([
                     'message' => 'success login',
                     'email'=>$search_data->email,

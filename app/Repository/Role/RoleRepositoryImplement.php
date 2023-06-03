@@ -47,12 +47,14 @@ class RoleRepositoryImplement implements RoleRepository{
            $model_save =$this->model->where('id',$id)->first();
            $model_save->name_role = $data->name_role;
            $model_save->kategori = $data->kategori;
+           $model_save->toko = $data->toko;
            $model_save->product = $data->product;
            $model_save->kasir = $data->kasir;
            $model_save->laporan = $data->laporan;
         }else{
             $model_save->name_role = $data->name_role;
             $model_save->kategori = $data->kategori;
+            $model_save->toko = $data->toko;
             $model_save->product = $data->product;
             $model_save->kasir = $data->kasir;
             $model_save->laporan = $data->laporan;

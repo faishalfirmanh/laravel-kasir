@@ -12,6 +12,7 @@ class Role extends Model
         'id_roles',
         'name_role',
         'kategori',
+        'toko',
         'product',
         'kasir',
         'laporan'

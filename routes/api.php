@@ -43,7 +43,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     });
 
     //toko
-    Route::controller(TokoController::class)->prefix('toko')->group(function(){
+    Route::controller(TokoController::class)->middleware('rules_toko')->prefix('toko')->group(function(){
         Route::post('/','getAllTokoPaginateSearchCon')->name('toko-list');//paginate - search
         Route::post('/post-toko','store')->name('post-toko');
         Route::post('/detail-toko','detail')->name('detail-toko');
