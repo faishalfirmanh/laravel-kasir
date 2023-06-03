@@ -69,7 +69,7 @@
         <div class="" style="margin-left:25px">
             {{-- <a href="#" id="add_product" class="btn">Tambah Product</a> --}}
 
-            <button class="btn btn-blue" data-toggle="modal2" data-target="#modal2">Tambah product</button>
+            <button class="btn btn-blue" id="btn-modal-product" data-toggle="modal2" data-target="#modal2">Tambah product</button>
         </div>
         <section class="table__body">
             <table class="product-yajra" id="id-table-product" style="width: 100%">
@@ -109,7 +109,7 @@ $(document).ready(function() {
             },
             "error": function(xhr, error, thrown) {
                const toJson = JSON.parse(xhr.responseText);
-               console.log(toJson);
+              
                if (toJson.status === 'Token is Invalid') {
                      Swal.fire({
                         icon: 'error',
@@ -121,6 +121,12 @@ $(document).ready(function() {
                         }
                      })
                }
+
+               if(xhr.status == 403) {
+                    sweetAlertError("Tidak dapat akses menu product")
+                    $("#id-table-product").html("");
+                    $("#btn-modal-product").remove()
+                }
             }
          },
          "columns": [{

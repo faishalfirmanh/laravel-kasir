@@ -95,7 +95,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     });
 
     /** ---- user ----- */
-    Route::controller(UserController::class)->prefix('user')->group(function(){
+    Route::controller(UserController::class)->middleware('rules_cek')->prefix('user')->group(function(){
         Route::post('/user-add','store')->name('user-save');
         Route::post('/user-change-password','changePassword')->name('user-change-password');
         Route::post('/user-detail','detailParam')->name('user-detail');

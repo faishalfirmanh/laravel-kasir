@@ -69,6 +69,11 @@
                             }
                         })
                     }
+                    if (xhr.status == 403) {
+                        sweetAlertError("Tidak dapat akses menu toko")
+                        $("#toko-ajax-list").html("");
+                        $("#add_toko").remove()
+                    }
                 }
             },
             "columns": [{

@@ -84,6 +84,12 @@
                             }
                         })
                     }
+
+                    if (xhr.status == 403) {
+                        sweetAlertError("Tidak dapat akses menu user")
+                        $("#user-ajax-list").html("");
+                        $("#add_user").remove()
+                    }
                 }
             },
             "columns": [{

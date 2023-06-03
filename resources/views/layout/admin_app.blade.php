@@ -183,6 +183,14 @@
             }
          })
     })
+
+    function sweetAlertError(msg){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: msg,
+        })
+    }
 </script>
 </body>
 </html>
