@@ -84,6 +84,7 @@ class ProductRepositoryImplement implements ProductRepository{
         if ( intval($id) > 0 || $id != NULL) {
             $model_save = $this->model->where('id_product',$id)->first();
             $model_save->nama_product = strtolower($data->nama_product);
+            $model_save->toko_id = $data->toko_id;
             $model_save->kategori_id = strtolower($data->kategori_id);
             $model_save->harga_beli = strtolower($data->harga_beli);
             $model_save->expired = $data->expired;
@@ -91,6 +92,7 @@ class ProductRepositoryImplement implements ProductRepository{
             cek_is_kg($data->is_kg,$model_save,$data);
         }else{
             $model_save->nama_product = strtolower($data->nama_product);
+            $model_save->toko_id = $data->toko_id;
             $model_save->kategori_id = strtolower($data->kategori_id);
             $model_save->harga_beli = strtolower($data->harga_beli);
             $model_save->expired = $data->expired;

@@ -75,6 +75,7 @@ class ProductServiceImplement implements ProductService{
         
         $validated = Validator::make($data->all(),[
             'nama_product' => 'required|'.$kondisi_,
+            'toko_id' => 'required|integer|exists:tokos,id_toko',
             'kategori_id' => 'required|integer|exists:kategoris,id_kategori',
             'harga_beli' => 'integer',
             'expired'=> 'date_format:Y-m-d|after:today|nullable',

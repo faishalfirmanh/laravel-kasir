@@ -15,14 +15,23 @@ class KategoriSeeder extends Seeder
     public function run()
     {
         //
-        $faker = Faker::create('id_ID');
- 
-    	for($i = 1; $i <= 20; $i++){
-    		DB::table('kategoris')->insert([
-    			'nama_kategori' => $faker->name,
-    		]);
- 
-    	}
+       
+        DB::table('kategoris')->insert([
+            'nama_kategori' => 'kebutuhan pokoK',
+        ],true);
+        
+        DB::table('kategoris')->insert([
+            'nama_kategori' => 'rempah rempah',
+        ],true);
+
+        DB::table('kategoris')->insert([
+            'nama_kategori' => 'sayur',
+        ],true);
+        
+        DB::table('kategoris')->insert([
+            'nama_kategori' => 'buah',
+        ],true);
+    	
 
     }
 }

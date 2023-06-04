@@ -22,7 +22,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $this->service->postProductService($request,$request->id_product);
-        return $this->generalResponseV2($data,11);
+        return $this->generalResponseV2($data,12);
 
     }
 
@@ -38,7 +38,7 @@ class ProductController extends Controller
     public function getAllProductController(Request $request)
     {
         $data = $this->service->getAllProductNoPaginate();
-        return $this->generalResponseV2($data,14);
+        return $this->generalResponseV2($data,15);
     }
 
     public function detailRequestId(Request $request)

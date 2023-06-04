@@ -240,6 +240,7 @@
                 input_price_sell.value = '';
                 input_end_kg.value = '';
                 input_start_kg.value = '';
+                input_price_buy.value = 0;
 
                 if (document.getElementById('id_product_jual_hidden')) {
                     document.getElementById("id_product_jual_hidden").outerHTML = "";
@@ -269,7 +270,7 @@
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                url: `{{ route('get-all-product-beli') }}`,
+                url: `{{ route('get-all-product-beli-no-used') }}`,
                 data: { 'product_id' : id_product },
                 type: 'post',
                 beforeSend: function (xhr) {
@@ -341,9 +342,10 @@
                     console.log(data);
                     if (data.status == 'ok') {
                         $('.product-price-yajra').DataTable().ajax.reload(null, true);
+                        $("#price-buy-table").DataTable().ajax.reload(null, true);
                         Swal.fire(
                             'Add',
-                            'Tambah data product berhasil',
+                            'Simpan data product jual berhasil',
                             'success'
                         ).then((result) => {
                             if (result.isConfirmed) {

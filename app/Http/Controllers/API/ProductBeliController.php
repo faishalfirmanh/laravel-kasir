@@ -31,6 +31,12 @@ class ProductBeliController extends Controller
         return $this->responseSucess($data);
     }
 
+    public function getAllProductBeliNoUsedCon(Request $request)
+    {
+        $data = $this->service->getAllProductBeliNoSetService($request);
+        return $this->generalResponseV2($data,8);
+    }
+
     public function saveProductBeliCon(Request $request)
     {
         $data = $this->service->saveProductBeliService($request);

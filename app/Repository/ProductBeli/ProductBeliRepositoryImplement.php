@@ -18,6 +18,15 @@ class ProductBeliRepositoryImplement implements ProductBeliRepository{
         return $data;
     }
 
+    public function getAllProductBeliNoSet($product_id)
+    {
+        $data = $this->model->with(["getProduct",'getProductJual'])
+        ->where('product_id',$product_id)
+        ->doesntHave('getProductJual')
+        ->get();
+        return $data;
+    }
+
     public function getProductBeliById($id_product_beli)
     {
         $data = $this->model->with("getProduct")->where('id_product_beli',$id_product_beli)->first();

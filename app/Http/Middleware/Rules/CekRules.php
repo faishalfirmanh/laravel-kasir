@@ -21,6 +21,12 @@ class CekRules
     {
         try {
             $user = Auth::user();
+
+            if ($user == NULL) {
+                return response()->json(['status' => 'Authorization Token not found', 
+                'msg' => 'please login '],404);
+            }
+
             $id_toko = $user->toko_id;
             $id_roles = $user->id_roles;
             $cek_roles = Role::find($id_roles);

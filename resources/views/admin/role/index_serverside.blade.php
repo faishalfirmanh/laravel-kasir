@@ -196,13 +196,17 @@
       let cek_product = document.getElementById('is_product').checked ? 1 : 0;
       let cek_laporan = document.getElementById('is_laporan').checked ? 1 : 0;
       let cek_kategori = document.getElementById('is_kategori').checked ? 1 : 0;
+      let cek_toko = document.getElementById('is_toko').checked ? 1 : 0;
+      let cek_user = document.getElementById('is_user').checked ? 1 : 0;
       
       let data_input = {
          'name_role' : input_nama.value,
          'kategori' :cek_kategori,
          'product' :cek_product,
          'kasir' : cek_kasir,
-         'laporan' :cek_laporan
+         'laporan' :cek_laporan,
+         'toko' : cek_toko,
+         'user': cek_user
       }
       if (cek_id) {
          data_input.id = localStorage.getItem('id_role_hidden')

@@ -88,6 +88,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         //Product Beli set custom harga kulakan
         Route::controller(ProductBeliController::class)->group(function(){
             Route::post('/get-all-product-beli','getAllProductBeliCon')->name('get-all-product-beli');
+            Route::post('/get-all-product-beli-no-used','getAllProductBeliNoUsedCon')->name('get-all-product-beli-no-used');
             Route::post('/get-product-beliById','getProductBeliConById')->name('get-product-beliById');
             Route::post('/save-product-beli','saveProductBeliCon')->name('save-product-beli');
             Route::post('/delete-product-beli','deleteProductBeliCon')->name('delete-product-beli');

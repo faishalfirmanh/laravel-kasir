@@ -58,11 +58,24 @@ trait ResponseApi{
     }
 
     public function responseError($data){
-        if (count($data) > 0) { //hanya error saja
+
+        if (gettype($data) == 'object') {
+            $to_str = (string) $data;
+            $cek_first_character = substr($to_str, 0, 1);
+            if ($cek_first_character == '[') {
+                $count = count($data);
+            }else{
+                $count = count(array($data));
+            }
+        }else{
+            $count = count($data);
+        }
+
+        if ($count > 0) { //hanya error saja
             return response()->json([
                 "status"=>"no",
                 "msg"=> "error",
-                "total_data"=>count($data),
+                "total_data"=>$count,
                 "data"=>$data
             ],404);
         }else{

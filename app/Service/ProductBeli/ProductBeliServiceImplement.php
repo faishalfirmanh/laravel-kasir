@@ -30,6 +30,19 @@ class ProductBeliServiceImplement implements ProductBeliService{
         return $data;
     }
 
+    public function getAllProductBeliNoSetService($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'product_id'=> 'required|exists:products,id_product'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+
+        $data = $this->repository->getAllProductBeliNoSet($request->product_id);
+        return $data;
+    }
+
     public function getProductBeliServiceById($request)
     {
         $validated = Validator::make($request->all(),[
