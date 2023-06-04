@@ -37,6 +37,10 @@ class Product extends Model
         return $this->hasMany(ProductJual::class,'product_id','id_product');
     }
 
+    public function getToko(){
+        return $this->belongsTo(Toko::class,'toko_id','id_toko')->select('id_toko','nama_toko');
+    }
+
     public function priceBuyProductCustom(){
         return $this->hasMany(ProductBeli::class,'product_id','id_product');
     }

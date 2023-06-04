@@ -38,7 +38,7 @@ class ProductController extends Controller
     public function getAllProductController(Request $request)
     {
         $data = $this->service->getAllProductNoPaginate();
-        return $this->generalResponseV2($data,15);
+        return $this->generalResponseV2($data,16);
     }
 
     public function detailRequestId(Request $request)

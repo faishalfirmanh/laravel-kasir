@@ -38,8 +38,8 @@ class CekRulesKategori
             }
 
             //default otomatis, tinggal dipanggil dicontroller / service
-            $request->merge(["toko_id" => $id_toko]);
-            $request->merge(["role_id" => $id_roles]);
+            $request->merge(["toko_id_from_middleware" => $id_toko]);
+            $request->merge(["role_id_from_middleware" => $id_roles]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 "status"=>"exception error",

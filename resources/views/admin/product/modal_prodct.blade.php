@@ -9,6 +9,10 @@
         <form action="" id="form-product">
             <label id="id_label_nama_barang" class="text-label-modal" for="nama_barang" style="margin-left: 5px;">Nama barang</label>
             <input class="input-modal-global" id="name_product" required type="text" style="margin-top:5px;" name="nama_barang" placeholder="Nama barang">
+            <label id="id_label_toko" class="text-label-modal" for="toko" style="margin-left: 5px;">Toko</label>
+            <select class="input-modal-global" id="toko_select" name="toko"  style="margin-top:5px;" required>
+              
+            </select>
             <label id="id_label_kategori" class="text-label-modal" for="kategori" style="margin-left: 5px;">Kategori</label>
             <select class="input-modal-global" id="kategori_select" name="kategori"  style="margin-top:5px;" required>
               

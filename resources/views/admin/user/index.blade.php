@@ -228,14 +228,13 @@
                 'email' : input_email.value,
                 'id_roles' : select_role.value,
                 'toko_id' : select_toko.value,
-                'passoword' : input_password.value
+                'password' : input_password.value
             }
             if (cek_id) {
                 data_input.id = localStorage.getItem('id_user_hidden')
                 console.log('edit');
             }
            
-            console.log(data_input);
             
             $.ajax({
                 url: `{{ route('user-save') }}`,

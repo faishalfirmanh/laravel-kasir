@@ -14,7 +14,7 @@ class ProductRepositoryImplement implements ProductRepository{
     }
 
     public function getAllProduct(){
-        $data = $this->model->with(['kategori','priceSellProduct','priceBuyProductCustom'])->get();
+        $data = $this->model->with(['kategori','priceSellProduct','priceBuyProductCustom','getToko'])->get();
         return $data;
     }
 

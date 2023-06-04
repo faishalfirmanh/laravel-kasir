@@ -192,6 +192,40 @@ $(document).ready(function() {
         const navbar_samping_id = document.getElementById('sidebar');
 
 
+        function getAllToko(){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                url: `{{ route('get-all-toko') }}`,
+                type: 'get',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                },
+                success: function(data) {
+                    if (data.status == 'ok'){
+                        let total_list = data.data.length;
+                        let html_opt = `<option value="0">- pilih toko-</option>`;
+                        if (total_list > 0) {
+                            data.data.forEach((e) => {
+                                html_opt +=
+                                    `<option value="${e.id_toko}">${e.nama_toko} </option>`;
+                            });
+                        }else{
+                            html_opt +=
+                                    `<option value="0">Tidak di set custom</option>`;
+                        }
+                        if ($("#toko_select")) {
+                            $("#toko_select").html(html_opt);
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('error get list toko',xhr);
+                }
+            });
+        }
+
         //input
         const name_ = document.getElementById('name_product')
         const harga_beli = document.getElementById('harga_beli')
@@ -244,6 +278,8 @@ $(document).ready(function() {
                         console.log('error', toJson);
                     }
                 })
+
+                getAllToko()
                 //ajax list kategori     
                 e.preventDefault()
                 const modal = document.querySelector(this.dataset.target)
@@ -279,6 +315,7 @@ $(document).ready(function() {
             e.preventDefault();
             let name = $("#name_product").val();
             let id_kategori = $("#kategori_select").val();
+            let select_toko = $("#toko_select").val();
             let input_harga_beli = $("#harga_beli").val();
             let cek_satuan = $('.is_kg:checked').val() == undefined ? 0 : 1;
             let cek_box = $('.is_kg:checked').val();
@@ -297,6 +334,7 @@ $(document).ready(function() {
                 'nama_product': name,
                 'kategori_id': id_kategori,
                 'harga_beli': harga_beli,
+                'toko_id' : select_toko,
                 'is_kg': cek_satuan,
                 'pcs': berat,
                 'expired': expired
@@ -304,6 +342,7 @@ $(document).ready(function() {
             let data_kg = {
                 'nama_product': name,
                 'kategori_id': id_kategori,
+                'toko_id' : select_toko,
                 'harga_beli': harga_beli,
                 'is_kg': cek_satuan,
                 'total_kg': berat,
@@ -314,6 +353,7 @@ $(document).ready(function() {
                 data_kg.id_product = cek_id_product.value
             }
 
+            console.log(select_toko);
             $.ajax({
                 type: 'post',
                 headers: {
@@ -353,8 +393,7 @@ $(document).ready(function() {
                 }
             });
         });
-    </script>
-    <script type="text/javascript">
+    
         //   $(function () { 
         //       var table = $('.product-yajra').DataTable({
         //          responsive: true,
@@ -379,8 +418,7 @@ $(document).ready(function() {
 
         //    });
        
-    </script>
-    <script>
+   
         function selectElement(id, valueToSelect) {
             let element = document.getElementById(id);
             element.value = valueToSelect;
@@ -413,6 +451,9 @@ $(document).ready(function() {
             }
         })
         //list kategori
+        //list toko
+        getAllToko()
+        //list toko
         function editProduct(id) {
             $.ajax({
                 type: "post",
@@ -432,6 +473,7 @@ $(document).ready(function() {
                     berat.value = cek_is_berat
                     response.data.is_kg == 0 ? is_kg_check.checked = false : is_kg_check.checked = true;
                     selectElement('kategori_select', response.data.kategori_id)
+                    selectElement('toko_select', response.data.toko_id)
                     let dd = new Date(Date.parse(response.data.expired));
                     expired.value = response.data.expired != null ? dd.toDateInputValue() : '';
                     //get
