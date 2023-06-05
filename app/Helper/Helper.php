@@ -34,8 +34,10 @@ if (!function_exists('cek_is_kg')) {
     function cek_is_kg($isKg,$model,$input){
         if ($isKg == '1') {
             $model->total_kg =  $input->total_kg;
+            $model->pcs = null;
         }else{
             $model->pcs = $input->pcs;
+            $model->total_kg = null;
         }
         return $model;
     }

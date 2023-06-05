@@ -168,7 +168,7 @@ $(document).ready(function() {
             {
                "data": `kondisi_stock`, render: function(data, type, row) {
                     var total = row.pcs == null ? row.total_kg : row.pcs;
-                    var satuan = row.pcs == null ? '(kg)' : '(pcs)';
+                    var satuan = row.pcs == null ? '(kg/liter)' : '(pcs)';
                     var  kondisi_stock = `${total} ${satuan}` 
                     return kondisi_stock;
                 }
@@ -358,9 +358,10 @@ $(document).ready(function() {
             if (cek_id_product) {
                 data_pcs.id_product = cek_id_product.value
                 data_kg.id_product = cek_id_product.value
+                console.log('edit');
             }
 
-            console.log(select_toko);
+            
             $.ajax({
                 type: 'post',
                 headers: {
