@@ -37,3 +37,23 @@
         </form>
     </div>
 </div>
+
+
+<div class="modal2" id="modalChangePassUser">
+    <div class="modal__wrapper">
+        <h3 id="title_modal">Ubah password</h3>
+        <p></p>
+        <form action="" id="form-change-pass-user">
+            <label id="id_label_nama_user" class="text-label-modal" for="nama_user" style="margin-left: 5px;">Nama User</label>
+            <input class="input-modal-global" disabled id="nama_user_change"  type="text" style="margin-top:5px;" name="nama_user" placeholder="Nama user">
+            <div class="input-group">
+                <label id="" class="text-label-modal" for="Passwprd" style="margin-left: 5px;">Password baru</label><br>
+                <input class="input-modal-global" id="password_change" type="password"  style="margin-top:5px;" name="password" placeholder="">
+            </div>
+            <div class="btn-group-modal2">
+                <button type="submit" class="btn-modal2 btn-blue">Submit</button>
+                <button class="btn-modal2 btn-light-modal2 modal__close_2_change">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

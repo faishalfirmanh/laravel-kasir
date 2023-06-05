@@ -44,7 +44,7 @@ class UserController extends Controller
     public function detailParam(Request $request)
     {
         $find = $this->service_user->GetUserByIdServicePost($request);
-        return $this->responseSucess($find); 
+        return $this->generalResponseV2($find,10);
     }
 
     public function changePassword(Request $request)

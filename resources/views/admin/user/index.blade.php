@@ -115,7 +115,7 @@
                         const delete_btn = `<i onclick="deleteUser(${row.id})" class="far fa-trash-alt" style="background:red" title="delete-user"></i>`
                         const edit = `<i onclick="editUser(${row.id})" class="far fa-edit" style="margin-right:5px;" title="edit user"></i>`
                         const action = edit + 
-                        `<i oncick="changePass(${row.id})" class="fas fa-wrench" style="background:blue;margin-right:5px" title="ubah-password"></i>`
+                        `<i onclick="changePass(${row.id})" class="fas fa-wrench" style="background:blue;margin-right:5px" title="ubah-password"></i>`
                                       + delete_btn
                         return action;
                     }
@@ -275,9 +275,113 @@
 
         })
 
+        function ajaxDetail(id){
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    url: `{{ route('user-detail') }}`,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                    },
+                    data: {
+                        'id': id
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'post',
+                    success: function(res) {
+                        resolve(res)
+                    },
+                    error: function(xhr, status, msg) {
+                        reject(msg)
+                    }
+                })
+            })
+        }
 
-        function changePass(id){
+        function ajaxSaveChangePass(data_save){
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    url: `{{ route('user-change-password') }}`,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                    },
+                    data: data_save,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'post',
+                    success: function(res_ajax_success) {
+                        resolve(res_ajax_success);
+                    },
+                    error: function(err_ajax_failure){
+                        reject(err_ajax_failure);
+                    }
+                })
+            })
+        }
 
+
+        //penggunaan function yang di panggil lagi pada ajax, tidak bisa dipanggil langgsung,
+        //harus menggunakan, promise, callback
+        function changePass(id_user){
+            let navbar_atas_change_pass = document.getElementById('top-bar');
+            const navbar_samping_change_pass = document.getElementById('sidebar');
+            const modal_change_pass = document.querySelector("#modalChangePassUser")
+            const modal_close_change_pass = modal_change_pass.querySelector('.modal__close_2_change')
+
+             ajaxDetail(id_user)
+             .then(function(res){
+                //dom
+                modal_change_pass.classList.add('show-modal')
+                navbar_atas_change_pass.style.position = "initial";
+                modal_close_change_pass.style.position = "initial";
+
+                const val_pass = document.getElementById('password_change')
+                const val_name = document.getElementById('nama_user_change')
+                val_pass.value = ''
+                val_name.value = res.data.name
+                $("#form-change-pass-user").on("submit", function(event_ajax){
+                    event_ajax.preventDefault();
+                    let data_save_change_password = {
+                            'id': res.data.id,
+                            'password' : val_pass.value,
+                        }
+                    ajaxSaveChangePass(data_save_change_password)
+                    .then(function(res_save){
+                        let pesan = res_save.msg
+                        if (pesan == 'success') {
+                            Swal.fire(
+                                'Change!',
+                                'User has been change password.',
+                                'success'
+                            )
+                            $('#user-ajax-list').DataTable().ajax.reload(null, true);
+                            //close modal
+                            modal_change_pass.classList.remove('show-modal')
+                            navbar_atas_change_pass.style.position = "fixed";
+                            navbar_samping_change_pass.style.position = "fixed";
+                        }
+
+                    })
+                    .catch(function(err_res_save){
+                        console.log(err_res_save);
+                    })
+                  
+                })
+
+             })
+             .catch(function(err){
+                console.log(err);
+             })
+
+             //dom close modal
+             modal_close_change_pass.addEventListener('click', function(e) {
+                e.preventDefault()
+                modal_change_pass.classList.remove('show-modal')
+                navbar_atas_change_pass.style.position = "fixed";
+                navbar_samping_change_pass.style.position = "fixed";
+            })
         }
 
         function editUser(id) {
