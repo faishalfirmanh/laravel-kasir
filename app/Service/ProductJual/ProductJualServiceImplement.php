@@ -29,7 +29,7 @@ class ProductJualServiceImplement implements ProductJualService{
         if ($validated->fails()) {
             return $validated->errors();
         }
-        $get_data = $this->ProductJualRepository->getAllProductPriceSearch($request->keyword);
+        $get_data = $this->ProductJualRepository->getAllProductPriceSearch($request->keyword, $request->toko_id_from_middleware);
         return  $get_data;
     }
 

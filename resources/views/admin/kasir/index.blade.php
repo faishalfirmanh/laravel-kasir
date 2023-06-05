@@ -202,6 +202,9 @@ $("#txt_search").keyup(function(){
                 type: "post",
                 url:"{{ route('product-list-jual-price-search') }}",
                 data:{'keyword': input_keyword},
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                },
                 success: function(response){
                     let data_tes = response.data
                     const total_ = response.data.length
@@ -272,6 +275,9 @@ $("#btn-hitung-transaksi").click(function(){
         success: function(response){
             console.log('response suskes transaksi',response);
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+        },
         error: function (xhr,status,response){
             if (status == 'error') {
                 let msg_error = JSON.parse(xhr.responseText);
@@ -335,6 +341,9 @@ function reqAjaxRemoveKeranjang(id){
     $.ajax({
         type: "post",  
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+        },
         url:"{{ route('delete-keranjang') }}",
         data:{'id_keranjang_kasir': id},
         success: function(response){
@@ -389,6 +398,9 @@ function saveProductToKeranjang(element){
         url: '{{route("kerajang-create")}}',
         type: 'post',
         data: input_data,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+        },
         success: function(response){
             const data_res = response.data;
             let keranjang_id = data_res.id_keranjang_kasir;
@@ -428,6 +440,9 @@ function getStruckFunction(id_struck){
         url: '{{route("get-view-struck-barang")}}',
         type: 'post',
         data: {'id_struck' : id_struck},
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+        },
         success: function(resStruck){
             //enabled button save and input price money from user
             let btn_cetak_struck = document.getElementById('btn-hitung-transaksi');
@@ -527,6 +542,9 @@ function generateNewStruck(){
     $.ajax({
         url: '{{route("generate-new-struck")}}',
         type: 'post',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+        },
         success: function(response){
             if (response.msg == 'success') {
                 document.getElementById("id_struck").value = response.data.id_struck;

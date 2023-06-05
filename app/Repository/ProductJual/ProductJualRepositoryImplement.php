@@ -31,18 +31,20 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
         return $data;
     }
 
-    public function getAllProductPriceSearch($keyword)
+    public function getAllProductPriceSearch($keyword,$toko_id)
     {
        if (!empty($keyword)) {
             $data = $this->model
             ->select("*")
             ->join("products","product_juals.product_id","=","products.id_product")
+            ->where("products.toko_id",$toko_id)
             ->where("products.nama_product",'like','%'.strtolower($keyword).'%')
             ->get();
        }else{
             $data = $this->model
             ->select("*")
             ->join("products","product_juals.product_id","=","products.id_product")
+            ->where("products.toko_id",$toko_id)
             ->get();
        }
         $data_val = [];
