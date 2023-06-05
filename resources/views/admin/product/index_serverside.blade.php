@@ -77,6 +77,7 @@
                     <tr>
                         <th>No</th>
                         <th>Name Product</th>
+                        <th>Toko</th>
                         <th>Harga Beli</th>
                         <th>Harga Jual</th>
                         <th>Stock</th>
@@ -134,6 +135,12 @@ $(document).ready(function() {
             },
             {
                "data": "nama_product"
+            },
+            {
+               "data": "name_toko", render:function(data, type, row){
+                    const name_toko = row.get_toko.nama_toko
+                    return name_toko
+               }
             },
             {
                "data": `kk`, render: function(data, type, row) {
