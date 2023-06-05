@@ -43,8 +43,8 @@ trait ResponseApi{
             }else{
                 $count = count(array($data));
             }
-        }else{
-            $count =  count(array($data));
+        }else{ // array
+            $count =  count($data); //count(array($data));
         }
        
        

@@ -38,6 +38,10 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
             ->select("*")
             ->join("products","product_juals.product_id","=","products.id_product")
             ->where("products.toko_id",$toko_id)
+            ->where(function($query){
+                $query->where('products.pcs', '>', 0);
+                $query->orWhere('products.total_kg', '>', 0);
+            })
             ->where("products.nama_product",'like','%'.strtolower($keyword).'%')
             ->get();
        }else{
@@ -45,6 +49,10 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
             ->select("*")
             ->join("products","product_juals.product_id","=","products.id_product")
             ->where("products.toko_id",$toko_id)
+            ->where(function($query){
+                $query->where('products.pcs', '>', 0);
+                $query->orWhere('products.total_kg', '>', 0);
+            })
             ->get();
        }
         $data_val = [];
