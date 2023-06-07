@@ -295,6 +295,9 @@ function reqAjaxMin1Keranjang(idKeranjang){
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
         url:"{{ route('remove-keranjang-product-min1') }}",
         data:{'id_keranjang_kasir': idKeranjang},
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+        },
         success: function(response){
             domLoading();
             if (response.data == null) {
@@ -323,6 +326,9 @@ function reqAjaxPlus1Keranjang(idKeranjang){
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
         url:"{{ route('add-keranjang-product-plus1') }}",
         data:{'id_keranjang_kasir': idKeranjang},
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+        },
         success: function(response){
             domLoading();
             const id_struck = response.data.struck_id;

@@ -44,7 +44,11 @@ trait ResponseApi{
                 $count = count(array($data));
             }
         }else{ // array
-            $count =  count($data); //count(array($data));
+            if (gettype($data) == 'boolean') {
+                $count = 1;
+            }else{
+                $count =  count($data); //count(array($data));
+            }
         }
        
        

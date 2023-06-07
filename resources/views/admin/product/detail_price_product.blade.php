@@ -265,42 +265,53 @@
             element.value = valueToSelect;
         }
 
-        function getListPriceBeliCustom(id_product){
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                url: `{{ route('get-all-product-beli-no-used') }}`,
-                data: { 'product_id' : id_product },
-                type: 'post',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
-                },
-                success: function(data) {
-                    if (data.status == 'ok'){
-                        let total_list = data.data.length;
-                        let html_opt = `<option value="0">- pilih variant harga (set kosong)-</option>`;
-                        if (total_list > 0) {
-                            data.data.forEach((e) => {
+        function getListPriceBeliCustom(id_product,element_id_edit,id_value){
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    url: `{{ route('get-all-product-beli-no-used') }}`,
+                    data: { 'product_id' : id_product },
+                    type: 'post',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                    },
+                    success: function(data) {
+                        if (data.status == 'ok'){
+                            let total_list = data.data.length;
+                            let html_opt = `<option value="0">- pilih variant harga (set kosong)-</option>`;
+                            if (total_list > 0) {
+                                data.data.forEach((e) => {
+                                    html_opt +=
+                                        `<option value="${e.id_product_beli}">${e.nama_product_variant} ( ${e.harga_beli_custom.toLocaleString()} ) </option>`;
+                                });
+                            }else{
                                 html_opt +=
-                                    `<option value="${e.id_product_beli}">${e.nama_product_variant} ( ${e.harga_beli_custom.toLocaleString()} ) </option>`;
-                            });
-                        }else{
-                            html_opt +=
-                                    `<option value="0">Tidak di set custom</option>`;
+                                        `<option value="0">Tidak di set custom</option>`;
+                            }
+                            if ($("#price_buy")) {
+                                //$("#price_buy").html(html_opt)
+                                if (element_id_edit !== null){
+                                    html_opt += element_id_edit
+                                }
+                                resolve($("#price_buy").html(html_opt))
+                                
+                                if (element_id_edit !== null) {
+                                    $('#price_buy').val(id_value);
+                                }
+                               
+                            }
                         }
-                        if ($("#price_buy")) {
-                            $("#price_buy").html(html_opt);
-                        }
+                    },
+                    error: function(xhr, status, error) {
+                        reject(error)
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.log('error get list price beli custom',xhr);
-                }
-            });
+                });
+            })
         }
 
-        getListPriceBeliCustom($("#id_prd").val());
+        getListPriceBeliCustom($("#id_prd").val(),null,null);
 
         // if (parseInt(input_price_buy.value) > 0) {
         //     const input_price_buy_kondisi = parseInt(input_price_buy.value)
@@ -407,7 +418,35 @@
                         input_price_sell.value = response.data.price_sell;
                         const cek_select_price_beli = response.data.product_beli_id == undefined ? 0 : response.data.product_beli_id
                         if (cek_select_price_beli > 0) {
-                            selectElement('price_buy',cek_select_price_beli)
+                            $.ajax({
+                                url: `{{ route('get-product-beliById') }}`,
+                                beforeSend: function(xhr) {
+                                    xhr.setRequestHeader('Authorization',
+                                        `Bearer ${localStorage.getItem("token")}`);
+                                },
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                type: 'post',
+                                data: {
+                                    'id_product_beli': cek_select_price_beli
+                                },
+                                success: function(response) {
+                                if (response.status == 'ok') {
+                                    const name__ = response.data.nama_product_variant;
+                                    const harga__ = response.data.harga_beli_custom;
+                                    //dom and slect, ajax get-product-beliById bisa dipisah dijadikan 1 function
+                                    let element_html_default = `<option value="${cek_select_price_beli}">
+                                                                    ${name__} ( ${harga__.toLocaleString()} )
+                                                                </option>`
+                                    getListPriceBeliCustom($("#id_prd").val(),element_html_default,cek_select_price_beli)
+                                    //end
+                                }
+                                },
+                                error: function(err) {
+                                    console.log('error detail', err);
+                                }
+                            })
                         }else{
                             selectElement('price_buy',null)
                         }
