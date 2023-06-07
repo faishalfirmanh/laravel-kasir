@@ -20,18 +20,6 @@
             cursor: pointer;
         }
 
-        .danger-div {
-            width: 80%;
-            color: white;
-            background: red;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: bold;
-            /*-- center vertical --*/
-            height: 30px;
-            line-height: 30px;
-        }
     </style>
     <div class="tables" style="margin-top:20px;">
         <div class="" style="margin-left:25px">

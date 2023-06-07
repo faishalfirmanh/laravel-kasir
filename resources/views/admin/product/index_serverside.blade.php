@@ -169,7 +169,7 @@ $(document).ready(function() {
                "data": `kondisi_stock`, render: function(data, type, row) {
                     var total = row.pcs == null ? row.total_kg : row.pcs;
                     var satuan = row.pcs == null ? '(kg/liter)' : '(pcs)';
-                    var  kondisi_stock = `${total} ${satuan}` 
+                    var  kondisi_stock = total < 1 ? `<div class="danger-div">${total} ${satuan}</div>` : `${total} ${satuan}` 
                     return kondisi_stock;
                 }
             },

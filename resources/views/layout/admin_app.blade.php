@@ -18,6 +18,20 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
+    <style>
+          .danger-div {
+            width: 80%;
+            color: white;
+            background: red;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            /*-- center vertical --*/
+            height: 30px;
+            line-height: 30px;
+        }
+    </style>
   
     <div class="container">
         <div class="sidebar" id="sidebar">

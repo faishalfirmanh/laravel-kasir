@@ -7,6 +7,8 @@ use App\Repository\NewStruck\NewStruckRepository;
 use App\Repository\ProductJual\ProductJualRepository;
 use Illuminate\Support\Facades\Validator;
 use stdClass;
+use Illuminate\Support\Facades\DB;
+
 
 class KeranjangKasirServiceImplement implements KeranjangKasirService{
 
@@ -52,17 +54,25 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         }
         //get db
         //save db
-        $update_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
-                                                                (int) $data_keranjang->jumlah_item_dibeli + 1,
-                                                                (int) $data_keranjang->total_harga_item + $data_keranjang->harga_tiap_item);                         
-        
-        $total_product_each_item = $data_struck->total_harga_dibayar + $data_keranjang->harga_tiap_item; //harga yang harus diupdate pada data struck;   
-        $req_struck = new stdClass();
-        $req_struck->id = $data_keranjang->struck_id;
-        $req_struck->total_harga_dibayar = $total_product_each_item;                                                        
-        $update_struck = $this->repo_struck->updateStruckPlusMins1($req_struck);
-        //save db
-        return $update_keranjang;
+        DB::beginTransaction();
+        try{
+            $update_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
+            (int) $data_keranjang->jumlah_item_dibeli + 1,
+            (int) $data_keranjang->total_harga_item + $data_keranjang->harga_tiap_item);                         
+
+            $total_product_each_item = $data_struck->total_harga_dibayar + $data_keranjang->harga_tiap_item; //harga yang harus diupdate pada data struck;   
+            $req_struck = new stdClass();
+            $req_struck->id = $data_keranjang->struck_id;
+            $req_struck->total_harga_dibayar = $total_product_each_item;                                                        
+            $update_struck = $this->repo_struck->updateStruckPlusMins1($req_struck);
+            //save db
+            DB::commit(); //kalau variabel yang direturn tidak  ada maka (undifined), error tidak dilempar ke catch
+            return $update_keranjang;
+        }catch (\Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+       
 
     }
 
@@ -156,23 +166,30 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         }
         
         //save to db
-        if ($data_keranjang != NULL) {
-            $id_keranjang_kasir = $data_keranjang->id_keranjang_kasir;
-            $data_add_keranjang = $this->repository->Add1JumlahKerajang($id_keranjang_kasir,
-                                                (int) $data_keranjang->jumlah_item_dibeli + (int) $request->jumlah_item_dibeli,
-                                                (int) $data_keranjang->total_harga_item + ($data_keranjang->harga_tiap_item * $request->jumlah_item_dibeli));                         
-        }else{
-            $data_add_keranjang = $this->repository->addKeranjang($request);
+        DB::beginTransaction();
+        try{
+            if ($data_keranjang != NULL) {
+                $id_keranjang_kasir = $data_keranjang->id_keranjang_kasir;
+                $data_add_keranjang = $this->repository->Add1JumlahKerajang($id_keranjang_kasir,
+                                                    (int) $data_keranjang->jumlah_item_dibeli + (int) $request->jumlah_item_dibeli,
+                                                    (int) $data_keranjang->total_harga_item + ($data_keranjang->harga_tiap_item * $request->jumlah_item_dibeli));                         
+            }else{
+                $data_add_keranjang = $this->repository->addKeranjang($request);
+            }
+            
+            if ((int)$find_data_struck->total_harga_dibayar > 0) {
+                $must_pay = $this->repository->getAllTotalPriceMustPayByIdStruck($request->struck_id);
+                $data_update_struck = $this->repo_struck->updateStatusNewStruck($request->struck_id,$must_pay,1);
+            }else{
+                $data_update_struck = $this->repo_struck->updateStatusNewStruck($request->struck_id,$total_price_item,1);
+            }
+            DB::commit();
+            return $data_add_keranjang;//response bisa diganti paggil api get-view-struck-barang
+        }catch(\Exception $e) {
+            DB::rollBack();
+            return false;
         }
-        
-        if ((int)$find_data_struck->total_harga_dibayar > 0) {
-            $must_pay = $this->repository->getAllTotalPriceMustPayByIdStruck($request->struck_id);
-            $data_update_struck = $this->repo_struck->updateStatusNewStruck($request->struck_id,$must_pay,1);
-        }else{
-            $data_update_struck = $this->repo_struck->updateStatusNewStruck($request->struck_id,$total_price_item,1);
-        }
-       
-        return $data_add_keranjang;//response bisa diganti paggil api get-view-struck-barang
+
     }
 
     public function DeleteKeranjangServiceById($request)
