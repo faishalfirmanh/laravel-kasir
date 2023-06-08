@@ -431,6 +431,9 @@ function saveProductToKeranjang(element){
                 if (msg_error.data.id_keranjang_kasir) {
                     alert(msg_error.data.id_keranjang_kasir)
                 }
+                if (msg_error.data[0].data.id_keranjang_kasir) {
+                    alert(msg_error.data[0].data.id_keranjang_kasir)
+                }
             }
         }
 
@@ -456,7 +459,7 @@ function getStruckFunction(id_struck){
             let input_harga_bayar_user = document.getElementById('user_bayar_id')
             input_harga_bayar_user.removeAttribute("disabled");
             //enabled button save and input price money from user
-            const list_data = resStruck.data;
+            const list_data = resStruck.data[0].data;;
             const total_price_must_pay = list_data.total_harga.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             $("#total_harga").text(total_price_must_pay);
             const list_item = list_data.list;

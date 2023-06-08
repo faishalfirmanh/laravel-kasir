@@ -50,13 +50,13 @@ class UserController extends Controller
     public function changePassword(Request $request)
     {
         $change = $this->service_user->UserChangePassByIdServicePost($request);
-        return $this->responseSucess($change);
+        return $this->generalResponseV2($change,8);
     }
 
     public function remove(Request $request)
     {
         $data = $this->service_user->DeleteUserService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,1);
     }
 
     public function detail(Request $request)

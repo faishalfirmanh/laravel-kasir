@@ -44,10 +44,7 @@ class ProductController extends Controller
     public function detailRequestId(Request $request)
     {
         $data = $this->service->getProductByIdServiceInput($request);
-        return response()->json([
-            "status"=>"ok",
-            "data"=>$data
-        ],200);
+        return $this->generalResponseV2($data,14);
       
     }
 
@@ -63,10 +60,7 @@ class ProductController extends Controller
     public function remove(Request $request)
     {
         $data = $this->service->deleteProductService($request);
-        return response()->json([
-            "status"=>"ok",
-            "data"=>$data
-        ],200);
+        return $this->generalResponseV2($data,1);
     }
 
     public function getProductJualByIdProduct(Request $request)
@@ -82,7 +76,7 @@ class ProductController extends Controller
         return $this->responseSucess($data);
     }
 
-    public function detailProductJual2(Request $request)//detail
+    public function detailProductJual2(Request $request)//detail, used
     {
         $data = $this->product_jual_service->getProductJualByIdSelftService($request);
         return $this->generalResponseV2($data,8);
@@ -96,7 +90,7 @@ class ProductController extends Controller
 
     public function remove_price_sell_product(Request $request){
         $data = $this->product_jual_service->deleteProductJualService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,1);
 
     }
 

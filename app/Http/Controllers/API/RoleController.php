@@ -50,6 +50,6 @@ class RoleController extends Controller
     public function remove(Request $request)
     {
         $data = $this->service->DeleteRoleService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,1);
     }
 }

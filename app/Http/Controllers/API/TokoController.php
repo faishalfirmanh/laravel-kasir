@@ -55,6 +55,6 @@ class TokoController extends Controller
     public function remove(Request $request)
     {
         $data = $this->service->DeleteTokoService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,1);
     }
 }

@@ -42,13 +42,13 @@ class KeranjangKasirController extends Controller
     public function reduce1JumlahProductKerajang(Request $request)
     {
         $data = $this->service->Remove1ProductKeranjangServiceById($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,9);
     }
 
     public function deleteKeranjang(Request $request)
     {
         $data = $this->service->DeleteKeranjangServiceById($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,8);
     }
 
 }

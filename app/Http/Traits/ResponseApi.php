@@ -111,9 +111,11 @@ trait ResponseApi{
         if (is_object($json_data)) {
             $p = array($json_data);
             $total_column_response = count(get_object_vars($p[0]));
-        }else{
+        }else if(gettype($json_data) == 'array'){
             $arr_empty = array();
             $total_column_response = count( $json_data) < 1 ? count($arr_empty) : count(get_object_vars($json_data[0]));
+        }else{
+            $total_column_response = array($json_data);
         }
         return $total_column_response;
     }
@@ -127,7 +129,7 @@ trait ResponseApi{
         $final_data_convert = $this->convertDataToArrayObject($data);//cek
         $json_data_ =  json_decode(json_encode($data),false);
         $final_res_column = $this->cekTotalColumDataBaseTipeData($json_data_);
-        if ((int)$total_kolom_set_param == $final_res_column) {
+        if ((int)$total_kolom_set_param == (int)$final_res_column) {
             return $this->responseSucess($final_data_convert);
         }else{
             return $this->responseError($final_data_convert);

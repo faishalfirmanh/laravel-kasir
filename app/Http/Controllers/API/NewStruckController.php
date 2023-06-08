@@ -19,13 +19,13 @@ class NewStruckController extends Controller
     public function getStrudById(Request $request)
     {
         $data = $this->service->getStruckByIdService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,8);
     }
 
     public function GenerateNewStruck(Request $request)
     {
         $data = $this->service->generateNewStruckService();
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,3);
     }
 
     public function UpdateStruck(Request $request)
@@ -36,18 +36,18 @@ class NewStruckController extends Controller
     public function InputPriceUserBayar(Request $request)
     {
         $data = $this->service->UpdateDataStruckService($request);
-        return $this->generalResponse($data,8);
+        return $this->generalResponseV2($data,8);
     }
 
     public function getProductByIdStruck(Request $request)
     {
         $data = $this->service->getProductByIdStruckService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,4);
     }
 
     public function getKeuntunganByIdStruckCon(Request $request)
     {
         $data = $this->service->getKeuntunganByIdStruckService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,2);
     }
 }

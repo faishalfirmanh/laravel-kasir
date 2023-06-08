@@ -675,13 +675,13 @@
                   
                 },
                 error: function(xhr, status, error) {
-                    console.log(error,xhr);
+                    const toJsonError = JSON.parse(xhr.responseText);
                     if (xhr.responseJSON) {
                         if (xhr.responseJSON.data.nama_product_variant) {
                             alert("Gagal nama variatn sudah digunakan");
                         }
                         if (xhr.responseJSON.data.harga_beli_custom) {
-                            alert("Gagal, harga harus berupa angka");
+                            alert(toJsonError.data.harga_beli_custom[0]);
                         }
                     }
                     

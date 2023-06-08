@@ -43,6 +43,6 @@ class RulesCekInputHargaBeliCustom implements Rule
      */
     public function message()
     {
-       return 'Gagal, harga beli harus diset 0';  
+       return 'Gagal, harga beli pada master product, harus diset 0';  
     }
 }

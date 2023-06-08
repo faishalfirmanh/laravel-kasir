@@ -95,29 +95,36 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         }
         //get db
         //save db
-        if ($total_dibeli_setelah_dikurangi < 1) {
-             $this->repository->DeleteKeranjangStruck($request->id_keranjang_kasir);
-             $save_keranjang = $this->repository->getKeranjangByStruckId($data_keranjang->struck_id);
-        }else{
-             $save_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
-                                                                     (int) $data_keranjang->jumlah_item_dibeli - 1,
-                                                                     (int) $data_keranjang->total_harga_item - $data_keranjang->harga_tiap_item
-                                                                    );      
+        DB::beginTransaction();
+        try {
+            if($total_dibeli_setelah_dikurangi < 1) {
+                $this->repository->DeleteKeranjangStruck($request->id_keranjang_kasir);
+                $save_keranjang = $this->repository->getKeranjangByStruckId($data_keranjang->struck_id);
+            }else{
+                    $save_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
+                                                                            (int) $data_keranjang->jumlah_item_dibeli - 1,
+                                                                            (int) $data_keranjang->total_harga_item - $data_keranjang->harga_tiap_item
+                                                                        );      
+            }
+                              
+           $req_struck = new stdClass();
+           $req_struck->id = $data_keranjang->struck_id;
+           $req_struck->total_harga_dibayar = $total_product_each_item;
+   
+           $cek_struck_in_kasir_exsis = $this->repository->getAllKeranjangByIdKasir($data_keranjang->struck_id);
+           if (count($cek_struck_in_kasir_exsis) < 1) {
+               //$this->repo_struck->updateStatusStruck($data_keranjang->struck_id,4);
+               $this->repo_struck->deleteStruckByIdStruck($data_keranjang->struck_id);
+           }else{
+               $this->repo_struck->updateStruckPlusMins1($req_struck);
+           }                                                       
+            DB::commit();
+           return $save_keranjang;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return false;
         }
-                           
-        $req_struck = new stdClass();
-        $req_struck->id = $data_keranjang->struck_id;
-        $req_struck->total_harga_dibayar = $total_product_each_item;
-
-        $cek_struck_in_kasir_exsis = $this->repository->getAllKeranjangByIdKasir($data_keranjang->struck_id);
-        if (count($cek_struck_in_kasir_exsis) < 1) {
-            //$this->repo_struck->updateStatusStruck($data_keranjang->struck_id,4);
-            $this->repo_struck->deleteStruckByIdStruck($data_keranjang->struck_id);
-        }else{
-            $this->repo_struck->updateStruckPlusMins1($req_struck);
-        }                                                       
-        //save db
-        return $save_keranjang;
+       
 
     }
 
@@ -206,15 +213,23 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         $price_delete = $get_keranjang->total_harga_item;
         $must_pay = $this->repository->getAllTotalPriceMustPayByIdStruck($get_keranjang->struck_id);
         //save db
-        $delete_keranjang = $this->repository->DeleteKeranjangStruck($request->id_keranjang_kasir);
-        $cek_struck_in_kasir_exsis = $this->repository->getAllKeranjangByIdKasir($get_keranjang->struck_id);
-        if (count($cek_struck_in_kasir_exsis) < 1) {
-            $this->repo_struck->deleteStruckByIdStruck($get_keranjang->struck_id);
-            $update_total_price_struck = null;
-        }else{
-            $update_total_price_struck = $this->repo_struck->updateStatusNewStruck($get_keranjang->struck_id,$must_pay-$price_delete,1);
+        DB::beginTransaction();
+        try {
+            $delete_keranjang = $this->repository->DeleteKeranjangStruck($request->id_keranjang_kasir);
+            $cek_struck_in_kasir_exsis = $this->repository->getAllKeranjangByIdKasir($get_keranjang->struck_id);
+            if (count($cek_struck_in_kasir_exsis) < 1) {
+                $this->repo_struck->deleteStruckByIdStruck($get_keranjang->struck_id);
+                $update_total_price_struck = null;
+            }else{
+                $update_total_price_struck = $this->repo_struck->updateStatusNewStruck($get_keranjang->struck_id,$must_pay-$price_delete,1);
+            }
+            DB::commit();
+            return $update_total_price_struck;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return false;
         }
-        return $update_total_price_struck;
+        
     }
 
 }

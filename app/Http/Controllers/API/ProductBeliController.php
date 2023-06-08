@@ -46,7 +46,7 @@ class ProductBeliController extends Controller
     public function deleteProductBeliCon(Request $request)
     {
         $data = $this->service->deleteProductBeliService($request);
-        return $this->responseSucess($data);
+        return $this->generalResponseV2($data,1);
     }
 
 
