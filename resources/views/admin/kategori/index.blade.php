@@ -155,7 +155,7 @@ kategori tess
                console.log(response);
                let data_json = response.data[0].data
                console.log('sukses',data_json);
-               localStorage.setItem("total_page", data_json.total_page);
+               localStorage.setItem("data", data_json.total_data);
                var tbody = $('#kategori_id tbody');
                $.each(data_json.data, function(i, item) {
                   var row = $('<tr>').appendTo(tbody);
@@ -175,7 +175,7 @@ kategori tess
    //console.log('tess');
    //console.log(localStorage.getItem("token"));
 	
-   	
+   
 
    	
 	
@@ -188,7 +188,7 @@ kategori tess
 
 function getPagination(table) {
   var lastPage = 1;
-
+	
   $('#maxRows')
     .on('change', function(evt) {
       //$('.paginationprev').html('');						// reset pagination
@@ -210,7 +210,9 @@ function getPagination(table) {
       }
 
       //var totalRows = $(table + ' tbody tr').length; // numbers of rows
-	  var totalRows = 32;
+    var data = localStorage.getItem("data");
+    console.log('ac', data);
+	  var totalRows = data;
 	  console.log('totalRows', totalRows);
       $(table + ' tr:gt(0)').each(function() {
         // each TR in  table and not the header
