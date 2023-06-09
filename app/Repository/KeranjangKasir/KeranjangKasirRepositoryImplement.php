@@ -39,6 +39,7 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
     public function addKeranjang($request)
     {
         $modal_save = $this->model;
+        $modal_save->id_keranjang_kasir = $request->id_keranjang_kasir;// kalau memperlambat bisa dihpus
         $modal_save->product_jual_id  = $request->product_jual_id;
         $modal_save->jumlah_item_dibeli = $request->jumlah_item_dibeli;
         $modal_save->harga_tiap_item = $request->harga_tiap_item;

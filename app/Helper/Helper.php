@@ -58,6 +58,22 @@ if (!function_exists('cek_last_id_struck')) {
     }
 }
 
+if (!function_exists('cek_last_id_keranjang_kasir')) {
+    function cek_last_id_keranjang_kasir(){
+        $data = KeranjangKasir::query()->limit(1)->orderBy('id_keranjang_kasir',"DESC")->get();
+        if (count($data) > 0) {
+            $l = [];
+            foreach ($data as $key => $value) {
+                array_push($l,$value->id_keranjang_kasir);
+            }
+            $cek  = intval($l[0])+1;
+        }else{
+            $cek = 1;
+        }
+        return $cek;
+    }
+}
+
 if (!function_exists('cekPriceTotalStruck')) {
     function cekPriceTotalStruck($id_struck){
         $data = NewStruck::query()->where('id_struck',$id_struck)->first();

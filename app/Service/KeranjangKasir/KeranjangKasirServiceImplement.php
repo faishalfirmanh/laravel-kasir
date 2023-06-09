@@ -181,6 +181,7 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
                                                     (int) $data_keranjang->jumlah_item_dibeli + (int) $request->jumlah_item_dibeli,
                                                     (int) $data_keranjang->total_harga_item + ($data_keranjang->harga_tiap_item * $request->jumlah_item_dibeli));                         
             }else{
+                $request->id_keranjang_kasir = cek_last_id_keranjang_kasir();// kalau memperlambat bisa dihpus
                 $data_add_keranjang = $this->repository->addKeranjang($request);
             }
             

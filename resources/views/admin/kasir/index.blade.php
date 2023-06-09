@@ -130,7 +130,7 @@
         <input type="text" id="txt_search" name="txt_search">
         <p id="msg_search"></p>
     </div>
-    <ul id="searchResult"></ul>
+    <ul id="searchResult" style="margin-bottom: 50px;"></ul>
 
     <div class="clear"></div>
     <div id="userDetail"></div>
