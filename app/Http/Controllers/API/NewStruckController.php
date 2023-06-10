@@ -50,4 +50,15 @@ class NewStruckController extends Controller
         $data = $this->service->getKeuntunganByIdStruckService($request);
         return $this->generalResponseV2($data,2);
     }
+
+    public function listTransactionAll(Request $request)
+    {
+        $data = $this->service->getAllStruckTransactionService($request);
+        return $this->generalResponseV2($data,8);
+    }
+
+    public function listTransactionPaginate(Request $request)
+    {
+
+    }
 }

@@ -107,5 +107,16 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
         WHERE s.id_struck = '.$id_struck.' and k.status = 2');
         return $query;
     }
+
+    public function getAllStruckReport($request)
+    {
+        $data = $this->model->where('status',$request)->with('listProducBuy')->get();
+        return $data;
+    }
+
+    public function getAllStruckReportPaginate($request)
+    {
+        
+    }
    
 }

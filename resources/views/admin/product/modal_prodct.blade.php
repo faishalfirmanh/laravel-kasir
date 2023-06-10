@@ -22,7 +22,7 @@
             <label id="id_label_satuan" class="text-label-modal" style="margin-left: 5px">Satuan kg, Uncheck bila pcs</label>
             <input  class="input-modal-global is_kg"  type="checkbox" id="is_kg" name="is_kg">
             <br>
-            <label id="id_label_jumlah" class="text-label-modal" min="1" for="jumlah_berat" style="margin-left: 5px;">Jumlah berat / kg</label>
+            <label id="id_label_jumlah" class="text-label-modal" min="1" for="jumlah_berat" style="margin-left: 5px;">Jumlah berat / kg (stock)</label>
             <input class="input-modal-global" required type="number" id="total_satuan" style="margin-top:5px;" name="jumlah_berat" placeholder="Jumlah berat">
             <label id="" class="text-label-modal" for="expired" style="margin-left: 5px;">tanggal expired <label id="id_label_expired" style="color:red"></label> </label>
             <input class="input-modal-global" type="date" id="expired" style="margin-top:5px;" name="expired" placeholder="Tanggal expired">

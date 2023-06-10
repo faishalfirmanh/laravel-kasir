@@ -15,4 +15,7 @@ interface NewStruckRepository{
     public function QueryMySqlGetKeuntungan($id_struck);
     public function updateStatusStruck($id_struck, $status);
     public function deleteStruckByIdStruck($id_struck);
+
+    public function getAllStruckReport($request);
+    public function getAllStruckReportPaginate($request);
 }

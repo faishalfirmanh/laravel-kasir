@@ -79,6 +79,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('view-laporan')}}">
+                        <i class="fas fa-money-bill-alt"></i>
+                        <div class="title">Transaction</div>
+                    </a>
+                </li>
+                <li>
                     <a href="{{route('view-kasir')}}">
                         <i class="fa fa-cart-plus" aria-hidden="true"></i>
                         <div class="title">Kasir</div>
@@ -149,7 +155,7 @@
                     <i class="fas fa-window-close"></i>
                 </div>
                 {{-- <img src="{{asset('css/img/setting2.png')}}" class="modal__img"> --}}
-                {{-- <h1 class="modal__title">Good Boy</h1> --}}
+                <h3 class="modal__title" id="dom-user" style="margin-bottom: 10px"></h3>
                 {{-- <p class="modal__description">Click to the button for close</p> --}}
                 <button class="modal_button modal__button-width" id="btn-logout-aj">
                    Logout
@@ -168,6 +174,8 @@
 <script src="{{ asset('css/js/modal_custom.js') }}"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script>
+    let elm = $("#dom-user")
+    elm.text(`Hallo ${localStorage.getItem("name_login")}`)
     $("#btn-logout-aj").on('click',function(){
         $.ajax({
          type:'post',
@@ -179,7 +187,9 @@
          },
          url:`{{route('logout-api')}}`,
          success:function(res){
-            console.log(res);
+            localStorage.removeItem("userId");
+            localStorage.removeItem("token");
+            localStorage.removeItem("name_login");
             if (res.message == 'Logout Berhasil!') {
                     Swal.fire(
                             'Saved',

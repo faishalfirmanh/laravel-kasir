@@ -138,6 +138,16 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     });
 
+
+    Route::middleware('rules_cek')->prefix('laporan')->group(function(){
+        
+        Route::controller(NewStruckController::class)->group(function(){
+            Route::get('/get-all-transaction','listTransactionAll')->name('get-all-transaction');
+            Route::post('/get-all-transaction-paginate','listTransactionPaginate')->name('get-all-transaction-paginate');
+            Route::post('/detail-transaction','getKeuntunganByIdStruckCon')->name('detail-transaction');
+        });
+        
+    });
     
 
     //--use jwt--

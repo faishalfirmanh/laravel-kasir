@@ -6,6 +6,7 @@ use App\Http\Controllers\WEB\TokoController;
 use App\Http\Controllers\WEB\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WEB\AdminController;
+use App\Http\Controllers\WEB\LaporanController;
 use App\Http\Controllers\WEB\KasirController;
 use App\Http\Controllers\WEB\KategoriServerSideController;
 use App\Http\Controllers\WEB\ProductServerSideController;
@@ -55,3 +56,6 @@ Route::get('/api-kategori',[KategoriController::class,'index'])->name('api-kateg
 
     //Kasir
     Route::get('/view-kasir',[KasirController::class,'viewKasir'])->name('view-kasir');
+
+    //laporan
+    Route::get('/view-laporan',[LaporanController::class,'viewLaporan'])->name('view-laporan');

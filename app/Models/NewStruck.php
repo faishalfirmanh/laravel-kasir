@@ -19,4 +19,9 @@ class NewStruck extends Model
         'keuntungan_bersih',
         'status', //0 generate, 1 tambah keranjang, 2 pembeli bayar, 3 selesai, 4 batal (cancel)
     ];
+
+    public function listProducBuy()
+    {
+        return $this->hasMany(KeranjangKasir::class,'struck_id');
+    }
 }

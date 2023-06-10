@@ -311,7 +311,9 @@
                                }
                             }
                             if (response.hasOwnProperty('message') && response.message == 'success login') {
+                                localStorage.setItem("userId",response.id_user)
                                 localStorage.setItem("token", response.jwt_token);
+                                localStorage.setItem("name_login",`${response.role.name_role}-${response.toko.nama_toko}`)
                                 window.location.href = '{{route("kategori-url")}}'
                             }
                             

@@ -115,4 +115,14 @@ class NewStruckServiceImplement implements NewStruckService{
         ];
     }
 
+    public function getAllStruckTransactionService($request) //all laporan
+    {
+        $data = $this->repository->getAllStruckReport(2); //2 sudah transaksi
+        return $data;
+    }
+
+    public function getAllStrukTransactionPaginateService($request)
+    {
+        
+    }
 }
