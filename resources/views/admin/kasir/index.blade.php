@@ -60,7 +60,7 @@
     .struc-display{
         padding-top: 10px;
         padding-bottom: 10px;
-        width: 200px;
+        width: 350px;
         height: auto;
         border-style: dotted ;
     }
@@ -114,6 +114,10 @@
         font-size: 17px;
         color: red;
    }
+
+   .span-align{
+       margin-right:15px;
+   }
 </style>
 
 @section('content-no-table')
@@ -154,26 +158,11 @@
     <div id="response_struck_print" class="struc-display">
         <h4>Tampilan struck</h4>
         <br><br>
-        <ul>
-            <li>
-                <span style="margin-right:15px" id="nama_barang">Sampo</span>
-                <span style="margin-right: 10px" id="item_barang">1x12000</span>
-                <span style="margin-right: 10px" id="total_harga_barang">12.000</span>
-            </li>
-            <li>
-                <span style="margin-right:15px" id="nama_barang">Garam</span>
-                <span style="margin-right: 10px" id="item_barang">3x3000</span>
-                <span style="margin-right: 10px" id="total_harga_barang">9.000</span>
-            </li>
-            <li>
-                <span style="margin-right:15px" id="nama_barang">Jeruk</span>
-                <span style="margin-right: 10px" id="item_barang">1x5000</span>
-                <span style="margin-right: 10px" id="total_harga_barang">5.000</span>
-            </li>
-           
-            <li>Total &nbsp;&nbsp;&nbsp;  28.000</li>
-            <li>Bayar &nbsp;&nbsp;&nbsp;  30.000</li>
-            <li>Kembali &nbsp;&nbsp;&nbsp; 2.000</li>
+        <ul id="id-ul-view-struck">
+            <li>Total &nbsp;&nbsp;&nbsp;  <span id="id_struckUser_total"></span></li>
+            <li>Bayar &nbsp;&nbsp;&nbsp;  <span id="id_struckUser_bayar"></span></li>
+            <li>Kembali &nbsp;&nbsp;&nbsp; <span id="id_struckUser_kembali"></span></li>
+            <hr style="margin-top: 5px;margin-bottom:5px;">
         </ul>
     </div>
 </div>
@@ -248,6 +237,17 @@ $("#txt_search").keyup(function(){
     }, 800);
 })
 
+const generalDomLoading = (idDomParent, idLoadingCreate) =>{
+    const ul_parent = document.getElementById(idDomParent);
+    const loading_p = document.createElement("p");
+    var text_loading = document.createTextNode("Loading......");
+    loading_p.className = "loading-p-class";
+    loading_p.appendChild(text_loading)
+    loading_p.setAttribute('id', idLoadingCreate)
+    ul_parent.appendChild(loading_p) 
+   
+}
+
 function domLoading(){
     const ul_parent = document.getElementById('parrent-keranjang');
     const loading_p = document.createElement("p");
@@ -264,19 +264,82 @@ function domLoading(){
 }
 
 $("#btn-hitung-transaksi").click(function(){
+    //dom
+    generalDomLoading("response_struck_print","loading-struck-id")
+    let div_ul_struck = document.getElementById('id-ul-view-struck')
+    div_ul_struck.style.display = 'none';
+    //dom
+
     let struck_id = document.getElementById('id_struck').value
     let input_price = document.getElementById('user_bayar_id').value
     let input_data = { 'id_struck' : struck_id, 'user_bayar' : input_price }
+    let loading_struck = document.getElementById("loading-struck-id");
     $.ajax({
         type: "post",  
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+        },
         url:"{{ route('input-price-user-bayar') }}",
         data: input_data,
         success: function(response){
-            console.log('response suskes transaksi',response);
-        },
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+            const id_struck_after_pay = response.data.id_struck;
+            getAjaxStruckViewBarang(id_struck_after_pay)
+            .then((responseJson)=>{
+                let json_data = responseJson.data[0].data;
+                const list_product_buy_customer = json_data.list
+                div_ul_struck.style.display = 'block'; //parent ul
+               
+                if (loading_struck) {
+                    loading_struck.remove();
+                }
+                
+                list_product_buy_customer.map((item,key)=>{
+                   
+                  
+                    const name_item =  item.nama_product;
+                    const each_item_price = `${item.harga_tiap_item} x ${item.jumlah_item_dibeli}`;
+                    const total_item_price = item.total_harga_item;
+                    const attribute_id = `item_keranjgan_id_${item.id_keranjang_kasir}`
+
+                    const elemet_li_struck = document.createElement('li')
+                    elemet_li_struck.style.marginTop = "15px";
+                    elemet_li_struck.setAttribute('id',attribute_id);
+                    elemet_li_struck.setAttribute('class','li-struck-view');
+
+                    div_ul_struck.appendChild(elemet_li_struck)
+                    const element_span = document.createElement('span');
+                    element_span.className = "span-align";
+                    
+                    element_span.textContent = `${name_item} - ${each_item_price} - ${ total_item_price}`
+                    elemet_li_struck.appendChild(element_span);
+
+                    const hr = document.createElement("hr")
+                    hr.style.width = "350px"
+                    element_span.appendChild(hr)
+
+
+                })
+
+                let total_must_pay = document.getElementById('id_struckUser_total');
+                let user_pay = document.getElementById('id_struckUser_bayar')
+                let kembalian = document.getElementById('id_struckUser_kembali')
+
+                total_must_pay.textContent = json_data.total_harga;
+                user_pay.textContent = json_data.dibayar
+                kembalian.textContent = json_data.kembalian
+
+                let btn_trn = document.getElementById('btn-hitung-transaksi');
+                btn_trn.setAttribute("disabled", true);
+               
+               
+            })
+            .catch((e)=>{
+                if (loading_struck) {
+                    loading_struck.remove();
+                }
+                console.log('catch error trabsaksi');
+            })
         },
         error: function (xhr,status,response){
             if (status == 'error') {
@@ -284,6 +347,9 @@ $("#btn-hitung-transaksi").click(function(){
                 if (msg_error.data.user_bayar) {
                     alert(msg_error.data.user_bayar)
                 }
+            }
+            if (loading_struck) {
+                loading_struck.remove();
             }
         }
     });
@@ -440,6 +506,38 @@ function saveProductToKeranjang(element){
     });
 }
 
+
+
+function getAjaxStruckViewBarang(param){
+    //non blocking (tanpa menunggu semua proses selesai), jalan bersamaan dapat menggunakan : callback, promise async await
+    return new Promise((resolve, reject)=>{ 
+        $.ajax({
+            url: '{{route("get-view-struck-barang")}}',
+            type: 'post',
+            data: {'id_struck' : param},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+            },
+            success: function(resStruck){
+                resolve(resStruck)
+            },error: function(xhr, status, error){
+                if (status == 'error') {
+                    let msg_error = JSON.parse(xhr.responseText);
+                    reject(msg_error);
+                }
+            }
+        })
+    });
+}
+
+
+// function gggg(id_struck){
+//     getAjaxStruckViewBarang(id_struck)
+//     .then(e=>console.log('sukses-promise',e))
+//     .catch(e=>console.log('error',e))
+// }
+// gggg(1)
+
 function getStruckFunction(id_struck){
     //dom-create tampilan keranjang
     const div_keranjang_struck = document.getElementById('keranjang_struck');
@@ -562,6 +660,10 @@ function generateNewStruck(){
                 $("#total_harga").text(0)
                 document.getElementById('txt_search').value = ''
                 document.getElementById('user_bayar_id').value = ''
+                document.querySelectorAll(".li-struck-view").forEach(el => el.remove());
+                document.getElementById('id_struckUser_total').textContent = 0;
+                document.getElementById('id_struckUser_bayar').textContent = 0;
+                document.getElementById('id_struckUser_kembali').textContent = 0;
             }
            
         },

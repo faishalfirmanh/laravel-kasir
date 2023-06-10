@@ -62,7 +62,7 @@ class NewStruckServiceImplement implements NewStruckService{
             $get_keuntungan = $this->getKeuntunganByIdStruckService($request);
             $save_db = $this->repository->updateInputPriceUserBayar($request->id_struck,2,$request->user_bayar,$get_keuntungan['total_semua_keuntungan']);
         
-            //get value price beli->ok, ubah price beli cek kondisi
+            //get value price beli->ok, ubah price beli cek kondisi perhitungan price beli custom ok
             //`1. jika di tabel product_juals product_beli_id null, deefault(ambil product->kolom hargq beli)
             // 2. jika di taqbel product_juals product_beli_id != null, ambil relasi (produc_beli kolom harga beli custom)
             //isi value pada kolumn keuntungan bersih ditabel new strucks (price beli - price jual)->ok
