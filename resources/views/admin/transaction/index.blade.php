@@ -48,6 +48,7 @@
 
 @push('scripts')
     <script>
+
       $(document).ready(function(){
         $('#transaksi-ajax-list').DataTable({
             "ajax": {
@@ -108,37 +109,72 @@
         });
       })
 
-        function selectElement(id, valueToSelect) {
-            let element = document.getElementById(id);
-            element.value = valueToSelect;
-        }
-
-
-        function getTokoAjax(){
-            $.ajax({
-                type: "get",
-                url: "{{ route('get-all-toko') }}",
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
-                },
-                success: function(response) {
-                    setTimeout(() => {
-                        if (response.data.length > 0) {
-                            let html_opt = `<option value="0">- pilih Toko -</option>`;
-                            response.data.forEach((e) => {
-                                html_opt +=
-                                    `<option value="${e.id_toko}">${e.nama_toko}</option>`;
-                                    if ($("#select_toko")) {
-                                        $("#select_toko").html(html_opt);
-                                    }
-                            });
-                        }
-                    }, 500);
-                }
+      function reqAjaxDetailKeuntungan(id){
+            return new Promise((resolve, reject)=>{
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('get-keuntungan-by-struck-id') }}",
+                    data : { 'id_struck' : id },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                    },
+                    success: function(response) {
+                        resolve(response.data)
+                    },
+                    error: function(err){
+                       reject(err)
+                    }
+                })
             })
+      }
+
+
+        function detail(id){
+            const modal = document.querySelector("#modalTransaksi")
+            modal.classList.add('show-modal')
+          
+            reqAjaxDetailKeuntungan(id)
+            .then((ok_res)=>{
+                let list_data = ok_res[0].data;
+                let wrap_div = document.getElementById("div-transaksi")
+                list_data.detail_keuntungan.map((item)=>{
+                    const elemet_p = document.createElement('p')
+                    elemet_p.style.fontSize = "20px";
+                    elemet_p.setAttribute('class','li-struck-view-trans');
+                    elemet_p.textContent = `${item.nama_product} - total : ${item.jumlah_item_dibeli} | ${item.TotalKeuntungan.toLocaleString()}`
+                    wrap_div.appendChild(elemet_p)
+                })
+                let dd = list_data.total_semua_keuntungan.toLocaleString();
+                const elemet_ptotal = document.createElement('p')
+                elemet_ptotal.style.fontSize = "20px";
+                elemet_ptotal.setAttribute('class','dom-total');
+                elemet_ptotal.textContent = `Total keuntungan : ${dd}`
+                wrap_div.appendChild(elemet_ptotal);
+
+            })
+            .catch((no_ok)=>{
+                console.log('err',no_ok)
+            })
+
+           
+
+            const modal_close = modal.querySelector('.modal__close_2_transaksi')
+           
+            navbar_atas_id.style.position = "initial";
+            navbar_samping_id.style.position = "initial";
+            modal_close.addEventListener('click', function(e) {
+                e.preventDefault()
+                modal.classList.remove('show-modal')
+                navbar_atas_id.style.position = "fixed";
+                navbar_samping_id.style.position = "fixed";
+                document.querySelectorAll(".li-struck-view-trans").forEach(el => el.remove());
+                document.querySelectorAll('.dom-total').forEach(e => e.remove());
+            })
+
         }
 
-        getTokoAjax();
+       
+
 
         function getRolejax() {
             $.ajax({
