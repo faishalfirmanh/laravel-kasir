@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Product;
+use App\Models\KeranjangKasir;
 
 class NewStruck extends Model
 {
@@ -23,5 +25,15 @@ class NewStruck extends Model
     public function listProducBuy()
     {
         return $this->hasMany(KeranjangKasir::class,'struck_id');
+    }
+
+    public function coba() //no finished
+    {
+        return $this->hasManyThrough(
+            ProductJual::class,
+            KeranjangKasir::class,
+            'struck_id',
+            'id_product_jual',
+            );
     }
 }

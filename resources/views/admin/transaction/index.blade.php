@@ -16,6 +16,7 @@
 
         .far.fa-edit,
         .fas.fa-wrench,
+        .fa-info-circle,
         .far.fa-trash-alt{
             cursor: pointer;
         }
@@ -23,13 +24,14 @@
     </style>
     <div class="tables" style="margin-top:20px;">
         <section class="table__body">
-            <table class="" id="transaksi-ajax-list">
+            <h3 style="text-align: center;margin-bottom:10px;margin-top:10px">Transaksi</h3>
+            <table class="" id="transaksi-ajax-list" style="width: 100%">
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Email</th>
-                        <th>Toko</th>
-                        <th>Role</th>
+                        <th>Keuntungan</th>
+                        <th>Total product (beda merk)</th>
+                        <th>tanggal</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -47,7 +49,63 @@
 @push('scripts')
     <script>
       $(document).ready(function(){
-       
+        $('#transaksi-ajax-list').DataTable({
+            "ajax": {
+                "url": "{{ route('get-all-transaction') }}",
+                "dataSrc": "data",
+                "beforeSend": function(xhr) {
+                    xhr.setRequestHeader('Authorization',
+                        "Bearer " + `${localStorage.getItem("token")}`);
+                },
+                "error": function(xhr, error, thrown) {
+                    const toJson = JSON.parse(xhr.responseText);
+                    if (toJson.status === 'Token is Invalid') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Harap login kembali',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '{{ route('home') }}'
+                            }
+                        })
+                    }
+                    if (xhr.status == 403) {
+                        sweetAlertError("Tidak dapat akses menu laporan")
+                        $("#transaksi-ajax-list").html("");
+                    }
+                }
+            },
+            "columns": [{
+                    "data": "id_struck"
+                },
+                {
+                    "data": `keuntungan`, render: function(data, type, row){
+                        const keuntungan = row.keuntungan_bersih.toLocaleString();
+                        return keuntungan;
+                    }
+                },
+                {
+                    "data": `list_produc_buy.length`
+                },
+                {
+                    "data" : `string_date`, render: function(data, type, row){
+                        const aa = row.created_at;
+                        const dt = new Date(aa).toISOString().split('T')[0];
+                        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                        const string_date = new Date(dt).toLocaleString("id-ID", options)
+                        return string_date;
+                    }
+                },
+                { "data" : 'btn', render: function(data, type, row) {
+                        const btn = ` <div >
+                                        <i onclick="detail(${row.id_struck})" class="fa fa-info-circle" title="detail-transaction" style="margin-right:5px;background:#b4a2fb;margin-right:10px;"></i>
+                                    </div>`;
+                        return btn;
+                    }
+                }
+            ]
+        });
       })
 
         function selectElement(id, valueToSelect) {

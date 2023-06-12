@@ -11,11 +11,11 @@ class ProductJual extends Model
     protected $primaryKey = 'id_product_jual';
 
     protected $fillable = [
-        'product_id ',
+        'product_id',
+        'product_beli_id',
         'start_kg',
         'end_kg',
-        'price_sell',
-        'id_product_beli'
+        'price_sell'
     ];
 
     public function productName(){
