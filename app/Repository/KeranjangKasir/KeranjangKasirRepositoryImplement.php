@@ -32,7 +32,7 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
 
     public function getAllKeranjangByIdKasir($id_kasir)
     {
-        $data = $this->model->where('struck_id', $id_kasir)->get();
+        $data = $this->model->with(['getProduct'])->where('struck_id', $id_kasir)->get();
         return $data;
     }
 

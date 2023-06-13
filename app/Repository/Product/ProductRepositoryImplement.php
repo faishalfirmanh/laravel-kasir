@@ -108,4 +108,20 @@ class ProductRepositoryImplement implements ProductRepository{
         $model = $this->model->find($id);
         return $model->delete();
     }
+
+    public function updateStockKg($idPrd, $stockFinal)
+    {
+        $model_save = $this->model->where('id_product',$idPrd)->first();
+        $model_save->total_kg = $stockFinal;
+        $model_save->save();
+        return $model_save->fresh();
+    }
+
+    public function updateStockPcs($idPrd, $stockFinal)
+    {
+        $model_save = $this->model->where('id_product',$idPrd)->first();
+        $model_save->pcs = $stockFinal;
+        $model_save->save();
+        return $model_save->fresh();
+    }
 }

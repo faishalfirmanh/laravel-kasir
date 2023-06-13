@@ -148,6 +148,17 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         }
 
         $find_data_product_jual = $this->repo_product_jual->getProductJualById($request->product_jual_id);
+        //cek stock yang ada dengan yang akan dibeli pelanggan
+        if ($find_data_product_jual->productName->is_kg === 1) {
+            $stock_gudang = $find_data_product_jual->productName->total_kg;
+        }else{
+            $stock_gudang = $find_data_product_jual->productName->pcs;
+        }
+        
+        if ((int) $request->jumlah_item_dibeli + 1 > (int) $stock_gudang) {
+            $msg_err = ['jumlah_item_dibeli' => 'stock tidak mencukupi, stock digudang ada '.$stock_gudang];
+            return $msg_err;
+        }
         //jumlah jumlah_item_dibeli = null,  ambil dari start_kg 
         $cek_jumlah_item_dibeli = empty($request->jumlah_item_dibeli) ? $find_data_product_jual->start_kg : (int) $request->jumlah_item_dibeli;
         $request->jumlah_item_dibeli = $cek_jumlah_item_dibeli;

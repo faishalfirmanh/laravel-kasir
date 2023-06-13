@@ -23,4 +23,13 @@ class KeranjangKasir extends Model
     {
         return $this->hasMany(ProductJual::class, 'id_product_jual', 'product_jual_id');
     }
+
+    public function getProduct()
+    {
+        return $this->hasMany(
+            ProductJual::class,
+            'id_product_jual',
+            'product_jual_id',
+            )->join('products','product_juals.product_id','=','products.id_product');
+    }
 }

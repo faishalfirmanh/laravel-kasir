@@ -79,7 +79,7 @@ class ProductController extends Controller
     public function detailProductJual2(Request $request)//detail, used
     {
         $data = $this->product_jual_service->getProductJualByIdSelftService($request);
-        return $this->generalResponseV2($data,8);
+        return $this->generalResponseV2($data,9);
     }
 
 

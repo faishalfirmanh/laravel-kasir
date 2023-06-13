@@ -71,7 +71,7 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
     public function getProductJualById($id)
     {
         //tambah with('namafungsimode') kalau ingin menampilkan data yg berhubungan
-        $data = $this->model->where('id_product_jual',$id)->first();
+        $data = $this->model->with(['productName'])->where('id_product_jual',$id)->first();
         return $data;
     }
 

@@ -4,16 +4,20 @@ namespace App\Service\NewStruck;
 
 use App\Repository\KeranjangKasir\KeranjangKasirRepository;
 use App\Repository\NewStruck\NewStruckRepository;
+use App\Repository\Product\ProductRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 class NewStruckServiceImplement implements NewStruckService{
 
     protected $repository;
-    public function __construct(NewStruckRepository $repository, KeranjangKasirRepository $repository_keranjang)
+    public function __construct(NewStruckRepository $repository, 
+                                KeranjangKasirRepository $repository_keranjang,
+                                ProductRepository $repository_product)
     {
         $this->repository = $repository;
         $this->repository_keranjang = $repository_keranjang;
+        $this->repository_product = $repository_product;
     }
 
     public function generateNewStruckService()
@@ -37,6 +41,7 @@ class NewStruckServiceImplement implements NewStruckService{
 
     }
 
+    //kurangi stock saat 2, input price user bayar,
     public function UpdateDataStruckService($request)
     {  
         $cek_data = cekPriceTotalStruck($request->id_struck) != NULL ? 
@@ -61,6 +66,28 @@ class NewStruckServiceImplement implements NewStruckService{
             $update_status_keranjang = $this->repository_keranjang->UpdateStatusKeranjangByStruckId($request->id_struck,2);
             $get_keuntungan = $this->getKeuntunganByIdStruckService($request);
             $save_db = $this->repository->updateInputPriceUserBayar($request->id_struck,2,$request->user_bayar,$get_keuntungan['total_semua_keuntungan']);
+            //get all product
+            $get_all_keranjang = $this->repository_keranjang->getAllKeranjangByIdKasir($request->id_struck);
+            foreach ($get_all_keranjang as $key => $value) {
+                $total_buy = (int) $value->jumlah_item_dibeli;
+                $stock_available = $value->getProduct[0]->is_kg === 1 ?
+                    (int) $value->getProduct[0]->total_kg : 
+                    (int) $value->getProduct[0]->pcs;
+                //cek ketersediaan product tidak melebih,i stock yang ada
+                if ($total_buy > $stock_available) {
+                    $msg_status_error_stock = ['product' => $value->getProduct[0]->nama_product.' dibeli dengan jumlah '.$total_buy.' tidal mencukupi, stock yang ada '.$stock_available];
+                    return  $msg_status_error_stock;
+                }
+
+                $final_stock_afater_reduced = (int) $stock_available - $total_buy; //stock akhir
+                if ($value->getProduct[0]->is_kg === 1) { //update stock
+                    $this->repository_product->updateStockKg($value->getProduct[0]->id_product,$final_stock_afater_reduced);
+                }else{
+                    $this->repository_product->updateStockPcs($value->getProduct[0]->id_product,$final_stock_afater_reduced);
+                }
+               
+            }
+
         
             //get value price beli->ok, ubah price beli cek kondisi perhitungan price beli custom ok
             //`1. jika di tabel product_juals product_beli_id null, deefault(ambil product->kolom hargq beli)
@@ -68,12 +95,12 @@ class NewStruckServiceImplement implements NewStruckService{
             //isi value pada kolumn keuntungan bersih ditabel new strucks (price beli - price jual)->ok
             //kurangi stock
             DB::commit(); 
-            return $save_db;
+           
         } catch (\Exception $e) {
             DB::rollBack();
-            return false;
-
+            $save_db = false;
         }
+        return $save_db;
        
     }
 
