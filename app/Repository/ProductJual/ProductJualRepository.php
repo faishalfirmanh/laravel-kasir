@@ -9,6 +9,7 @@ interface ProductJualRepository{
     public function getProductJualById($id);
     public function getProductJualByIdProduct($id);
     public function getProductJualByIdProducBeli($id_product_beli);
+    public function getProductJualByStartKgAndProdIdFirst($id_prod,$start_kg);
     public function postProductJual($data,$id);
     public function deleteProductJual($id);
 }

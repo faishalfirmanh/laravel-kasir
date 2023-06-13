@@ -5,7 +5,7 @@ namespace App\Repository\ProductJual;
 use App\Models\ProductJual as ProductJualModel;
 use App\Repository\ProductJual\ProductJualRepository;
 use stdClass;
-
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductJualRepositoryImplement implements ProductJualRepository{
 
@@ -77,7 +77,19 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
 
     public function getProductJualByIdProduct($id)
     {
-        $data = $this->model->where('product_id',$id)->with(['productName','productBeliKulak'])->get();
+        $data = $this->model->where('product_id',$id)->with(['productName','productBeliKulak'])->orderBy('id_product_jual','asc')->get();
+        return $data;
+    }
+
+    public function getProductJualByStartKgAndProdIdFirst($id_prod,$batas_jumlah)
+    {
+        $data = $this->model
+        ->where('product_id',$id_prod)
+        ->where(function (Builder $query) use ($batas_jumlah){
+            $query->where('start_kg',$batas_jumlah );
+            $query->orWhere('end_kg',$batas_jumlah );
+        })
+        ->first();
         return $data;
     }
 
