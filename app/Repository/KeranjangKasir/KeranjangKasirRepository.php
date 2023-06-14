@@ -15,4 +15,5 @@ interface KeranjangKasirRepository{
     public function Reduce1JumlahKerajang($id,$item_dibeli,$total_harga_item);
     public function getAllTotalPriceMustPayByIdStruck($idStrck);//total harga semua yg harus dibayar
     public function UpdateStatusKeranjangByStruckId($id_struck,$status);
+    public function getTotalPriceAllItemMustPayCount($id_struck); //menjumlahkan total harga semua barang base on id struck
 }

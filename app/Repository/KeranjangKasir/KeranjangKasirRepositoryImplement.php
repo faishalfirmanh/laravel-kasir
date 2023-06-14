@@ -122,4 +122,11 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         return $data;
     }
 
+    public function getTotalPriceAllItemMustPayCount($id_struck)
+    {
+        $count = $this->model->where('struck_id',$id_struck)
+                  ->selectRaw('SUM(total_harga_item) as total')->first();
+                  //->pluck('total');
+        return $count;
+    }
 }
