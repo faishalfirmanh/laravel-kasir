@@ -51,6 +51,8 @@
 
       $(document).ready(function(){
         $('#transaksi-ajax-list').DataTable({
+            "serverside": true,
+            "pageLength": 10,
             "ajax": {
                 "url": "{{ route('get-all-transaction') }}",
                 "dataSrc": "data",

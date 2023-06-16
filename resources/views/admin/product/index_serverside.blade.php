@@ -101,6 +101,8 @@
 
 $(document).ready(function() {
    $('#id-table-product').DataTable({
+        "serverside": true,
+        "pageLength": 10,
          "ajax": {
             "url": "{{ route('product-all-no-paginate') }}",
             "dataSrc": "data",
