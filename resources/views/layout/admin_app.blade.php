@@ -31,6 +31,13 @@
             height: 30px;
             line-height: 30px;
         }
+
+        .blue-div {
+            font-weight: bold;
+            color: white;
+            background: rgb(29, 17, 202);
+            border-radius: 5px;
+        }
     </style>
   
     <div class="container">

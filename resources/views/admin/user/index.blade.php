@@ -81,7 +81,12 @@
                 }
             },
             "columns": [{
-                    "data": "id"
+                    "data": "cek_", render: function(data,type,row){
+                        const id = row.id;
+                        const id_user_login = localStorage.getItem('userId')
+                        const cek_ =  id == id_user_login ? `<div class="blue-div">${id}</div>` : id
+                        return cek_
+                    }
                 },
                 {
                     "data": "email"
