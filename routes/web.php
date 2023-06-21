@@ -56,6 +56,8 @@ Route::get('/api-kategori',[KategoriController::class,'index'])->name('api-kateg
 
     //Kasir
     Route::get('/view-kasir',[KasirController::class,'viewKasir'])->name('view-kasir');
+    Route::get('/invoice/{id}',[KasirController::class, 'viewInvoice'])->name('invoice');
+
 
     //laporan
     Route::get('/view-laporan',[LaporanController::class,'viewLaporan'])->name('view-laporan');

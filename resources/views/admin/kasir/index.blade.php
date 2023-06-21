@@ -118,6 +118,9 @@
    .span-align{
        margin-right:15px;
    }
+   .button-to-invoice{
+        pointer-events: none;
+   }
 </style>
 
 @section('content-no-table')
@@ -155,7 +158,7 @@
     </div>
     
 
-    <div id="response_struck_print" class="struc-display">
+    <div id="response_struck_print" style="margin-bottom:30px" class="struc-display">
         <h4>Tampilan struck</h4>
         <br><br>
         <ul id="id-ul-view-struck">
@@ -164,6 +167,12 @@
             <li>Kembali &nbsp;&nbsp;&nbsp; <span id="id_struckUser_kembali"></span></li>
             <hr style="margin-top: 5px;margin-bottom:5px;">
         </ul>
+    </div>
+
+    <div style="display:block;margin-top:30px;margin-bottom:30px">
+        <a style="font-size: 14px;" href="" id="btn-view-invoice" target="_blank" class="button-to-invoice">
+            Lihat invoice
+        </a>
     </div>
 </div>
 @endsection
@@ -331,14 +340,21 @@ $("#btn-hitung-transaksi").click(function(){
 
                 let btn_trn = document.getElementById('btn-hitung-transaksi');
                 btn_trn.setAttribute("disabled", true);
-               
+
+                /*-- invoice struck --*/
+                let statick_invoice_url  = '{{route("invoice",["id"=> ":idStruck" ])}}'
+                let final_url_invoice =  statick_invoice_url.replace(':idStruck', id_struck_after_pay);
+                const btn_invoice_view_struck = document.getElementById('btn-view-invoice')
+                btn_invoice_view_struck.classList.remove("button-to-invoice");
+                btn_invoice_view_struck.setAttribute("href",final_url_invoice)
+
                
             })
             .catch((e)=>{
                 if (loading_struck) {
                     loading_struck.remove();
                 }
-                console.log('catch error trabsaksi');
+                console.log('catch error transaksi');
             })
         },
         error: function (xhr,status,response){
