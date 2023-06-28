@@ -16,7 +16,8 @@ class Role extends Model
         'user',
         'product',
         'kasir',
-        'laporan'
+        'laporan',
+        'log_activity'
     ];
 
     public function roleRelasiUser(){

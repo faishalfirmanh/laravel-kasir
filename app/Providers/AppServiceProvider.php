@@ -6,6 +6,8 @@ use App\Repository\Kategori\KategoriRepository;
 use App\Repository\Kategori\KategoriRepositoryImplement;
 use App\Repository\KeranjangKasir\KeranjangKasirRepository;
 use App\Repository\KeranjangKasir\KeranjangKasirRepositoryImplement;
+use App\Repository\LogActivity\LogActivityRepository;
+use App\Repository\LogActivity\LogActivityRepositoryImplement;
 use App\Repository\NewStruck\NewStruckRepository;
 use App\Repository\NewStruck\NewStruckRepositoryImpelemnt;
 use App\Repository\Product\ProductRepository;
@@ -24,6 +26,8 @@ use App\Service\Kategori\KategoriService;
 use App\Service\Kategori\KategoriServiceImplement;
 use App\Service\KeranjangKasir\KeranjangKasirService;
 use App\Service\KeranjangKasir\KeranjangKasirServiceImplement;
+use App\Service\LogActivity\LogActivityService;
+use App\Service\LogActivity\LogActivityServiceImplement;
 use App\Service\NewStruck\NewStruckService;
 use App\Service\NewStruck\NewStruckServiceImplement;
 use App\Service\Product\ProductService;
@@ -74,6 +78,10 @@ class AppServiceProvider extends ServiceProvider
         //keranjangToStruck
         $this->app->bind(KeranjangKasirService::class, KeranjangKasirServiceImplement::class);
         $this->app->bind(KeranjangKasirRepository::class, KeranjangKasirRepositoryImplement::class);
+
+        //log activity
+        $this->app->bind(LogActivityService::class, LogActivityServiceImplement::class);
+        $this->app->bind(LogActivityRepository::class, LogActivityRepositoryImplement::class);
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\KeranjangKasirController;
+use App\Http\Controllers\API\LogActivityController;
 use App\Http\Controllers\API\ProductBeliController;
 use App\Http\Controllers\API\TokoController;
 use Illuminate\Http\Request;
@@ -148,6 +149,16 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         });
         
     });
+
+
+    //log-activity
+    Route::middleware('rules_cek')->prefix('log_activity')->group(function(){
+        Route::controller(LogActivityController::class)->group(function(){
+            Route::post('/get-all-logActivity','getAllLogActivityController')->name('get-all-logActivity');
+            Route::post('/get-detail-logActivity','detailLogActivityController')->name('get-detail-logActivity');
+        });
+    });
+    Route::post('/save-logActivity',[LogActivityController::class, 'saveLogActivityController'])->name('save-logActivity');
     
 
     //--use jwt--
