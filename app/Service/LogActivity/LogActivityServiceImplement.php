@@ -33,7 +33,7 @@ class LogActivityServiceImplement implements LogActivityService{
         $validated = Validator::make($req->all(),[
             'user_id' => 'required|integer|exists:users,id',
             'tipe' => 'required|string',
-            'ip' => 'string',
+            'ip' => 'string|nullable',
             'lat' => 'required|string',
             'long' => 'required|string',
             'desc' => 'required|string'

@@ -352,6 +352,17 @@
                 success: function(data) {
                     console.log(data);
                     if (data.status == 'ok') {
+                        /*-- log activity --*/
+                        const cek_update = cek_id_for_update ? `update-product-harga-jual-id-${input_data.id} dengan harga ${data.data.price_sell}` : 'add-product-harga-jual';
+                        const log_act = {
+                        'user_id': localStorage.getItem('userId'),
+                        'tipe': 'post',
+                        'lat': localStorage.getItem('lat'),
+                        'long': localStorage.getItem('long'),
+                        'desc': `user ${localStorage.getItem('name_login')} telah melakukan ${cek_update}`
+                    }
+                    saveAjaxLogActivity(log_act)
+                     /*-- log activity --*/
                         $('.product-price-yajra').DataTable().ajax.reload(null, true);
                         $("#price-buy-table").DataTable().ajax.reload(null, true);
                         Swal.fire(

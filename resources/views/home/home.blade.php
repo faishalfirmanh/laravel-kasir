@@ -316,6 +316,16 @@
                                 localStorage.setItem("name_login",`${response.role.name_role}-${response.toko.nama_toko}`)
                                 window.location.href = '{{route("kategori-url")}}'
                             }
+                            const save_param_log_activity = {
+                                'user_id': response.id_user,
+                                'tipe': 'post',
+                                'lat': localStorage.getItem('lat'),
+                                'long': localStorage.getItem('long'),
+                                'desc' : `user ${response.role.name_role}-${response.toko.nama_toko} telah melakukan login`
+                            };
+                            saveAjax(save_param_log_activity)
+                            .then(res=>res)
+                            .catch(err=> err)
                             
                         },
                         error: function(xhr,status,res){
@@ -330,5 +340,45 @@
             })
                
         })
+
+       const saveAjax = (req_data) =>{
+            return new Promise((resolve,reject)=>{
+                $.ajax({
+                    url: `{{route('save-logActivity')}}`,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'post',
+                    data:req_data,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('Authorization',
+                            `Bearer ${localStorage.getItem("token")}`);
+                    },
+                    success: function(resStruck) {
+                        resolve(resStruck)
+                    },
+                    error: function(xhr, status, error) {
+                        if (status == 'error') {
+                            let msg_error = JSON.parse(xhr.responseText);
+                            reject(msg_error);
+                        }
+                    }
+                })
+            })
+       }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(successFunction);
+        } else {
+            alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
+        }
+
+        function successFunction(position) {
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            localStorage.setItem("lat",lat)
+            localStorage.setItem("long", long);
+        }
+        
     </script>
 @endpush
