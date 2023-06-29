@@ -387,6 +387,25 @@
                             text:json_res_ajax.data.product_beli_id[0],
                         })   
                     }
+                    console.log(json_res_ajax.data);
+                    if (json_res_ajax.data) {
+                        if (json_res_ajax.data.price_sell) {
+                             /* default */
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'harga jual tidak boleh kurang dari harga beli default',
+                            })   
+                        }else{
+                            /* cutom */
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text:json_res_ajax.data[0].data.status_price,
+                            })   
+                        }
+                        
+                    }
                   
                 }
             });

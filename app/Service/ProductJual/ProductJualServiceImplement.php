@@ -2,6 +2,7 @@
 
 namespace App\Service\ProductJual;
 
+use App\Repository\ProductBeli\ProductBeliRepository;
 use App\Repository\ProductJual\ProductJualRepository;
 use App\Rules\RulesCekPriceLessThan;
 use App\Service\ProductJual\ProductJualService;
@@ -10,9 +11,10 @@ use Illuminate\Validation\Rule;
 class ProductJualServiceImplement implements ProductJualService{
 
     protected $ProductJualRepository;
-    public function __construct(ProductJualRepository $ProductJualRepository)
+    public function __construct(ProductJualRepository $ProductJualRepository, ProductBeliRepository $ProductBeliRepository)
     {
         $this->ProductJualRepository = $ProductJualRepository;
+        $this->ProductBeliRepository = $ProductBeliRepository;
     }
 
     public function getAllProductService($request){
@@ -79,6 +81,13 @@ class ProductJualServiceImplement implements ProductJualService{
         if ($validated->fails()) {
             return $validated->errors();
         }
+
+        $cek_product_beli = $this->ProductBeliRepository->getProductBeliById($request->product_beli_id);
+        if ((int)$cek_product_beli->harga_beli_custom > (int) $request->price_sell ) {
+            $msg_err = ['status_price' => 'tidak valid , harga jual tidak boleh kurang dari harga beli custom'];
+            return $msg_err;
+        }
+
         $save = $this->ProductJualRepository->postProductJual($request,$id);
         return  $save;
     }
