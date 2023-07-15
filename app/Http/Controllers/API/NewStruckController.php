@@ -66,6 +66,6 @@ class NewStruckController extends Controller
     public function get_dashboardToday(Request $request)
     {
         $data  = $this->service->getRangukumanDashboardService($request);
-        return $this->generalResponseV2($data,3);
+        return $this->generalResponseV2($data,4);
     }
 }

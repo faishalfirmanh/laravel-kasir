@@ -151,7 +151,8 @@ if (!function_exists('cekCountTransaction')) { //date  = 'yyyy-mm-dd'
         select 
             count(*) as "total_transaksi",
             sum(pembeli_bayar) as "uang_masuk", 
-            sum(keuntungan_bersih) as "keuntungan_bersih"
+            sum(keuntungan_bersih) as "keuntungan_bersih",
+            DATE(created_at) as "tanggal"
         from new_strucks
         where id_struck in
         (
