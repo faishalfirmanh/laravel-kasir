@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 use App\Models\KeranjangKasir;
-
+use DB;
 class NewStruck extends Model
 {
     use HasFactory;
@@ -20,6 +20,7 @@ class NewStruck extends Model
         'kembalian',
         'keuntungan_bersih',
         'status', //0 generate, 1 tambah keranjang, 2 pembeli bayar, 3 selesai, 4 batal (cancel)
+        'created_at'
     ];
 
     public function listProducBuy()

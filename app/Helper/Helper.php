@@ -4,6 +4,8 @@ use App\Models\KeranjangKasir;
 use App\Models\NewStruck;
 use App\Models\Product;
 use App\Models\ProductJual;
+use Illuminate\Support\Facades\DB;
+
 
 if(!function_exists('getObject')){
     function getObject($data,$isIndex = null){//jika index bernilai 1
@@ -140,6 +142,32 @@ if (!function_exists('cekCountAllDataSearch')) {
     function cekCoutAllDataSearch($name_table, $column, $keyword){
         $data = $name_table->where($column,'like','%'.$keyword .'%')->get();
         return $data->count();
+    }
+}
+
+if (!function_exists('cekCountTransaction')) { //date  = 'yyyy-mm-dd'
+    function cekCountTransaction($toko_id, $date){
+        $result_data = DB::select('
+        select 
+            count(*) as "total_transaksi",
+            sum(pembeli_bayar) as "uang_masuk", 
+            sum(keuntungan_bersih) as "keuntungan_bersih"
+        from new_strucks
+        where id_struck in
+        (
+            select ns.id_struck
+            FROM `new_strucks` ns 
+            join keranjang_kasirs ks on ks.struck_id = ns.id_struck 
+            join product_juals pj on pj.id_product_jual = ks.product_jual_id 
+            join products prd on prd.id_product = pj.product_id 
+            join tokos on tokos.id_toko = prd.toko_id 
+            where tokos.id_toko = '.$toko_id.' 
+            and ns.status = 2
+            and DATE(ns.created_at) = "'.$date.'"
+            GROUP by ns.id_struck order by ns.id_struck desc
+        )
+        ');
+        return $result_data;
     }
 }
 

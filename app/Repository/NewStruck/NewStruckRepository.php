@@ -18,4 +18,5 @@ interface NewStruckRepository{
 
     public function getAllStruckReport($request);
     public function getAllStruckReportPaginate($request);
+    public function getDashboardReport($request);
 }

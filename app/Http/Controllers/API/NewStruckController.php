@@ -62,4 +62,10 @@ class NewStruckController extends Controller
         $data  = $this->service->getAllStrukTransactionPaginateService($request);
         return $this->responseSucess($data);
     }
+
+    public function get_dashboardToday(Request $request)
+    {
+        $data  = $this->service->getRangukumanDashboardService($request);
+        return $this->generalResponseV2($data,3);
+    }
 }

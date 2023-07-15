@@ -166,4 +166,27 @@ class NewStruckServiceImplement implements NewStruckService{
 
         return $data;
     }
+
+    public function getRangukumanDashboardService($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'toko_id' => 'nullable|exists:tokos,id_toko'
+            // 'date' => 'integer|nullable',
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+
+        if (empty($request->toko_id)) {
+           $request->toko_id = $request->toko_id_from_middleware;
+        }
+       
+        if (empty($request->tanggal)) {
+           $request->tanggal = date('Y-m-d');
+        }
+
+        $data = $this->repository->getDashboardReport($request);
+
+        return $data;
+    }
 }

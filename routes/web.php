@@ -28,9 +28,9 @@ use App\Http\Controllers\WEB\RoleController;
 // });
 
 Route::get('/',[HomeController::class ,'pageHome'])->name('home');
-Route::group(['middleware' => ['jwt.auth']], function() {
+// Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('/dashboard',[AdminController::class, 'dashboardView'])->name('dashboard');
-});
+// });
 
 
 Route::get('/api-kategori',[KategoriController::class,'index'])->name('api-kategori');

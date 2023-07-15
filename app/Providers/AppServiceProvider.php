@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-
+use Illuminate\Support\Facades\Schema;
 use App\Repository\Kategori\KategoriRepository;
 use App\Repository\Kategori\KategoriRepositoryImplement;
 use App\Repository\KeranjangKasir\KeranjangKasirRepository;

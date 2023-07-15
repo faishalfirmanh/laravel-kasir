@@ -29,6 +29,7 @@
                 <thead>
                     <tr>
                         <th>Id</th>
+                        {{-- <th>Nama Toko</th> --}}
                         <th>Keuntungan</th>
                         <th>Total product (beda merk)</th>
                         <th>tanggal</th>
@@ -82,6 +83,9 @@
             "columns": [{
                     "data": "id_struck"
                 },
+                // {
+                //     "data": "nama_toko"
+                // },
                 {
                     "data": `keuntungan`, render: function(data, type, row){
                         const keuntungan = row.keuntungan_bersih.toLocaleString();

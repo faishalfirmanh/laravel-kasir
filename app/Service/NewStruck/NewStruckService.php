@@ -10,4 +10,5 @@ interface NewStruckService{
     public function getKeuntunganByIdStruckService($request);
     public function getAllStruckTransactionService($request);
     public function getAllStrukTransactionPaginateService($request);
+    public function getRangukumanDashboardService($request);
 }

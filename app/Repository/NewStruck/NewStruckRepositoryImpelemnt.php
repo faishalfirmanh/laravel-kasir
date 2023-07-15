@@ -110,7 +110,7 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
 
     public function getAllStruckReport($request)
     {
-        $data = $this->model->where('status',$request)->with(['listProducBuy'])->get();
+        $data = $this->model->where('status',$request)->with(['listProducBuy'])->orderBy('id_struck','desc')->get();
         return $data;
     }
 
@@ -164,6 +164,12 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
             'next_page' => $ee
         ];
         return $ress;
+    }
+
+    public function getDashboardReport($request)
+    {
+        $data = cekCountTransaction($request->toko_id, $request->tanggal);
+        return $data;
     }
    
 }
