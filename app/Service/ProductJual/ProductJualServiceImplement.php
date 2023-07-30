@@ -82,10 +82,13 @@ class ProductJualServiceImplement implements ProductJualService{
             return $validated->errors();
         }
 
-        $cek_product_beli = $this->ProductBeliRepository->getProductBeliById($request->product_beli_id);
-        if ((int)$cek_product_beli->harga_beli_custom > (int) $request->price_sell ) {
-            $msg_err = ['status_price' => 'tidak valid , harga jual tidak boleh kurang dari harga beli custom'];
-            return $msg_err;
+        /** allow set custom price kulak null */
+        if($request->product_beli_id != null){
+            $cek_product_beli = $this->ProductBeliRepository->getProductBeliById($request->product_beli_id);
+            if ((int)$cek_product_beli->harga_beli_custom > (int) $request->price_sell ) {
+                $msg_err = ['status_price' => 'tidak valid , harga jual tidak boleh kurang dari harga beli custom'];
+                return $msg_err;
+            }
         }
 
         $save = $this->ProductJualRepository->postProductJual($request,$id);

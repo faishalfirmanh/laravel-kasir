@@ -26,7 +26,7 @@ class RoleController extends Controller
     public function indexGetAllCon(Request $request)
     {
         $data = $this->service->GetAllRoleServiceWithoutPaginate($request);
-        return $this->generalResponseV2($data,11);
+        return $this->generalResponseV2($data,12);
     }
 
     public function store(Request $request)
