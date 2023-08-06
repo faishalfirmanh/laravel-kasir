@@ -79,11 +79,17 @@ class NewStruckServiceImplement implements NewStruckService{
                     return  $msg_status_error_stock;
                 }
 
-                $final_stock_afater_reduced = (int) $stock_available - $total_buy; //stock akhir
-                if ($value->getProduct[0]->is_kg === 1) { //update stock
-                    $this->repository_product->updateStockKg($value->getProduct[0]->id_product,$final_stock_afater_reduced);
-                }else{
-                    $this->repository_product->updateStockPcs($value->getProduct[0]->id_product,$final_stock_afater_reduced);
+                //kalau input user bayar dilakukan lagi (2 x submit)
+                //tidak mengurangi product lagi, dengan kondisi ini mengizinkan edit (input ulang)
+                if((int) $cekDataStruck->status !== 2){ 
+
+                    $final_stock_afater_reduced = (int) $stock_available - $total_buy; //stock akhir
+                    if ($value->getProduct[0]->is_kg === 1) { //update stock
+                        $this->repository_product->updateStockKg($value->getProduct[0]->id_product,$final_stock_afater_reduced);
+                    }else{
+                        $this->repository_product->updateStockPcs($value->getProduct[0]->id_product,$final_stock_afater_reduced);
+                    }
+
                 }
                
             }

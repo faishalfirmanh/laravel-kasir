@@ -145,7 +145,7 @@ if (!function_exists('cekCountAllDataSearch')) {
     }
 }
 
-if (!function_exists('cekCountTransaction')) { //date  = 'yyyy-mm-dd'
+if (!function_exists('cekCountTransaction')) { //date  = 'yyyy-mm-dd', keuntungan yang sudah fix status new struck = 2
     function cekCountTransaction($toko_id, $date){
         $result_data = DB::select('
         select 
