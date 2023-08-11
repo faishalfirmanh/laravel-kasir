@@ -120,7 +120,8 @@ class NewStruckServiceImplement implements NewStruckService{
         }
         $get_data_struck = $this->repository->getStruckById($request->id_struck);
         $list = $this->repository->getProductByIdStruck($request->id_struck);
-        $data = array('list'=> $list, 
+        $data = array('list'=> $list, /**timestamp dari mysql tidak bisa langsung ditampilkan pada php harus diconvert dulu */
+                    'tanggal'=> date('M j Y g:i A', strtotime($get_data_struck->updated_at)),
                     'dibayar'=> number_format($get_data_struck->pembeli_bayar),
                     'total_harga'=>number_format($get_data_struck->total_harga_dibayar),
                     'kembalian'=>number_format($get_data_struck->kembalian));

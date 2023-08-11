@@ -99,6 +99,17 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
 
+$("#name_product").keyup(function(){
+    var dInput = this.value.length;
+    if(Number(dInput) > 39){
+        $('#length_char').html(`Peringatan character ${dInput}`);
+    }else{
+        $('#length_char').html('');
+    }
+    console.log(dInput);
+  
+});
+
 $(document).ready(function() {
    $('#id-table-product').DataTable({
         "serverside": true,
@@ -571,5 +582,31 @@ $(document).ready(function() {
                 }
             })
         }
+
+        const inputKg = document.getElementById('is_kg');
+        const stock_dom = document.getElementById('stock_dom')
+        const span_html = document.getElementById('check_satuan_dom');
+        stock_dom.style.fontSize = "16px";
+        span_html.style.fontSize = "18px"
+        span_html.style.marginBottom = "10px"
+        function checkPilih(){
+            
+            if (inputKg.checked) {
+                span_html.style.color = "red";
+                span_html.textContent='Kg/Liter'
+
+                stock_dom.style.color = "red";
+                stock_dom.textContent='Kg/Liter'
+                
+            } else {
+                span_html.style.color = "blue";
+                span_html.textContent='pcs'
+                
+                stock_dom.style.color = "blue";
+                stock_dom.textContent='pcs'
+            }
+        }
+        checkPilih()
+       
     </script>
 @endpush

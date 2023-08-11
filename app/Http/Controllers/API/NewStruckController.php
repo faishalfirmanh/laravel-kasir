@@ -42,7 +42,7 @@ class NewStruckController extends Controller
     public function getProductByIdStruck(Request $request)
     {
         $data = $this->service->getProductByIdStruckService($request);
-        return $this->generalResponseV2($data,4);
+        return $this->generalResponseV2($data,5);
     }
 
     public function getKeuntunganByIdStruckCon(Request $request)
