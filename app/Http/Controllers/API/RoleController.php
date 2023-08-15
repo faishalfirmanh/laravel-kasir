@@ -32,7 +32,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $data = $this->service->PostRoleService($request,$request->id);
-        return $this->generalResponse($data,10);
+        return $this->generalResponse($data,11);
     }
 
     public function detail($id)

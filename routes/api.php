@@ -33,7 +33,7 @@ Route::post('logout-api',[UserController::class,'logouttess'])->name('logout-api
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     //--use jwt--
-    Route::controller(KategoriController::class)->prefix('kategori')->group(function () {
+    Route::controller(KategoriController::class)->middleware('rules_cek')->prefix('kategori')->group(function () {
         Route::post('/', 'index')->name('kategori-list');
         Route::get('/kategori-byid/{id}', 'detail')->name('kategori-details-byId'); 
         Route::get('/kategori-detail', 'detail2')->name('kategori-details'); 

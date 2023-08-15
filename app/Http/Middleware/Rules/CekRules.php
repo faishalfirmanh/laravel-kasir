@@ -6,6 +6,7 @@ use App\Models\Role;
 use Closure;
 use Illuminate\Http\Request;
 use JWTAuth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 class CekRules
@@ -53,7 +54,15 @@ class CekRules
                 "msg"=> "error toko",
             ],401);
         }
-       
+
+        //pengecekan disable script / xss
+        foreach ($request->all() as $key => $value) {
+            if ($key !== "toko_id_from_middleware" && $key !== "role_id_from_middleware"){
+                $request->$key =  strip_tags($request->$key);
+            }
+        }
+        //pengecekan disable script / xss
+
         return $next($request);
     }
 }

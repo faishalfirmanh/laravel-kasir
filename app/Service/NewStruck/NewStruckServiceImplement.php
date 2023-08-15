@@ -48,9 +48,9 @@ class NewStruckServiceImplement implements NewStruckService{
                     cekPriceTotalStruck($request->id_struck)->total_harga_dibayar : 0;
         $validated = Validator::make($request->all(),[
             'id_struck' => 'required|exists:new_strucks,id_struck',
-            'user_bayar' =>  'required|gt:'.$cek_data,
+            'user_bayar' =>  'required|gte:'.$cek_data,
         ]);
-
+        /**gte = gether than equal atau lebih besar = */
         if ($validated->fails()) {
             return $validated->errors();
         }
