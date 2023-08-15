@@ -12,6 +12,16 @@
         color: white;
         font-size: 13px;
     }
+    .input-modal-global-dash {
+        width: 100%;
+        font-size: 14px;
+        padding: .65rem 1.3rem;
+        border-radius: .5rem;
+        margin-bottom: .75rem;
+        background-color: white;
+        border: 1px solid var(--grey-d-2);
+        transition: .2s;
+    }
 </style>
 @section('dashboard')
     <div class="cards">
@@ -62,16 +72,16 @@
     <div class="" style="margin-left: 20px">
        <div>
             <label id="" class=""  style="margin-left: 5px;font-size:14px">Pilih toko</label>
-            <select class="" id="select_tokoid" name=""  style="margin-top:5px;margin-left:10px" required>
+            <select class="input-modal-global-dash" id="select_tokoid" name=""  style="margin-top:5px;margin-left:25px;width:200px" required>
                 
             </select>
        </div>
        <div style="margin-top: 20px">
-            <label for="tngl"  style="margin-left: 5px;font-size: 14px">Pilih tanggal</label>
-            <input type="date" id="id_tanggal" style="margin-left: 5px">
+            <label for="tngl"   style="margin-left: 5px;font-size: 14px">Pilih tanggal</label>
+            <input type="date"  class="input-modal-global-dash" id="id_tanggal" style="margin-left: 5px;width:200px">
        </div>
        <div style="margin-top: 20px;margin-left:5px">
-            <input id="id_submit" type="submit" value="Submit">
+            <input class="btn-modal2 btn-blue" id="id_submit" type="submit" value="Submit">
        </div>
     </div>
 @endsection
@@ -96,7 +106,7 @@
                     resolve(responseSuccess)
                 },
                 error: function(xhr, status, error) {
-                    reject(error)
+                    reject(xhr)
                 }
             })
         })
@@ -222,7 +232,15 @@
             console.log(tgl);
 
         } catch (error) {
-            alert('error dashboard')
+            const status_msg = error.responseJSON.msg
+            if (status_msg) {
+                Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Anda tidak dapat akses',
+                        })
+            }
+            // alert('error dashboard')
         }
      }
 
