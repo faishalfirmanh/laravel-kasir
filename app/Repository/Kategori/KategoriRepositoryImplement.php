@@ -13,7 +13,7 @@ class KategoriRepositoryImplement implements KategoriRepository{
     }
 
     public function getAllKategori(){
-        $data = $this->model->get();
+        $data = $this->model->with(['productRelasiKategori'])->get();
         return $data;
     }
 
