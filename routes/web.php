@@ -9,6 +9,7 @@ use App\Http\Controllers\WEB\AdminController;
 use App\Http\Controllers\WEB\LaporanController;
 use App\Http\Controllers\WEB\KasirController;
 use App\Http\Controllers\WEB\KategoriServerSideController;
+use App\Http\Controllers\WEB\LogActivityWebController;
 use App\Http\Controllers\WEB\ProductServerSideController;
 use App\Http\Controllers\WEB\RoleController;
 
@@ -58,6 +59,8 @@ Route::get('/api-kategori',[KategoriController::class,'index'])->name('api-kateg
     Route::get('/view-kasir',[KasirController::class,'viewKasir'])->name('view-kasir');
     Route::get('/invoice/{id}',[KasirController::class, 'viewInvoice'])->name('invoice');
 
+
+    Route::get('/view-log-activity',[LogActivityWebController::class, 'index'])->name('view-log-activity');
 
     //laporan
     Route::get('/view-laporan',[LaporanController::class,'viewLaporan'])->name('view-laporan');

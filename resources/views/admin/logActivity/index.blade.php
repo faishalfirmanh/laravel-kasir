@@ -18,17 +18,15 @@
     }
     </style>
 <div class="tables" style="margin-top:20px;">
-   <div class="" style="margin-left:25px">
-      <a href="#" id="add_role" class="btn">Tambah Role</a>
-   </div>
+  
    <section class="table__body">
-      <table class="" id="role-ajax-list" style="width: 100%">
+      <table class="" id="activity-ajax-list" style="width: 100%">
          <thead>
             <tr>
                <th>No</th>
-               <th>Name Role</th>
-               <th>Total User</th>
-               <th>Action</th>
+               <th>Ip</th>
+               <th>Desc</th>
+               <th>Tanggal</th>
             </tr>
          </thead>
          <tbody>
@@ -38,60 +36,23 @@
 </div>
 @endsection
 
-@section('modal_global')
-    @include('admin.role.modal')
-@endsection
+
 
 @push('scripts')
 <script type="text/javascript">
-   // $(function () { 
-   //     var table = $('.role-yajra').DataTable({
-   //        responsive: true,
-   //        processing: true,
-   //        serverSide: true,
-   //        ajax: "{{ route('server-side-role') }}",
-   //        columns: [
-   //              {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-   //              {data: 'name_role', name: 'name_role'},
-   //              {data: 'total_user', name: 'total_user'},
-   //              {
-   //                 data: 'action', 
-   //                 name: 'action', 
-   //                 orderable: false, 
-   //                 searchable: false
-   //              },
-   //        ]
-   //     });
-       
-   //  });
-</script>
-<script type="text/javascript">
    
    $(document).ready(function() {
-      $('#role-ajax-list').DataTable({
+      $('#activity-ajax-list').DataTable({
          "ajax": {
-            "url": "{{ route('get-all-role') }}",
+            "url": "{{ route('get-log-all') }}",
             "dataSrc": "data",/*response data*/
             "beforeSend": function (xhr) {
                xhr.setRequestHeader('Authorization',
                      "Bearer " + `${localStorage.getItem("token")}`);
             },
-            // "success" :function(res){
-            //    if (res.status == 'Token is Invalid') {
-            //       Swal.fire({
-            //                   icon: 'error',
-            //                   title: 'Token invalid',
-            //                   text: 'harap login kembali',
-            //             }).then((result) => {
-            //                   if (result.isConfirmed) {
-            //                      window.location.href = '{{route("home")}}'
-            //                   }
-            //             })
-            //    }
-            // },
             "error": function(xhr, error, thrown) {
                const toJson = JSON.parse(xhr.responseText);
-               if (toJson.status === 'Token is Invalid') {
+               if (toJson.status === 'Token is Invalid' || toJson.status == "Token is Expired") {
                   Swal.fire({
                               icon: 'error',
                               title: 'Oops...',
@@ -102,29 +63,22 @@
                               }
                            })
                }
-              if (toJson.status == "Token is Expired") {
-               Swal.fire({
-                           icon: 'error',
-                           title: 'Oops...',
-                           text: 'Sesi login kedaluarsa, Harap login kembali',
-                        }).then((result) => {
-                           if (result.isConfirmed) {
-                              window.location.href = '{{route("home")}}'
-                           }
-                        })
-              }
             }
          },
          "columns": [
-            { "data": "id" }, 
-            { "data": "name_role"},
-            { "data" : `role_relasi_user.length`},
+            { "data": "id_logActivity" },
+            { "data": "ip" },  
+            { "data": "desc"},
             {
-               render: function(data, type, row) {
-                  const cek = row.role_relasi_user.length < 1 ? `<i onclick="deleteRole(${row.id})" class="far fa-trash-alt" style="background:red" title="delete-product"></i>` : '';
-                  return `<i onclick="editRole(${row.id})" class="far fa-edit" style="margin-right:5px;"></i>` + cek;
-               }
-            }
+                    "data" : `string_date`, render: function(data, type, row){
+                        const aa = row.created_at;
+                        const dt = new Date(aa).toISOString().split('T')[0];
+                        const time_ = new Date(aa).getHours() + ":" + new Date(aa).getMinutes()
+                        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                        const string_date = new Date(dt).toLocaleString("id-ID", options)
+                        return `${string_date} | ${time_}`;
+                    }
+            },
          ]
       });
    });

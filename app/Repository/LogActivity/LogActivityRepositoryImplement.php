@@ -36,6 +36,12 @@ class LogActivityRepositoryImplement implements LogActivityRepository {
 
     }
 
+    public function getAllRepoActivityNopaginate()
+    {
+        $data = $this->model->get();
+        return $data;
+    }
+
     public function getAllLogActivityPaginateAndSearch($request)
     {
         $page = $request->page;

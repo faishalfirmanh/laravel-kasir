@@ -170,7 +170,14 @@
                 
             }
         } catch (error) {
-          alert("error get toko")
+            if (error == 'Unauthorized') {
+                Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Harap login kembali',
+                        })
+            }
+          
         }
     
      }
@@ -241,6 +248,17 @@
                         })
             }
             // alert('error dashboard')
+            if (error.responseJSON.status == "Token is Expired" ) {
+                Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Token expired . Harap login kembali',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '{{ route('home') }}'
+                            }
+                        })
+            }
         }
      }
 

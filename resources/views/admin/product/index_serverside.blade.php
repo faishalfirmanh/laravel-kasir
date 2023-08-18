@@ -124,7 +124,7 @@ $(document).ready(function() {
             "error": function(xhr, error, thrown) {
                const toJson = JSON.parse(xhr.responseText);
               
-               if (toJson.status === 'Token is Invalid') {
+               if (toJson.status === 'Token is Invalid' || toJson.status == "Token is Expired") {
                      Swal.fire({
                         icon: 'error',
                         title: 'Oops...',

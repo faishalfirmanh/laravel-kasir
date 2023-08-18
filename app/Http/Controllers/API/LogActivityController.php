@@ -17,6 +17,12 @@ class LogActivityController extends Controller
         $this->service = $service;
     }
 
+    public function getAllLogActivityControllerNoPaginate(Request $request)
+    {
+        $data = $this->service->getAllNoPaginateServiceLog();
+        return $this->generalResponseV2($data,9);
+    }
+
     public function getAllLogActivityController(Request $request)
     {
         $data = $this->service->getAllActivityService($request);

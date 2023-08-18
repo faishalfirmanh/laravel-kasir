@@ -14,6 +14,12 @@ class LogActivityServiceImplement implements LogActivityService{
         $this->repository = $repository;
     }
 
+    public function getAllNoPaginateServiceLog()
+    {
+        $data = $this->repository->getAllRepoActivityNopaginate();
+        return $data;
+    }
+
     public function getDetailActivityService($req)
     {
         $validated = Validator::make($req->all(),[

@@ -156,6 +156,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     //log-activity
     Route::middleware('rules_cek')->prefix('log_activity')->group(function(){
         Route::controller(LogActivityController::class)->group(function(){
+            Route::get('/get-log-all','getAllLogActivityControllerNoPaginate')->name('get-log-all');//no paginate
             Route::post('/get-all-logActivity','getAllLogActivityController')->name('get-all-logActivity');
             Route::post('/get-detail-logActivity','detailLogActivityController')->name('get-detail-logActivity');
         });

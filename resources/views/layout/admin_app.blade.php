@@ -100,6 +100,12 @@
                         <div class="title">Kasir</div>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('view-log-activity')}}">
+                        <i class="fas fa-balance-scale-right"></i>
+                        <div class="title">Log Activity</div>
+                    </a>
+                </li>
                 <!--tes-->
 
                 {{-- <li>
