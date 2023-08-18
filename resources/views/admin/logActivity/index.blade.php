@@ -63,6 +63,13 @@
                               }
                            })
                }
+               if (xhr.responseJSON.msg == 'tidak dapat akses menu kategori') {
+                  Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Tidak ada akses',
+                     })
+               }
             }
          },
          "columns": [
