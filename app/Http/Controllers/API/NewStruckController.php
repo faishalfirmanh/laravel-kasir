@@ -51,6 +51,12 @@ class NewStruckController extends Controller
         return $this->generalResponseV2($data,2);
     }
 
+    public function getLastStruckController(Request $request)
+    {
+        $data = $this->service->getLastIdStruckService($request);
+        return $this->generalResponseV2($data,8);
+    }
+
     public function listTransactionAll(Request $request)
     {
         $data = $this->service->getAllStruckTransactionService($request);

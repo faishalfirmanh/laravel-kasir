@@ -172,4 +172,11 @@ if (!function_exists('cekCountTransaction')) { //date  = 'yyyy-mm-dd', keuntunga
     }
 }
 
+if (!function_exists('cek_last_id_struck_helper')) {
+    function cek_last_id_struck_helper(){
+        $data = NewStruck::query()->orderBy("id_struck","desc")->limit(1)->get();
+        return $data;
+    }
+}
+
 }

@@ -4,6 +4,7 @@ namespace App\Service\NewStruck;
 
 interface NewStruckService{
     public function getStruckByIdService($request);
+    public function getLastIdStruckService($request);
     public function generateNewStruckService();
     public function UpdateDataStruckService($request);
     public function getProductByIdStruckService($request);

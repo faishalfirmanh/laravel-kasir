@@ -41,6 +41,13 @@ class NewStruckServiceImplement implements NewStruckService{
 
     }
 
+    public function getLastIdStruckService($request)
+    {
+        //$get_last_id = 
+        $get = cek_last_id_struck_helper();// $this->repository->getStruckById($get_last_id);
+        return $get;
+    }
+
     //kurangi stock saat 2, input price user bayar,
     public function UpdateDataStruckService($request)
     {  

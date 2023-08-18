@@ -114,6 +114,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::controller(NewStruckController::class)->group(function(){
             Route::post('/get-struck-id','getStrudById')->name('get-struck-id');
             Route::post('/generate-new-struck','GenerateNewStruck')->name('generate-new-struck');
+            Route::post('/get-last-struck-id','getLastStruckController')->name('get-last-struck-id');
             Route::post('/update-data-struck','UpdateStruck')->name('update-data-struck');
             Route::post('/get-view-struck-barang','getProductByIdStruck')->name('get-view-struck-barang');//menampilkan data struck belum bayar ->progres->done
             Route::post('/get-view-strukc-barang-final','UpdateStruck')->name('get-view-strukc-barang-final');//menampilkan data struck sudah  bayar (final) ->progres
