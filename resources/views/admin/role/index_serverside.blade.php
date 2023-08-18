@@ -185,6 +185,7 @@
       document.getElementById('is_product').checked = false;
       document.getElementById('is_laporan').checked = false;
       document.getElementById('is_kasir').checked = false;
+      document.getElementById('is_log').checked = false;
       modal_close.addEventListener('click', function(e){
          e.preventDefault()
          modal.classList.remove('show-modal')
@@ -209,6 +210,7 @@
       let cek_kategori = document.getElementById('is_kategori').checked ? 1 : 0;
       let cek_toko = document.getElementById('is_toko').checked ? 1 : 0;
       let cek_user = document.getElementById('is_user').checked ? 1 : 0;
+      let cek_log = document.getElementById('is_log').checked ? 1 : 0;
       
       let data_input = {
          'name_role' : input_nama.value,
@@ -217,7 +219,8 @@
          'kasir' : cek_kasir,
          'laporan' :cek_laporan,
          'toko' : cek_toko,
-         'user': cek_user
+         'user': cek_user,
+         'log_activity' : cek_log
       }
       if (cek_id) {
          data_input.id = localStorage.getItem('id_role_hidden')
@@ -290,6 +293,7 @@
             let cek_kasir = data.kasir == '1' ?  $("#is_kasir").attr("checked", true) : $("#is_kasir").attr("checked", false);
             let cek_laporan = data.laporan == '1' ? $("#is_laporan").attr("checked", true) : $("#is_laporan").attr("checked", false)
             let cek_kat = data.kategori == '1' ? document.getElementById("is_kategori").checked = true : document.getElementById("is_kategori").checked = false; 
+            let cek_log = data.log_activity == '1' ? $("#is_log").attr("checked", true) : $("#is_log").attr("checked", false)
             
          },
          error:function(xhr,status, msg){

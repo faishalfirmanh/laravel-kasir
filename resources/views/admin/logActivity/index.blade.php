@@ -63,7 +63,7 @@
                               }
                            })
                }
-               if (xhr.responseJSON.msg == 'tidak dapat akses menu kategori') {
+               if (xhr.responseJSON.msg == 'tidak dapat akses menu log_activity') {
                   Swal.fire({
                         icon: 'error',
                         title: 'Oops...',

@@ -72,6 +72,10 @@
                 <label id="id_label_laporan" class="text-label-modal" for="laporan" style="">Laporan</label>
                 <input class="input-modal-global is_laporan_class" id="is_laporan"  type="checkbox" style="">
             </div>
+            <div class="input-group-tes">
+                <label id="id_label_log" class="text-label-modal" for="laporan" style="">Log Activity</label>
+                <input class="input-modal-global is_log_class" id="is_log"  type="checkbox" style="">
+            </div>
             <div class="btn-group-modal2">
                 <button type="submit" class="btn-modal2 btn-blue">Submit</button>
                 <button class="btn-modal2 btn-light-modal2 modal__close_2">Cancel</button>
