@@ -53,6 +53,7 @@ class NewStruckController extends Controller
 
     public function getLastStruckController(Request $request)
     {
+        //get last id
         $data = $this->service->getLastIdStruckService($request);
         return $this->generalResponseV2($data,8);
     }
