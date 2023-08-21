@@ -84,7 +84,7 @@ class UserController extends Controller
             if (password_verify($pass, $search_data->password)) {
                 
                //jwt
-               $myTTL = 5;//60*24*5; //minutes expired jwt (5 days)
+               $myTTL = 60 * 10;//60*24*5; //minutes expired jwt (5 days) //ttl perminutes
                JWTAuth::factory()->setTTL($myTTL);
                try {
                     if (! $token = JWTAuth::attempt($credentials)) {

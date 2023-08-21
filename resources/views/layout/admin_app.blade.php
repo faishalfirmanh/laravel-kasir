@@ -94,12 +94,12 @@
                         <div class="title">Transaction</div>
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route('view-kasir') }}">
                         <i class="fa fa-cart-plus" aria-hidden="true"></i>
                         <div class="title">Kasir</div>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{route('view-log-activity')}}">
                         <i class="fas fa-balance-scale-right"></i>

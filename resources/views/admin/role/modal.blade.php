@@ -53,16 +53,16 @@
                 <input class="input-modal-global is_kategori_class" id="is_kategori"  type="checkbox" style="">
             </div>
             <div class="input-group-tes">
+                <label id="id_label_toko" class="text-label-modal" for="toko" style="">Toko</label>
+                <input class="input-modal-global is_toko_class" id="is_toko"  type="checkbox" style="">
+            </div>
+            <div class="input-group-tes">
                 <label id="id_label_product" class="text-label-modal" for="product" style="">Product</label>
                 <input class="input-modal-global is_product_class" id="is_product"  type="checkbox" style="">
             </div>
             <div class="input-group-tes">
                 <label id="id_label_user" class="text-label-modal" for="user" style="">User</label>
                 <input class="input-modal-global is_user_class" id="is_user"  type="checkbox" style="">
-            </div>
-            <div class="input-group-tes">
-                <label id="id_label_toko" class="text-label-modal" for="toko" style="">Toko</label>
-                <input class="input-modal-global is_toko_class" id="is_toko"  type="checkbox" style="">
             </div>
             <div class="input-group-tes">
                 <label id="id_label_kasir" class="text-label-modal" for="kasir" style="">Kasir</label>

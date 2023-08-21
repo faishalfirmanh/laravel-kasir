@@ -289,15 +289,18 @@
             document.getElementById('form-role').appendChild(input); 
             localStorage.setItem("id_role_hidden", id);
             //create input tipe hidden for edit
+            let cek_kat = data.kategori == '1' ? document.getElementById("is_kategori").checked = true : document.getElementById("is_kategori").checked = false; 
+            let cek_toko = data.toko == '1' ? document.getElementById("is_toko").checked = true : document.getElementById("is_toko").checked = false; 
             let cek_product = data.product == '1' ? $("#is_product").attr("checked", true) : $("#is_product").attr("checked", false)
+            let cek_user = data.user == '1' ? $("#is_user").attr("checked", true) : $("#is_user").attr("checked", false)
             let cek_kasir = data.kasir == '1' ?  $("#is_kasir").attr("checked", true) : $("#is_kasir").attr("checked", false);
             let cek_laporan = data.laporan == '1' ? $("#is_laporan").attr("checked", true) : $("#is_laporan").attr("checked", false)
-            let cek_kat = data.kategori == '1' ? document.getElementById("is_kategori").checked = true : document.getElementById("is_kategori").checked = false; 
+           
             let cek_log = data.log_activity == '1' ? $("#is_log").attr("checked", true) : $("#is_log").attr("checked", false)
             
          },
          error:function(xhr,status, msg){
-
+            console.log("error role detail");
          }
       })
       //ajax
