@@ -105,7 +105,7 @@ class RepoPatern extends Command
         $dir_repository = "App\Repository\\";
         $folderPathRepo = 'App/Repository/'.$name_repo;
         if (!file_exists($folderPathRepo)) {
-            if ( mkdir($folderPathRepo, 0755, true)) {
+            if ( mkdir($folderPathRepo, 0755, true)) { //0755, permision php
                 /** sukses create folder */
                 if (file_exists($dir_repository)) {
                     $cek_repo_exsis = "App\Repository\\".$name_repo."\\".$name_repo."Repository.php";
@@ -140,7 +140,107 @@ class RepoPatern extends Command
       
     }
 
-    public function createServiceValidate(){
+    public function defaultFunctionService($name_service,$id,$is_implement)
+    {
+        $request = "$"."request".",".$id;
+        if ($is_implement == 1) {
+            return  "\tpublic function getAll".$name_service."Service"."()"."\n"  ."\t{"."\n"."\t}"."\n" ."\n"        
+            ."\tpublic function getByID".$name_service."Service"."($request)"."\n"     ."\t{"."\n"."\t}"."\n" ."\n"
+            ."\tpublic function saved".$name_service."Service"."($request)"."\n"       ."\t{"."\n"."\t}"."\n" ."\n"
+            ."\tpublic function deleted".$name_service."Service"."($request)"."\n"     ."\t{"."\n"."\t}"."\n" ."\n";
+        }else{
+            return  "\tpublic function getAll".$name_service."Service"."();"."\n"     
+            ."\tpublic function getByID".$name_service."Service"."($request);"."\n"
+            ."\tpublic function saved".$name_service."Service"."($request);"."\n"  
+            ."\tpublic function deleted".$name_service."Service"."($request);"."\n";
+        }
+       
+    }
+
+    public function writeCodeInFileRepo($isImplement,$dir_name, $name_repo_patern){
+        $id = "$"."id";
+        $cek_default_fuction = 
+                $isImplement == 1 ? 
+                $this->defaultFunctionService($name_repo_patern,$id,1):
+                $this->defaultFunctionService($name_repo_patern,$id,0);
+        $validator = "Illuminate\Support\Facades\Validator";
+        $repo = "App\Repository\\".$name_repo_patern."\\".$name_repo_patern."Repository;". "\n";
+        if ($isImplement == 1) {
+            $var_repo = "$".$name_repo_patern."RepoVariable";
+            $var_construct = $name_repo_patern."Repository"." ".$var_repo;
+            $param_this = "$"."this->".$var_repo ."  "."=". $var_repo;
+            return  "<?php \n".
+                        "namespace ".$dir_name.";"."\n".
+                        "use ".$validator .";"."\n".
+                        "use ".$repo.";"."\n".
+                        "class ".$name_repo_patern."Service"." implements ".$name_repo_patern."Service"."{ \n"."\n". 
+                            "\t protected ".$var_repo.";\n\n".
+
+                            "\tpublic function __construct(".$var_construct.")"."\n"
+                            ."\t{"."\n"."\n"
+
+                                ."\t    ".$param_this .";" . "\n"
+
+                            ."\t}"
+                            ."\n"."\n"
+                            
+                            .$cek_default_fuction
+                            
+                            
+                        ."}";
+        }else{
+            return  "<?php \n".
+                        "namespace ".$dir_name.$name_repo_patern.";"."\n".
+                        "interface ".$name_repo_patern."Service"."{ \n"."\n"
+                            
+                            .$cek_default_fuction
+                    
+                            
+                        ."}";
+        }
+    }
+
+    public function createServiceValidate($name_service){
+        $dir_service = "App\Service\\";
+        $name_space_folder = $dir_service.$name_service;
+        $folderPathSerc = 'App/Service/'.$name_service;
+        if (!file_exists($folderPathSerc)) {
+            if ( mkdir($folderPathSerc, 0755, true)) { //0755, permision php
+                /** sukses create folder */
+                if (file_exists($dir_service)) {
+                    $cek_repo_exsis = "App\Service\\".$name_service."\\".$name_service."Service.php";
+                    if (file_exists($cek_repo_exsis)) {
+                        unlink($cek_repo_exsis);
+                        $createService = fopen('./App/Service/'.$name_service.'/'.$name_service.'Service'.'.php', 'x');
+                        $write_Service = $this->writeCodeInFileRepo(0,$name_space_folder, $name_service);
+                        fwrite($createService, $write_Service);
+
+                        $create_ServiceImplement =  fopen('./App/Service/'.$name_service.'/'.$name_service.'ServiceImplement'.'.php', 'x');
+                        $write_Service_implement = $this->writeCodeInFileRepo(1,$name_space_folder, $name_service);
+                        fwrite($create_ServiceImplement, $write_Service_implement);
+                        $this->info("sukses create service");
+                    }else{
+                        $createService = fopen('./App/Service/'.$name_service.'/'.$name_service.'Service'.'.php', 'x');
+                        $write_Service = $this->writeCodeInFileRepo(0,$name_space_folder, $name_service);
+                        fwrite($createService, $write_Service);
+                        
+                        $create_ServiceImplement =  fopen('./App/Service/'.$name_service.'/'.$name_service.'ServiceImplement'.'.php', 'x');
+                        $write_Service_implement = $this->writeCodeInFileRepo(1,$name_space_folder, $name_service);
+                        fwrite($create_ServiceImplement, $write_Service_implement);
+                        $this->info("sukses create service");
+                    }
+                 /** sukses create folder */
+                }else{
+                    $this->error('folder service tidak ada harap dibuat');
+                }
+            } else {
+                $this->error('folder service gagal dibuat');
+            }
+        }
+        else{
+            $this->error("Folder  already exists at $folderPathSerc");
+        }
+
 
     }
     /**
@@ -160,12 +260,14 @@ class RepoPatern extends Command
                 $write_controller = $this->textInFile($dir_name,$name_repo_patern);
                 fwrite($createController, $write_controller);
                 $this->createRepository($name_repo_patern);
+                $this->createServiceValidate($name_repo_patern);
                 $this->info("sukses create controller");
             }else{
                 $createController = fopen('./App/Http/Controllers/API/'.$name_repo_patern.'Controller'.'.php', 'x');
                 $write_controller = $write_controller = $this->textInFile($dir_name,$name_repo_patern);
                 fwrite($createController, $write_controller);
                 $this->createRepository($name_repo_patern);
+                $this->createServiceValidate($name_repo_patern);
                 $this->info("sukses create controller");
             }
            
