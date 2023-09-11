@@ -44,7 +44,7 @@
 
         .style-price-buy-problem{
             text-align: center;
-            background: #e01b1b;
+            background: #dde01b;
             border-radius: 5px;
             height: 23px;
             width: 70%;
@@ -164,7 +164,9 @@ $(document).ready(function() {
                         const kondisi_beli = row.harga_beli;
                         return kondisi_beli.toLocaleString();
                     }else{
-                        const kondisi_beli = '<div class="style-price-buy-problem" style="backgroud-color:red;color:white">data bermasalah</div>';
+                        const kondisi_beli = `<div class="style-price-buy-problem" style="backgroud-color:red;color:black">
+                            (total ${row.price_buy_product_custom.length})
+                            </div>`;
                         return kondisi_beli;
                     }
                     
@@ -267,7 +269,7 @@ $(document).ready(function() {
                 name_.value = ''
                 harga_beli.value = ''
                 berat.value = ''
-                expired.value = numDate.toDateInputValue();
+                expired.value = '';//numDate.toDateInputValue() -> default date now;
 
                 //ajax list kategori
                 $.ajax({

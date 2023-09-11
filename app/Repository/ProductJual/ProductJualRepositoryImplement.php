@@ -37,6 +37,7 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
             $data = $this->model
             ->select("*")
             ->join("products","product_juals.product_id","=","products.id_product")
+            ->leftJoin("product_belis","product_juals.product_beli_id","=","product_belis.id_product_beli")
             ->where("products.toko_id",$toko_id)
             ->where(function($query){
                 $query->where('products.pcs', '>', 0);
@@ -48,6 +49,7 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
             $data = $this->model
             ->select("*")
             ->join("products","product_juals.product_id","=","products.id_product")
+            ->leftJoin("product_belis","product_juals.product_beli_id","=","product_belis.id_product_beli")
             ->where("products.toko_id",$toko_id)
             ->where(function($query){
                 $query->where('products.pcs', '>', 0);
@@ -61,7 +63,8 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
             $coll = new stdClass();
             $coll->idProduct = $key->id_product;
             $coll->id_product_jual = $key->id_product_jual;
-            $coll->nama_product = $key->nama_product." | ".$key->start_kg."-".$key->end_kg." ".$cek_kg_or_pcs .' | '.number_format($key->price_sell);
+            $custom_price_buy = $key->product_beli_id != NULL ? $key->nama_product_variant : $key->start_kg."-".$key->end_kg." ".$cek_kg_or_pcs;
+            $coll->nama_product = $key->nama_product." | ".$custom_price_buy.' | '.number_format($key->price_sell);
             $coll->harga_jual = $key->price_sell;
             array_push($data_val,$coll);
         }

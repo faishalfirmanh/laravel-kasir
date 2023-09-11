@@ -710,9 +710,11 @@
                         if (xhr.responseJSON.data.nama_product_variant) {
                             alert("Gagal nama variatn sudah digunakan");
                         }
-                        if (xhr.responseJSON.data.harga_beli_custom) {
-                            alert(toJsonError.data.harga_beli_custom[0]);
-                        }
+                        //validaasi jika price buy product sudah di set, maka price beli custom tidak bisa diset
+                        // if (xhr.responseJSON.data.harga_beli_custom) {
+                        //     alert(toJsonError.data.harga_beli_custom[0]);
+                        //     console.log(toJsonError.data.harga_beli_custom[0]);
+                        // }
                     }
                     
                 }

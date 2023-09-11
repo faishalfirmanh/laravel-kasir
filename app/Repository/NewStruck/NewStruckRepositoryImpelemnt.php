@@ -74,11 +74,12 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
     
         $data = $this->model
         ->select('keranjang_kasirs.id_keranjang_kasir','new_strucks.id_struck',
-        'products.nama_product','products.is_kg','product_juals.start_kg','product_juals.end_kg','product_juals.id_product_jual',
+        'products.nama_product','products.is_kg','product_juals.start_kg','product_juals.end_kg','product_juals.id_product_jual','product_juals.product_beli_id','product_belis.nama_product_variant',
         'keranjang_kasirs.harga_tiap_item','keranjang_kasirs.jumlah_item_dibeli','keranjang_kasirs.total_harga_item')
         ->join('keranjang_kasirs','new_strucks.id_struck','=','keranjang_kasirs.struck_id')
         ->join('product_juals','keranjang_kasirs.product_jual_id','=','product_juals.id_product_jual')
         ->join('products','product_juals.product_id','=','products.id_product')
+        ->leftJoin("product_belis","product_juals.product_beli_id","=","product_belis.id_product_beli")
         ->where('keranjang_kasirs.struck_id',$id)
         ->get();
         return $data;

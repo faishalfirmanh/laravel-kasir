@@ -63,7 +63,8 @@ class ProductBeliServiceImplement implements ProductBeliService{
         $validated = Validator::make($request->all(),[
             'nama_product_variant' => $cek_,
             'product_id' => 'required|integer|exists:products,id_product',
-            'harga_beli_custom' => ['required','integer', new RulesCekInputHargaBeliCustom($request->product_id)]
+            'harga_beli_custom' => ['required','integer' //new RulesCekInputHargaBeliCustom($request->product_id)
+            ]
         ]);
         if ($validated->fails()) {
             return $validated->errors();
