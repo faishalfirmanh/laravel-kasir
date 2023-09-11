@@ -344,6 +344,27 @@
                     .then(function(res_save){
                         let pesan = res_save.msg
                         if (pesan == 'success') {
+                            if (res_save.data.id == localStorage.getItem("userId")) {
+                                $.ajax({
+                                    type: 'post',
+                                    beforeSend: function(xhr) {
+                                        xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                                    },
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    url: `{{ route('logout-api') }}`,
+                                    success: function(res) {
+
+                                        localStorage.removeItem("userId");
+                                        localStorage.removeItem("token");
+                                        localStorage.removeItem("name_login");
+                                        if (res.message == 'Logout Berhasil!') {
+                                            window.location.href = '{{ route('home') }}'
+                                        }
+                                    }
+                                })
+                            }
                             Swal.fire(
                                 'Change!',
                                 'User has been change password.',

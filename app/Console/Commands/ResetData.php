@@ -4,6 +4,9 @@ namespace App\Console\Commands;
 
 use App\Models\KeranjangKasir;
 use App\Models\NewStruck;
+use App\Models\Product;
+use App\Models\ProductBeli;
+use App\Models\ProductJual;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -33,6 +36,21 @@ class ResetData extends Command
         parent::__construct();
     }
 
+    public function deleteProductJual(){
+        $model = ProductJual::getQuery()->delete();
+        return $model;
+    }
+
+    public function deleteProductBeli(){
+        $model = ProductBeli::getQuery()->delete();
+        return $model;
+    }
+
+    public function deleteProduct(){
+        $model = Product::getQuery()->delete();
+        return $model;
+    }
+
     public function deleteDataKeranjang(){
         $model = KeranjangKasir::getQuery()->delete();
         return $model;
@@ -48,6 +66,10 @@ class ResetData extends Command
         try {
            $this->deleteDataKeranjang();
            $this->deleteDataStruck();
+           $this->deleteProductJual();
+           $this->deleteProductBeli();
+           $this->deleteProduct();
+
             DB::commit(); 
             $save_db = true;
         } catch (\Exception $e) {
