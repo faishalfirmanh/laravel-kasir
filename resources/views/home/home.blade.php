@@ -33,6 +33,7 @@
                     <a href="#" id="hrefhome" class="nav-item nav-link active">Home</a>
                     <a href="#" id="hrefabout" class="nav-item nav-link">About</a>
                     <a href="#" id="hrefproduct" class="nav-item nav-link">Product</a>
+                    <a href="#" id="loginbtnn" class="nav-item nav-link">Login</a>
                     <!-- <div class="nav-item dropdown">
                               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                               <div class="dropdown-menu m-0">
@@ -279,7 +280,14 @@
             })
         });
 
-        $("#onlogin").on('click', function() {
+        $("#loginbtnn").on('click', function() {
+
+            $("#hrefhome").removeClass("active");
+            $("#hrefproduct").removeClass("active");
+            $("#hrefcontact").removeClass("active")
+            $("#hrefabout").removeClass("active");
+            $("#loginbtnn").addClass('active')
+
             console.log('modal login');
             Swal.fire({
                 title: 'Login',

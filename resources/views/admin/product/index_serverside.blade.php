@@ -496,7 +496,13 @@ $(document).ready(function() {
                     selectElement('kategori_select', response.data.kategori_id)
                     selectElement('toko_select', response.data.toko_id)
                     let dd = new Date(Date.parse(response.data.expired));
-                    expired.value = response.data.expired != null ? dd.toDateInputValue() : '';
+                    //expired.value = response.data.expired != null ? dd.toDateInputValue() : '';
+                    if (response.data.expired != null && response.data.expired != "0000-00-00") {
+                        expired.value = dd.toDateInputValue();
+                    }
+                    else{
+                        expired.value = "";
+                    }
                     //get
                     const h3_title = document.getElementById('title_modal').textContent = 'Update Product';
                     var input = document.createElement("input");
