@@ -18,6 +18,11 @@ class ProductServerSideController extends Controller
         return view('admin.product.index_serverside');
     }
 
+    public function viewProductUpload()
+    {
+        return view('admin.uploadproduct.index');
+    }
+
     public function getProduct(Request $request)
     {
         if ($request->ajax()) {

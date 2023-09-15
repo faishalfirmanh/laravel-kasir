@@ -89,6 +89,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('view-product-upload') }}">
+                        <i class="fa fa-file-alt"></i>
+                        <div class="title">Product Upload</div>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('view-laporan') }}">
                         <i class="fas fa-money-bill-alt"></i>
                         <div class="title">Transaction</div>

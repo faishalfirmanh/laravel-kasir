@@ -46,6 +46,7 @@ Route::get('/api-kategori',[KategoriController::class,'index'])->name('api-kateg
     Route::get('/detail-price-product/{id_product}',[ProductServerSideController::class,'detailPriceProduct'])->name('detail-price-product');
     Route::get('/server-price-product/{id}',[ProductServerSideController::class,'getPriceListProductDetail'])->name('server-price-product');
     Route::get('/view-product', [ProductServerSideController::class, 'viewProduct'])->name('view-product');
+    Route::get('/view-product-upload', [ProductServerSideController::class, 'viewProductUpload'])->name('view-product-upload');
     Route::get('/view-user',[UserControllerWeb::class,'index'])->name('view-user');
     //toko
     Route::get('/view-toko',[TokoController::class,'viewToko'])->name('view-toko');
