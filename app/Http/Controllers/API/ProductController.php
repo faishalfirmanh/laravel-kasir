@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Service\Product\ProductService;
 use Illuminate\Http\Request;
 use App\Http\Traits\ResponseApi;
+use App\Service\Product\UploadProduct;
 use App\Service\ProductJual\ProductJualService;
 
 class ProductController extends Controller
@@ -13,10 +14,11 @@ class ProductController extends Controller
     //
     use ResponseApi;
     protected $service;
-    public function __construct(ProductService $service, ProductJualService $product_jual_service)
+    public function __construct(ProductService $service, ProductJualService $product_jual_service, UploadProduct $uploadExcel)
     {
         $this->service = $service;
         $this->product_jual_service = $product_jual_service;
+        $this->uploadExcel = $uploadExcel;
     }
 
     public function store(Request $request)
@@ -110,6 +112,13 @@ class ProductController extends Controller
     {
         $data = $this->product_jual_service->getProductJualSearchService($request);
         return $this->responseSucess($data);
+    }
+
+    public function uploadExcelProductController(Request $request)
+    {
+        $data = $this->uploadExcel->validasiUploadExcel($request);
+        return $this->generalResponseV2($data,1);
+       
     }
 
 }

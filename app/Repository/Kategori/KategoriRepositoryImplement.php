@@ -105,4 +105,10 @@ class KategoriRepositoryImplement implements KategoriRepository{
         return $ress;
     }
 
+    public function getKategoriByName($req){
+        $name = trim(strtolower($req));
+        $get =$this->model->where('nama_kategori',$name)->first();
+        return $get;
+    }
+
 }

@@ -72,6 +72,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('/product-all-no-paginate','getAllProductController')->name('product-all-no-paginate');
         Route::post('/product-add', 'store')->name('product-add');
         Route::post('/product-delete', 'remove')->name('product-delete');
+        Route::post('/product-upload-excel', 'uploadExcelProductController')->name('product-upload-excel');
     
         //product jual
         Route::post('/product-jual-byid-product','getProductJualByIdProduct')->name('product-jual-byid-product');

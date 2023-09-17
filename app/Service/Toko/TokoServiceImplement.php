@@ -51,6 +51,18 @@ class TokoServiceImplement implements TokoService{
         return  $get_data;
     }
 
+    public function GetTokoByNameService($req){
+        $validated = Validator::make($req->all(),[
+            'nama_toko' => 'string|exists:tokos,nama_toko'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        $name = trim(strtolower($req->nama_toko));
+        $get_data = $this->repository->getTokoByName($name);
+        return  $get_data;
+    }
+
     public function PostTokoService($request, $id)
     {
         if ($id > 0) {

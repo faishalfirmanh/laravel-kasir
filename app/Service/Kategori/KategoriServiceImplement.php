@@ -43,6 +43,18 @@ class KategoriServiceImplement implements KategoriService{
         return $data;
     }
 
+    public function getKategoryByNameService($req){
+        $validated = Validator::make($req->all(),[
+            'nama_kategori' => 'string|exists:kategoris,nama_kategori'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        $name = trim(strtolower($req->nama_kategori));
+        $get_data = $this->kategoriRepository->getKategoriByName($name);
+        return  $get_data;
+    }
+
     public function getKategoriByidServiceFix($request){
         $validated = Validator::make($request->all(),[
             'id_kategori' => 'required|exists:kategoris,id_kategori'

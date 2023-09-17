@@ -4,8 +4,34 @@ use App\Models\KeranjangKasir;
 use App\Models\NewStruck;
 use App\Models\Product;
 use App\Models\ProductJual;
+use App\Models\Kategori;
+use App\Models\Toko;
 use Illuminate\Support\Facades\DB;
 
+
+if (!function_exists('cek_toko_by_name')) {
+    function cek_toko_by_name($name){
+        $name_val = trim(strtolower($name));
+        $get = Toko::query()->where('nama_toko',$name_val)->first();
+        return $get;
+    }
+}
+
+if (!function_exists('cek_kategory_by_name')) {
+    function cek_kategory_by_name($name){
+        $name_val = trim(strtolower($name));
+        $get = Kategori::query()->where('nama_kategori',$name_val)->first();
+        return $get;
+    }
+}
+
+if (!function_exists('cek_product_by_name')) {
+    function cek_product_by_name($name){
+        $name_val = trim(strtolower($name));
+        $get = Product::query()->where('nama_product',$name_val)->first();
+        return $get;
+    }
+}
 
 if(!function_exists('getObject')){
     function getObject($data,$isIndex = null){//jika index bernilai 1

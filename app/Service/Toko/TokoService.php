@@ -8,4 +8,5 @@ interface TokoService{
     public function GetAllTokoService($request);
     public function GetAllTokoServicePaginateAndSearch($request);
     public function GetTokoByIdService($id);
+    public function GetTokoByNameService($name);
 }

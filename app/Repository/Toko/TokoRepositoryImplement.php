@@ -111,4 +111,10 @@ class TokoRepositoryImplement implements TokoRepository{
         return $model->delete();
     }
 
+    public function getTokoByName($name){
+        $nameee = trim(strtolower($name));
+        $get =$this->model->where('nama_toko',$nameee)->first();
+        return $get;
+    }
+
 }
