@@ -101,8 +101,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Start kg</th>
-                        <th>End kg</th>
+                        <th>Satuan berat item</th>
                         <th>Harga Jual</th>
                         <th>Harga Beli</th>
                         <th>Action</th>
@@ -190,10 +189,7 @@
                         "data": "id_product_jual"
                     },
                     {
-                        "data": "start_kg"
-                    },
-                    {
-                        "data": `end_kg`
+                        "data": "satuan_berat_item"
                     },
                     {
                         "data" : "price_sell.toLocaleString()"

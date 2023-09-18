@@ -69,7 +69,7 @@ class ProductController extends Controller
     {
         $data = $this->product_jual_service->getProductJualByIdProductService($request);
         // $cek = count($data) > 0 ? $this->responseSucess($data) : $this->responseError($data);
-        return $this->generalResponseV2($data,10);
+        return $this->generalResponseV2($data,9);
 
     }
 
@@ -87,7 +87,7 @@ class ProductController extends Controller
 
     public function save_price_sell_product(Request $request){
         $data = $this->product_jual_service->postProductJualService($request,$request->id);
-        return $this->generalResponseV2($data,8);
+        return $this->generalResponseV2($data,7);
     }
 
     public function remove_price_sell_product(Request $request){

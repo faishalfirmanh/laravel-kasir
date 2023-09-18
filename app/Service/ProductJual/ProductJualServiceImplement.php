@@ -70,8 +70,7 @@ class ProductJualServiceImplement implements ProductJualService{
         $productId = $request->product_id;
         $validated = Validator::make($request->all(),[
             'product_id' => 'required|integer|exists:products,id_product',
-            'start_kg' => 'required|integer',
-            'end_kg' => 'required|integer',
+            'satuan_berat_item' => 'required|numeric',
             'price_sell' => ['required','integer', new RulesCekPriceLessThan($request->product_id)],
             'product_beli_id'=>['integer','exists:product_belis,id_product_beli',
                             'nullable'

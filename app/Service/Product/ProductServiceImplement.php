@@ -70,7 +70,7 @@ class ProductServiceImplement implements ProductService{
             $kondisi_ = 'unique:products,nama_product';
         }
 
-        $cek_kondisi_stock_kg = $data->is_kg == 1 ? 'required|integer' : '';
+        $cek_kondisi_stock_kg = $data->is_kg == 1 ? 'required|numeric' : '';
         $cek_kondisi_stock_pcs = $data->is_kg == 0 ? 'required|integer' : '';
         
         $validated = Validator::make($data->all(),[
