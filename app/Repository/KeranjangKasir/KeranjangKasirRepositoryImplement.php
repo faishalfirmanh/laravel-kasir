@@ -46,6 +46,7 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         $modal_save->total_harga_item = $request->total_harga_item;
         $modal_save->status = 0;
         $modal_save->struck_id  = $request->struck_id;
+        $modal_save->total_decimal_buy_for_stock  = $request->total_decimal_buy_for_stock;
         $modal_save->save();
         return $modal_save->fresh();
     }
@@ -90,11 +91,12 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         return $param_save;
     }
 
-    public function Add1JumlahKerajang($id,$item_dibeli,$total_harga_item)
+    public function Add1JumlahKerajang($id,$item_dibeli,$total_harga_item,$total_stock_decimal)
     {
         $modal_save = $this->model->query()->where('id_keranjang_kasir',$id)->first();
         $modal_save->jumlah_item_dibeli = $item_dibeli;
         $modal_save->total_harga_item = $total_harga_item;
+        $modal_save->total_decimal_buy_for_stock  = $total_stock_decimal;
         $modal_save->save();
         return $modal_save->fresh();
     }

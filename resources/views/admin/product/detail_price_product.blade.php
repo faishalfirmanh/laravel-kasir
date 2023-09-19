@@ -102,6 +102,7 @@
                     <tr>
                         <th>No</th>
                         <th>Satuan berat item</th>
+                        <th>Subname</th>
                         <th>Harga Jual</th>
                         <th>Harga Beli</th>
                         <th>Action</th>
@@ -192,6 +193,9 @@
                         "data": "satuan_berat_item"
                     },
                     {
+                        "data": "subname"
+                    },
+                    {
                         "data" : "price_sell.toLocaleString()"
                     },
                     {
@@ -223,6 +227,7 @@
 
         const input_price_sell = document.getElementById('price_sell');
         const input_start_kg = document.getElementById('satuan_berat_item');
+        const subname = document.getElementById('subname');
        
         const input_price_buy = document.getElementById('price_buy')
 
@@ -235,6 +240,7 @@
 
                 input_price_sell.value = '';
                 input_start_kg.value = '';
+                subname.value = '';
                 input_price_buy.value = 0;
 
                 if (document.getElementById('id_product_jual_hidden')) {
@@ -323,7 +329,8 @@
                 'product_id': parseInt($("#id_prd").val()),
                 'satuan_berat_item': input_start_kg.value,
                 'price_sell': input_price_sell.value,
-                'product_beli_id' : cek_input_price_buy
+                'product_beli_id' : cek_input_price_buy,
+                'subname' : subname.value
             }
 
             //console.log(cek_input_price_buy);
@@ -438,6 +445,7 @@
                         
                         input_start_kg.value = response.data.satuan_berat_item;
                         input_price_sell.value = response.data.price_sell;
+                        subname.value = response.data.subname;
                         const cek_select_price_beli = response.data.product_beli_id == undefined ? 0 : response.data.product_beli_id
                         if (cek_select_price_beli > 0) {
                             $.ajax({

@@ -254,6 +254,7 @@ $(document).ready(function() {
         const berat = document.getElementById('total_satuan')
         const is_kg_check = document.getElementById('is_kg')
         const expired = document.getElementById('expired')
+        let subname = $("#subname").val();
         //input
         const all_toogle = document.querySelectorAll('[data-toggle="modal2"]')
         all_toogle.forEach(btn => {
@@ -492,6 +493,7 @@ $(document).ready(function() {
                     //get
                     name_.value = response.data.nama_product;
                     harga_beli.value = response.data.harga_beli;
+                    subname.value = response.data.subname;
                     const cek_is_berat = response.data.is_kg == 0 ? response.data.pcs : response.data.total_kg;
                     berat.value = cek_is_berat
                     response.data.is_kg == 0 ? is_kg_check.checked = false : is_kg_check.checked = true;

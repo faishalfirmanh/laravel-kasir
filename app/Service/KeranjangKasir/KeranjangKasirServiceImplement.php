@@ -47,7 +47,9 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         $data_keranjang = $this->repository->getKeranjangById($request->id_keranjang_kasir);
         $data_struck = $this->repo_struck->getStruckById($data_keranjang->struck_id);
         $find_data_product_jual = $this->repo_product_jual->getProductJualById($data_keranjang->product_jual_id);
-        
+        $satuan_item_jual = $find_data_product_jual->satuan_berat_item;
+        $request->total_decimal_buy_for_stock = 1 * $satuan_item_jual;
+
         if ($data_struck->status == 4) {
            $msg_err = ['status_struck' => 'id struck '.$data_keranjang->struck_id. ' tidak dapat digunakan, generate struck baru'];
            return $msg_err;
@@ -85,7 +87,8 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
             }else{
                 $update_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
                 (int) $data_keranjang->jumlah_item_dibeli + 1,
-                (int) $data_keranjang->total_harga_item + $data_keranjang->harga_tiap_item);     
+                (int) $data_keranjang->total_harga_item + $data_keranjang->harga_tiap_item,
+                      $data_keranjang->total_decimal_buy_for_stock +  $request->total_decimal_buy_for_stock);     
             }
             //update keranjang->ok
             //update struck->ok                   
@@ -140,7 +143,8 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         }
         //cek in product jual
         //get db
-
+        $satuan_item_jual = $find_data_product_jual->satuan_berat_item;
+        $request->total_decimal_buy_for_stock = 1 * $satuan_item_jual;
         
         //save db
         DB::beginTransaction();
@@ -164,7 +168,8 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
                 }else{
                     $save_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
                                                                             (int) $data_keranjang->jumlah_item_dibeli - 1,
-                                                                            (int) $data_keranjang->total_harga_item - $data_keranjang->harga_tiap_item
+                                                                            (int) $data_keranjang->total_harga_item - $data_keranjang->harga_tiap_item,
+                                                                            $data_keranjang->total_decimal_buy_for_stock - $request->total_decimal_buy_for_stock
                                                                         );      
                     }
             }
@@ -232,23 +237,27 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
        
         $find_data_struck = $this->repo_struck->getStruckById($request->struck_id);
         $total_price_item = (int)$find_data_product_jual->price_sell * (int)$request->jumlah_item_dibeli;
+        $satuan_item_jual = $find_data_product_jual->satuan_berat_item;
+       
         //keranjang
         $request->total_harga_item = $total_price_item;
         $request->harga_tiap_item = $find_data_product_jual->price_sell;
+        $request->total_decimal_buy_for_stock = 1 * $satuan_item_jual;
+       
         //cek if product & struc id eksis
         $data_keranjang = $this->repository->CekIdProductAndSturckIdInKeranjang($request->product_jual_id,$request->struck_id);
         
         $data_all_keranjang = $this->repository->getAllKeranjangByIdKasir($request->struck_id);
-        foreach ($data_all_keranjang as $key => $value) {
+        //foreach ($data_all_keranjang as $key => $value) {
             //validasi 1 transaksi hanya boleh 1 variant
-            $product_exsis =  $this->repo_product_jual->getProductJualById($value->product_jual_id);
-            if ($product_exsis->id_product_jual != $find_data_product_jual->id_product_jual) {
-                if ($product_exsis->product_id == $find_data_product_jual->product_id) {
-                    $msg_err = ['id_keranjang_kasir' => '1 transaksi hanya boleh 1 macam variant'];
-                    return $msg_err;
-                }
-            }
-        }
+        //    $product_exsis =  $this->repo_product_jual->getProductJualById($value->product_jual_id);
+        //    if ($product_exsis->id_product_jual != $find_data_product_jual->id_product_jual) {
+        //        if ($product_exsis->product_id == $find_data_product_jual->product_id) {
+        //            $msg_err = ['id_keranjang_kasir' => '1 transaksi hanya boleh 1 macam variant'];
+        //            return $msg_err;
+        //        }
+        //    }
+        //}
         
         //save to db
         DB::beginTransaction();
@@ -257,7 +266,8 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
                 $id_keranjang_kasir = $data_keranjang->id_keranjang_kasir;
                 $data_add_keranjang = $this->repository->Add1JumlahKerajang($id_keranjang_kasir,
                                                     (int) $data_keranjang->jumlah_item_dibeli + (int) $request->jumlah_item_dibeli,
-                                                    (int) $data_keranjang->total_harga_item + ($data_keranjang->harga_tiap_item * $request->jumlah_item_dibeli));                         
+                                                    (int) $data_keranjang->total_harga_item + ($data_keranjang->harga_tiap_item * $request->jumlah_item_dibeli),
+                                                          $data_keranjang->total_decimal_buy_for_stock + $request->total_decimal_buy_for_stock);                         
             }else{
                 $request->id_keranjang_kasir = cek_last_id_keranjang_kasir();// kalau memperlambat bisa dihpus
                 $data_add_keranjang = $this->repository->addKeranjang($request);

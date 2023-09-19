@@ -16,6 +16,7 @@ class KeranjangKasir extends Model
         'harga_tiap_item',
         'total_harga_item',
         'struck_id',
+        'total_decimal_buy_for_stock',
         'status'
     ];
 

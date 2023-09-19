@@ -76,7 +76,7 @@ class NewStruckServiceImplement implements NewStruckService{
             //get all product
             $get_all_keranjang = $this->repository_keranjang->getAllKeranjangByIdKasir($request->id_struck);
             foreach ($get_all_keranjang as $key => $value) {
-                $total_buy = (int) $value->jumlah_item_dibeli;
+                $total_buy = $value->total_decimal_buy_for_stock;//(int) $value->jumlah_item_dibeli;->yg dicomment sebelum decimal
                 $stock_available = $value->getProduct[0]->is_kg === 1 ?
                     (int) $value->getProduct[0]->total_kg : 
                     (int) $value->getProduct[0]->pcs;

@@ -16,6 +16,10 @@
                 <input class="input-modal-global" id="satuan_berat_item" step="0.01" required type="number" min="0" style="margin-top:5px;" name="satuan_berat_item" placeholder="satuan berat item">
             </div>
             <div class="input-group">
+                <label id="id_label_subname" class="text-label-modal" for="subname" style="margin-left: 5px;">Subname</label>
+                <input class="input-modal-global" id="subname"  required type="text"  style="margin-top:5px;" name="subname" placeholder="opsional subname">
+            </div>
+            <div class="input-group">
                 <label id="id_label_price_sell" class="text-label-modal" for="price_sell" style="margin-left: 5px;">Harga jual</label>
                 <input class="input-modal-global" id="price_sell" required type="text" style="margin-top:5px;" name="price_sell" placeholder="Harga jual">
             </div>

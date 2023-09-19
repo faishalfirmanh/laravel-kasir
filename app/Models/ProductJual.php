@@ -12,6 +12,7 @@ class ProductJual extends Model
 
     protected $fillable = [
         'product_id',
+        'subname',
         'product_beli_id',
         'satuan_berat_item',
         'price_sell'

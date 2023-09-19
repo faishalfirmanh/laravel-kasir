@@ -63,7 +63,8 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
             $coll = new stdClass();
             $coll->idProduct = $key->id_product;
             $coll->id_product_jual = $key->id_product_jual;
-            $custom_price_buy = $key->product_beli_id != NULL ? $key->nama_product_variant : $key->satuan_berat_item." ".$cek_kg_or_pcs;
+            $cek_subname = $key->subname != NULL ? $key->subname : $cek_kg_or_pcs;
+            $custom_price_buy = $key->product_beli_id != NULL ? $key->nama_product_variant : $cek_subname;
             $coll->nama_product = $key->nama_product." | ".$custom_price_buy.' | '.number_format($key->price_sell);
             $coll->harga_jual = $key->price_sell;
             array_push($data_val,$coll);
@@ -107,11 +108,17 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
             $model_save->satuan_berat_item = $data->satuan_berat_item;
             $model_save->product_beli_id = $input_product_beli_custom;
             $model_save->price_sell = $data->price_sell;
+            if (isset($data->subname)) {
+                $model_save->subname = $data->subname;
+             }
         }else{
             $model_save->product_id = $data->product_id;
             $model_save->satuan_berat_item = $data->satuan_berat_item;
             $model_save->product_beli_id = $input_product_beli_custom;
             $model_save->price_sell = $data->price_sell;
+            if (isset($data->subname)) {
+               $model_save->subname = $data->subname;
+            }
         }
         $model_save->save();
         return $model_save->fresh();

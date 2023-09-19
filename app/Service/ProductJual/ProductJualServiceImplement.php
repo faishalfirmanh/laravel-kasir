@@ -71,6 +71,7 @@ class ProductJualServiceImplement implements ProductJualService{
         $validated = Validator::make($request->all(),[
             'product_id' => 'required|integer|exists:products,id_product',
             'satuan_berat_item' => 'required|numeric',
+            'subname' => 'string|nullable',
             'price_sell' => ['required','integer', new RulesCekPriceLessThan($request->product_id)],
             'product_beli_id'=>['integer','exists:product_belis,id_product_beli',
                             'nullable'
@@ -89,7 +90,7 @@ class ProductJualServiceImplement implements ProductJualService{
                 return $msg_err;
             }
         }
-
+        if($request->subname != null) $request->subname;
         $save = $this->ProductJualRepository->postProductJual($request,$id);
         return  $save;
     }
