@@ -12,12 +12,8 @@
         <p></p>
         <form action="" id="form-product-price">
             <div class="input-group">
-                <label id="id_label_start_kg" class="text-label-modal" for="start_kg" style="margin-left: 5px;">Start kg</label>
-                <input class="input-modal-global" id="start_kg" required type="number" min="0" style="margin-top:5px;" name="start_kg" placeholder="start kg">
-            </div>
-            <div class="input-group">
-                <label id="id_label_end_kg" class="text-label-modal" for="end_kg" style="margin-left: 5px;">End kg</label>
-                <input class="input-modal-global" id="end_kg" required type="number" min="0" style="margin-top:5px;" name="end_kg" placeholder="end kg">
+                <label id="id_label_satuan_berat_item" class="text-label-modal" for="satuan_berat_item" style="margin-left: 5px;">Satuan berat item</label>
+                <input class="input-modal-global" id="satuan_berat_item" step="0.01" required type="number" min="0" style="margin-top:5px;" name="satuan_berat_item" placeholder="satuan berat item">
             </div>
             <div class="input-group">
                 <label id="id_label_price_sell" class="text-label-modal" for="price_sell" style="margin-left: 5px;">Harga jual</label>

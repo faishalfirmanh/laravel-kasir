@@ -222,8 +222,8 @@
         const navbar_samping_id = document.getElementById('sidebar');
 
         const input_price_sell = document.getElementById('price_sell');
-        const input_start_kg = document.getElementById('start_kg');
-        const input_end_kg = document.getElementById('end_kg');
+        const input_start_kg = document.getElementById('satuan_berat_item');
+       
         const input_price_buy = document.getElementById('price_buy')
 
         all_toogle.forEach(btn => {
@@ -234,7 +234,6 @@
                 modal.classList.add('show-modal')
 
                 input_price_sell.value = '';
-                input_end_kg.value = '';
                 input_start_kg.value = '';
                 input_price_buy.value = 0;
 
@@ -322,8 +321,7 @@
            
             let input_data = {
                 'product_id': parseInt($("#id_prd").val()),
-                'start_kg': input_start_kg.value,
-                'end_kg': input_end_kg.value,
+                'satuan_berat_item': input_start_kg.value,
                 'price_sell': input_price_sell.value,
                 'product_beli_id' : cek_input_price_buy
             }
@@ -417,7 +415,6 @@
                 navbar_samping_id.style.position = "initial";
                 modal_close.addEventListener('click', function(e) {
                     e.preventDefault()
-                    input_end_kg.value = ''
                     input_start_kg.value = ''
                     input_price_sell.value = ''
                     modal_global.classList.remove('show-modal')
@@ -439,8 +436,7 @@
                     },
                     success: function(response) {
                         
-                        input_end_kg.value = response.data.end_kg;
-                        input_start_kg.value = response.data.start_kg;
+                        input_start_kg.value = response.data.satuan_berat_item;
                         input_price_sell.value = response.data.price_sell;
                         const cek_select_price_beli = response.data.product_beli_id == undefined ? 0 : response.data.product_beli_id
                         if (cek_select_price_beli > 0) {
@@ -474,7 +470,8 @@
                                 }
                             })
                         }else{
-                            selectElement('price_buy',null)
+                            selectElement('price_buy',0)
+                            console.log("no select",response);
                         }
                     
                         //add input hidden id
