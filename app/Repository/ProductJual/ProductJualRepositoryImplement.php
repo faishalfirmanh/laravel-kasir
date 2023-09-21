@@ -85,6 +85,7 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
         return $data;
     }
 
+    //noused
     public function getProductJualByStartKgAndProdIdFirst($id_prod,$batas_jumlah)
     {
         $data = $this->model

@@ -470,8 +470,8 @@ function saveProductToKeranjang(element){
     let input_data = {
         'struck_id': final_id,
         'status' : 0,
-        'product_jual_id' : id_product
-        // 'jumlah_item_dibeli' : 1
+        'product_jual_id' : id_product,
+        'jumlah_item_dibeli' : 1
     }
    
     
@@ -582,11 +582,13 @@ function getStruckFunction(id_struck){
                 
                     const cek_element_exsist_list = $('li').hasClass('style-li-dom')
                     const id_product_jual = item.id_product_jual;
-                    
+                    console.log('subname--',item.subname);
                     //nama product
                     const list_item = document.createElement("li");
                     const cek_pcs = item.is_kg == 1 ? 'kg' : 'pcs';
-                    const name_prd = `${item.nama_product} | ${item.start_kg} - ${item.end_kg} ${cek_pcs}`;
+                    const cek_subname = item.subname !== null ? item.subname : cek_pcs;
+                    const cek_custom_price_buy = item.product_beli_id !== null ? item.nama_product_variant : cek_subname;
+                    const name_prd = `${item.nama_product} | ${cek_custom_price_buy} | ${cek_pcs}`;
                     list_item.textContent = name_prd;
                     list_item.className = "style-li-dom";
                     

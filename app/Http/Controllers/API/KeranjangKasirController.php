@@ -36,7 +36,8 @@ class KeranjangKasirController extends Controller
     public function add1JumlahProductKerajang(Request $request)
     {
         $data = $this->service->Add1ProductKeranjangServiceById($request);
-        return $this->responseSucess($data);
+        //return $this->responseSucess($data);
+        return $this->generalResponseV2($data,10);
     }
 
     public function reduce1JumlahProductKerajang(Request $request)

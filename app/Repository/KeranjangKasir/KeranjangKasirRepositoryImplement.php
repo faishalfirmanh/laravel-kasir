@@ -72,6 +72,9 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
         if (!empty($request->struck_id)) {
             $modal_save->struck_id = $request->struck_id;
         }
+        if (!empty($request->total_decimal_buy_for_stock)) {
+            $modal_save->total_decimal_buy_for_stock = $request->total_decimal_buy_for_stock;
+        }
         $modal_save->save();
         return $modal_save->fresh();
     }
@@ -130,5 +133,36 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
                   ->selectRaw('SUM(total_harga_item) as total')->first();
                   //->pluck('total');
         return $count;
+    }
+
+    public function queryCheck1TransationSameProduct($struck_id)
+    {
+        //$query = 
+        //'SET @param_stuck_id = '.$struck_id.';
+        //SET @VAL = (select p.id_product from keranjang_kasirs kk JOIN product_juals pj on pj.id_product_jual = kk.product_jual_id join products p on p.id_product = pj.product_id where kk.struck_id = @param_stuck_id GROUP by p.id_product HAVING COUNT(p.id_product) > 1); 
+        //SET @total_rownya = ( select sum(keranjang_kasirs.total_decimal_buy_for_stock) from keranjang_kasirs where keranjang_kasirs.struck_id = @param_stuck_id ); 
+        //SELECT IF (@VAL IS NOT NULL, ROUND(@total_rownya,3) ,0) AS "RESULT"; ';
+        // return $query;
+
+        $VAL = DB::table('keranjang_kasirs')
+            ->join('product_juals', 'product_juals.id_product_jual', '=', 'keranjang_kasirs.product_jual_id')
+            ->join('products', 'products.id_product', '=', 'product_juals.product_id')
+            ->where('keranjang_kasirs.struck_id', $struck_id)
+            ->groupBy('products.id_product')
+            ->havingRaw('COUNT(products.id_product) > 1')
+            ->select('products.id_product')
+            ->first();
+
+        //$result = ($VAL !== null) ? round($total_rownya, 3) : 0;
+        return $VAL ;
+    }
+
+    public function queryCheck1TransationSumStockProduct($struck_id,$product_id)
+    {
+        $total_rownya = DB::select('select sum(keranjang_kasirs.total_decimal_buy_for_stock) as "total"
+        from keranjang_kasirs 
+         join product_juals pj on keranjang_kasirs.product_jual_id = pj.id_product_jual 
+         join products p on pj.product_id = p.id_product where keranjang_kasirs.struck_id = '.$struck_id.' and p.id_product = '.$product_id.';');
+        return $total_rownya;
     }
 }
