@@ -154,23 +154,25 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
         }
 
         //cek in product jual
-        $id_prd = (int) $find_data_product_jual->product_id;
-        $product_jual_all = $this->repo_product_jual->getProductJualByIdProduct($id_prd);
-        $current_jumlah_dibeli_min =  (int) $data_keranjang->jumlah_item_dibeli - 1;
-        $cek_change_prod = [];
-        if ((int) count($product_jual_all) > 1) {
-           foreach ($product_jual_all as $key => $value) {
-              $cek_ganti_product_next = $this->repo_product_jual->getProductJualByStartKgAndProdIdFirst($value->product_id,$current_jumlah_dibeli_min);
-              if ($cek_ganti_product_next != NULL) {
-                 array_push($cek_change_prod,$cek_ganti_product_next->id_product_jual);
-              }
-           }
-        }
+        // $id_prd = (int) $find_data_product_jual->product_id;
+        // $product_jual_all = $this->repo_product_jual->getProductJualByIdProduct($id_prd);
+         $current_jumlah_dibeli_min =  (int) $data_keranjang->jumlah_item_dibeli - 1;
+        // $cek_change_prod = [];
+        // if ((int) count($product_jual_all) > 1) {
+        //    foreach ($product_jual_all as $key => $value) {
+        //       $cek_ganti_product_next = $this->repo_product_jual->getProductJualByStartKgAndProdIdFirst($value->product_id,$current_jumlah_dibeli_min);
+        //       if ($cek_ganti_product_next != NULL) {
+        //          array_push($cek_change_prod,$cek_ganti_product_next->id_product_jual);
+        //       }
+        //    }
+        // }
         //cek in product jual
         //get db
         $satuan_item_jual = $find_data_product_jual->satuan_berat_item;
-        $request->total_decimal_buy_for_stock = 1 * $satuan_item_jual;
-        
+       
+        $final_total_decimal_update =  $data_keranjang->total_decimal_buy_for_stock - (1 * $satuan_item_jual);
+       
+       
         //save db
         DB::beginTransaction();
         try {
@@ -178,25 +180,27 @@ class KeranjangKasirServiceImplement implements KeranjangKasirService{
                 $this->repository->DeleteKeranjangStruck($request->id_keranjang_kasir);
                 $save_keranjang = $this->repository->getKeranjangByStruckId($data_keranjang->struck_id);
             }else{
-                if (count($cek_change_prod) > 0) {
+                //if (count($cek_change_prod) > 0) {
                     //ubah product jual
-                    $change_new_id_produt_jual = $cek_change_prod[0];
+                    $change_new_id_produt_jual = $find_data_product_jual->id_product_jual;;
                     $find_change_prd_jual_new = $this->repo_product_jual->getProductJualById($change_new_id_produt_jual);
                     $req_change_prd = new stdClass();
                     $req_change_prd->product_jual_id = $change_new_id_produt_jual;
                     $req_change_prd->jumlah_item_dibeli = $current_jumlah_dibeli_min;
                     $req_change_prd->harga_tiap_item = $find_change_prd_jual_new->price_sell;
                     $req_change_prd->total_harga_item = $find_change_prd_jual_new->price_sell * $current_jumlah_dibeli_min;
-                    
+                    $req_change_prd->total_decimal_buy_for_stock = $final_total_decimal_update;
+
                     $save_keranjang =  $this->repository->UpdateKeranjang($req_change_prd,$request->id_keranjang_kasir);
-        
-                }else{
-                    $save_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
-                                                                            (int) $data_keranjang->jumlah_item_dibeli - 1,
-                                                                            (int) $data_keranjang->total_harga_item - $data_keranjang->harga_tiap_item,
-                                                                            $data_keranjang->total_decimal_buy_for_stock - $request->total_decimal_buy_for_stock
-                                                                        );      
-                    }
+                   
+                   
+                //}else{
+                //    $save_keranjang = $this->repository->Add1JumlahKerajang($request->id_keranjang_kasir,
+                //                                                            (int) $data_keranjang->jumlah_item_dibeli - 1,
+                //                                                            (int) $data_keranjang->total_harga_item - $data_keranjang->harga_tiap_item,
+                //                                                            $data_keranjang->total_decimal_buy_for_stock - $request->total_decimal_buy_for_stock
+                //                                                        );      
+                //    }
             }
                 
 
