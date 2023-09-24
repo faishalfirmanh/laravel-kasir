@@ -92,7 +92,20 @@ class NewStruckServiceImplement implements NewStruckService{
 
                     $final_stock_afater_reduced = (int) $stock_available - $total_buy; //stock akhir
                     if ($value->getProduct[0]->is_kg === 1) { //update stock
-                        $this->repository_product->updateStockKg($value->getProduct[0]->id_product,$final_stock_afater_reduced);
+                        $cek_same_produc1_transaction = $this->repository_keranjang->queryCheck1TransationSameProduct($request->id_struck);
+                        $cek_double = $this->repository_keranjang->queryCheck1TransDobule($value->product_jual_id,$request->id_struck);
+                        if (count($cek_double) > 0) {
+                            $id_product_same = $cek_same_produc1_transaction->id_product;
+                            $total_all_item_same_prod = $this->repository_keranjang->queryCheck1TransationSumStockProduct($id_product_same,$request->id_struck);
+                            $total_all_same_item_buy = $total_all_item_same_prod[0]->total;
+                            $final_stock_after_reduced_same_prd =  $stock_available - $total_all_same_item_buy;
+                            //update yg 1 product variant banyak kg
+                            $this->repository_product->updateStockKg($value->getProduct[0]->id_product,$final_stock_after_reduced_same_prd);
+                        }else{
+                             //update yg 1 product variant 1
+                            $this->repository_product->updateStockKg($value->getProduct[0]->id_product,$final_stock_afater_reduced);
+                        }
+                       
                     }else{
                         $this->repository_product->updateStockPcs($value->getProduct[0]->id_product,$final_stock_afater_reduced);
                     }

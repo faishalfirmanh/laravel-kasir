@@ -165,4 +165,32 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
          join products p on pj.product_id = p.id_product where keranjang_kasirs.struck_id = '.$struck_id.' and p.id_product = '.$product_id.';');
         return $total_rownya;
     }
+
+    public function queryCheck1TransDobule($id_prd_jual, $struck_id)
+    {
+        $resuletQuery = DB::select('select p.id_product from 
+        keranjang_kasirs kk 
+        JOIN product_juals pj on pj.id_product_jual = kk.product_jual_id 
+        join products p on p.id_product = pj.product_id where pj.id_product_jual = '.$id_prd_jual.'
+        and p.id_product in ( 
+            select p.id_product from keranjang_kasirs kk 
+             JOIN product_juals pj on pj.id_product_jual = kk.product_jual_id 
+             join products p on p.id_product = pj.product_id where kk.struck_id = '.$struck_id.' 
+             GROUP by p.id_product HAVING COUNT(p.id_product) > 1 )');
+        return $resuletQuery;
+    }
+
+    public function queryCheck1TransSingle($id_prd_jual, $struck_id)
+    {
+        $resuletQuery = DB::select('select p.id_product from 
+        keranjang_kasirs kk 
+        JOIN product_juals pj on pj.id_product_jual = kk.product_jual_id 
+        join products p on p.id_product = pj.product_id where pj.id_product_jual = '.$id_prd_jual.'
+        and p.id_product in ( 
+            select p.id_product from keranjang_kasirs kk 
+             JOIN product_juals pj on pj.id_product_jual = kk.product_jual_id 
+             join products p on p.id_product = pj.product_id where kk.struck_id = '.$struck_id.' 
+             GROUP by p.id_product HAVING COUNT(p.id_product) < 2 )');
+        return $resuletQuery;
+    }
 }
