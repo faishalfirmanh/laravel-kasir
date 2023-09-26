@@ -60,6 +60,7 @@ class CekRules
             if ($key !== "toko_id_from_middleware" && $key !== "role_id_from_middleware"){
                 $request->$key =  strip_tags($request->$key);
             }
+            $request->$key = strtolower($request->$key);
         }
         //pengecekan disable script / xss
 

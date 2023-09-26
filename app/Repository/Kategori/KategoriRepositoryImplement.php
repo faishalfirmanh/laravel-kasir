@@ -38,9 +38,9 @@ class KategoriRepositoryImplement implements KategoriRepository{
         $model_save = $this->model;
         if ( intval($id) > 0 || $id != NULL) {
             $model_save = $this->model->where('id_kategori',$id)->first();
-            $model_save->nama_kategori = strtolower($data->nama_kategori);
+            $model_save->nama_kategori = $data->nama_kategori;
         }else{
-            $model_save->nama_kategori = strtolower($data->nama_kategori);
+            $model_save->nama_kategori = $data->nama_kategori;
         }
         $model_save->save();
         return $model_save->fresh();

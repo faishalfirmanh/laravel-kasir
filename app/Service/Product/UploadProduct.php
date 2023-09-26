@@ -20,10 +20,7 @@ use Database\Seeders\TokoSeeder;
 
 class UploadProduct {
 
-    public function __construct(ProductRepository $ProductRepository)
-    {
-        $this->ProductRepository = $ProductRepository;
-    }
+   
 
     public function validasiUploadExcel($request){
         
@@ -43,9 +40,9 @@ class UploadProduct {
         }
 
         try {
-
-            Excel::import(new ProductImport(), request()->file('file_excel'));
-            $msg = "ok";
+            $import = new ProductImport();
+            Excel::import($import, request()->file('file_excel'));
+            $msg = 'OK';
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
             foreach ($failures as $failure) {
