@@ -412,6 +412,14 @@ $(document).ready(function() {
                         appendDelayedTextNode(label_expired, 'Tanggal tidak boleh kurang dari hari ini',
                             1000);
                     }
+                   
+                    if (xhr.responseJSON.data.pcs) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Jumlah stock Pcs tidak boleh desimal, hapus komanya',
+                        })
+                    }
 
 
                 }
@@ -493,7 +501,7 @@ $(document).ready(function() {
                     //get
                     name_.value = response.data.nama_product;
                     harga_beli.value = response.data.harga_beli;
-                    subname.value = response.data.subname;
+                    // subname.value = response.data.subname;
                     const cek_is_berat = response.data.is_kg == 0 ? response.data.pcs : response.data.total_kg;
                     berat.value = cek_is_berat
                     response.data.is_kg == 0 ? is_kg_check.checked = false : is_kg_check.checked = true;

@@ -90,8 +90,11 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
         $query = DB::select('
         select s.id_struck,
         p.id_product_jual,
+        prod.is_kg,
         p.product_beli_id,
         prod.nama_product,
+        p.subname,
+        prodBeli.nama_product_variant,
         k.jumlah_item_dibeli,
         IF (p.product_beli_id IS NULL, 
             ABS((k.jumlah_item_dibeli * prod.harga_beli) - k.total_harga_item), 
@@ -105,7 +108,7 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
         JOIN product_juals p on k.product_jual_id = p.id_product_jual 
         JOIN products prod on p.product_id = prod.id_product
         LEFT JOIN product_belis prodBeli on p.product_beli_id = prodBeli.id_product_beli 
-        WHERE s.id_struck = '.$id_struck.' and k.status = 2');
+        WHERE s.id_struck = '.$id_struck.' and k.status = 2 order by p.product_id asc');
         return $query;
     }
 

@@ -145,9 +145,13 @@
                 let wrap_div = document.getElementById("div-transaksi")
                 list_data.detail_keuntungan.map((item)=>{
                     const elemet_p = document.createElement('p')
+                    //name prd
+                    const cek_kg = item.is_kg == '1' ? 'kg' : 'pcs';
+                    const cek_subname = item.subname !== null ? item.subname : cek_kg;
+                    //name prd
                     elemet_p.style.fontSize = "20px";
                     elemet_p.setAttribute('class','li-struck-view-trans');
-                    elemet_p.textContent = `${item.nama_product} - total : ${item.jumlah_item_dibeli} | ${item.TotalKeuntungan.toLocaleString()}`
+                    elemet_p.textContent = `${item.nama_product} | ${cek_subname} - total : ${item.jumlah_item_dibeli} | ${item.TotalKeuntungan.toLocaleString()}`
                     wrap_div.appendChild(elemet_p)
                 })
                 let dd = list_data.total_semua_keuntungan.toLocaleString();
