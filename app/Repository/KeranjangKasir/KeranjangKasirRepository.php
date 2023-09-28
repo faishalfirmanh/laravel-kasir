@@ -19,6 +19,6 @@ interface KeranjangKasirRepository{
     public function UpdateStatusKeranjangByStruckId($id_struck,$status);
     public function getTotalPriceAllItemMustPayCount($id_struck); //menjumlahkan total harga semua barang base on id struck
 
-    public function queryCheck1TransDobule($id_product_jual,$struck_id);
+    public function queryCheck1TransDobule($struck_id,$id_product_jual);
     public function queryCheck1TransSingle($id_product_jual,$struck_id);
 }

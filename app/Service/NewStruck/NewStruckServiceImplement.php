@@ -96,7 +96,7 @@ class NewStruckServiceImplement implements NewStruckService{
                         $cek_double = $this->repository_keranjang->queryCheck1TransDobule($value->product_jual_id,$request->id_struck);
                         if (count($cek_double) > 0) {
                             $id_product_same = $cek_same_produc1_transaction->id_product;
-                            $total_all_item_same_prod = $this->repository_keranjang->queryCheck1TransationSumStockProduct($id_product_same,$request->id_struck);
+                            $total_all_item_same_prod = $this->repository_keranjang->queryCheck1TransationSumStockProduct($request->id_struck,$id_product_same);
                             $total_all_same_item_buy = $total_all_item_same_prod[0]->total;
                             $final_stock_after_reduced_same_prd =  $stock_available - $total_all_same_item_buy;
                             //update yg 1 product variant banyak kg
