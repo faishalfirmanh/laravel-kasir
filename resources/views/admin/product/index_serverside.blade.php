@@ -44,7 +44,7 @@
 
         .style-price-buy-problem{
             text-align: center;
-            background: #dde01b;
+            background: #a1891b;
             border-radius: 5px;
             height: 23px;
             width: 70%;
@@ -174,10 +174,16 @@ $(document).ready(function() {
             },
             {
                "data": `kondisi_price_jual`, render: function(data,type, row){
-                    const total = row.price_sell_product.length < 1 
-                    ? '<div class="style-price-buy-problem" style="backgroud-color:red;color:white"> no set </div>' : `${row.price_sell_product.length} (jenis)`;
-                    const kondisi_price_jual = total;
-                    return kondisi_price_jual;
+                    const total = parseInt(row.price_sell_product.length);// < 1 
+                    const kondisi_price_jual = '11'
+                    if (total < 1) {
+                        return  '<div class="style-price-buy-problem" style="backgroud-color:red;color:white"> no set </div>';
+                    }else if (total > 1) {
+                        return  `${row.price_sell_product.length} (jenis)`;
+                    }else{
+                        return `Rp .${row.price_sell_product[0].price_sell.toLocaleString()}`
+                    }
+                    //return kondisi_price_jual;
                }
             },
             {
