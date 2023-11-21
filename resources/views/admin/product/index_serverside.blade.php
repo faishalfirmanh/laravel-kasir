@@ -510,7 +510,29 @@ $(document).ready(function() {
                     // subname.value = response.data.subname;
                     const cek_is_berat = response.data.is_kg == 0 ? response.data.pcs : response.data.total_kg;
                     berat.value = cek_is_berat
-                    response.data.is_kg == 0 ? is_kg_check.checked = false : is_kg_check.checked = true;
+                    if ( response.data.is_kg == 0) {
+                        is_kg_check.checked = false
+                        document.getElementById('check_satuan_dom').style.color = "blue";
+                        document.getElementById('check_satuan_dom').textContent='pcs';
+                        const boxes = document.querySelectorAll('.class_stokc_dom');
+
+                        boxes.forEach(box => {
+                            box.style.color = 'blue';
+                            box.textContent = 'pcs';
+                        });
+
+               
+                    }else{
+                        is_kg_check.checked = true
+                        document.getElementById('check_satuan_dom').style.color = "red";
+                        document.getElementById('check_satuan_dom').textContent='Kg/Liter';
+                        const boxes = document.querySelectorAll('.class_stokc_dom');
+                        boxes.forEach(box => {
+                            box.style.color = 'red';
+                            box.textContent = 'Kg/Liter';
+                        });
+                    }
+                   
                     selectElement('kategori_select', response.data.kategori_id)
                     selectElement('toko_select', response.data.toko_id)
                     let dd = new Date(Date.parse(response.data.expired));
