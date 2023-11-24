@@ -190,7 +190,10 @@
                         "data": "id_product_jual"
                     },
                     {
-                        "data": "satuan_berat_item"
+                        "data": "satuan_stock", render: function(data, type, row) {
+                            var satuan_stock = parseFloat(row.satuan_berat_item);
+                            return satuan_stock;
+                        }
                     },
                     {
                         "data": "subname"

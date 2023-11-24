@@ -7,6 +7,7 @@ use App\Repository\NewStruck\NewStruckRepository;
 use App\Repository\Product\ProductRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\Double;
 
 class NewStruckServiceImplement implements NewStruckService{
 
@@ -78,7 +79,7 @@ class NewStruckServiceImplement implements NewStruckService{
             foreach ($get_all_keranjang as $key => $value) {
                 $total_buy = $value->total_decimal_buy_for_stock;//(int) $value->jumlah_item_dibeli;->yg dicomment sebelum decimal
                 $stock_available = $value->getProduct[0]->is_kg === 1 ?
-                    (int) $value->getProduct[0]->total_kg : 
+                    (Double) $value->getProduct[0]->total_kg : 
                     (int) $value->getProduct[0]->pcs;
                 //cek ketersediaan product tidak melebih,i stock yang ada
                 if ($total_buy > $stock_available) {
@@ -90,7 +91,7 @@ class NewStruckServiceImplement implements NewStruckService{
                 //tidak mengurangi product lagi, dengan kondisi ini mengizinkan edit (input ulang)
                 if((int) $cekDataStruck->status !== 2){ 
 
-                    $final_stock_afater_reduced = (int) $stock_available - $total_buy; //stock akhir
+                    $final_stock_afater_reduced =  $stock_available - $total_buy; //stock akhir
                     if ($value->getProduct[0]->is_kg === 1) { //update stock
                         $cek_same_produc1_transaction = $this->repository_keranjang->queryCheck1TransationSameProduct($request->id_struck);
                         $cek_double = $this->repository_keranjang->queryCheck1TransDobule($value->product_jual_id,$request->id_struck);

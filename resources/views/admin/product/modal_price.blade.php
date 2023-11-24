@@ -13,7 +13,7 @@
         <form action="" id="form-product-price">
             <div class="input-group">
                 <label id="id_label_satuan_berat_item" class="text-label-modal" for="satuan_berat_item" style="margin-left: 5px;">Satuan berat item <span style="font-size: 13px;color:red">(untuk stock)</span></label>
-                <input class="input-modal-global" id="satuan_berat_item" step="0.01" required type="number" min="0" style="margin-top:5px;" name="satuan_berat_item" placeholder="satuan berat item">
+                <input class="input-modal-global" id="satuan_berat_item" step="0.0001" required type="number" min="0" style="margin-top:5px;" name="satuan_berat_item" placeholder="satuan berat item">
             </div>
             <div class="input-group">
                 <label id="id_label_subname" class="text-label-modal" for="subname" style="margin-left: 5px;">Subname <span style="font-size: 13px">(opsional)</span></label>
