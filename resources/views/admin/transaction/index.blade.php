@@ -158,8 +158,14 @@
                 const elemet_ptotal = document.createElement('p')
                 elemet_ptotal.style.fontSize = "20px";
                 elemet_ptotal.setAttribute('class','dom-total');
-                elemet_ptotal.textContent = `Total keuntungan : ${dd}`
+              
                 wrap_div.appendChild(elemet_ptotal);
+                if (ok_res[0].data.detail_keuntungan.length < 1) {
+                    elemet_ptotal.textContent = `!! data product terhapus !!`
+                    elemet_ptotal.style.color = "red";
+                }else{
+                    elemet_ptotal.textContent = `Total keuntungan : ${dd}`
+                }
 
             })
             .catch((no_ok)=>{
