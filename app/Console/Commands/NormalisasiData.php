@@ -83,11 +83,12 @@ class NormalisasiData extends Command
 
     public function handle()
     {
-        $cek = $this->getDataKeranjangNotUsed();
-        if ($cek) {
-            $this->info("sukses clear struck");
-        }else{
-            $this->error('gagal hapus struck');
-        }
+        // $cek = $this->getDataKeranjangNotUsed();
+        // if ($cek) {
+        //     $this->info("sukses clear struck");
+        // }else{
+        //     $this->error('gagal hapus struck');
+        // }
+        echo "ini schaduler saya ";
     }
 }

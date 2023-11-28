@@ -24,7 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('fixing-data')->dailyAt('23:00')->timezone('Asia/Jakarta');
+        $schedule->command('fixing-data')//->dailyAt('23:00')->timezone('Asia/Jakarta');
+        ->everyMinute()->appendOutputTo('tesschadule.txt');
     }
 
     /**
