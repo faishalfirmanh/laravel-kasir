@@ -6,12 +6,9 @@ use App\Models\ProductBeli;
 use Illuminate\Database\Eloquent\Model;
 
 
-class BaseRepository{
+class BaseRepositoryDua{
 
-    public function __construct(Model $model)
-    {
-        $this->model = $model;
-    }
+   
 
     public function getAllData($modelNya,$where = array()){
         if (count($where) > 0) {
@@ -22,20 +19,6 @@ class BaseRepository{
         return $data;
     }
 
-    public function getAllDataPaginate(){
-
-    }
-
-    public function getDataById($id){
-        return $this->model->findOrFail($id);
-    }
-
-    public function saveData($data,$id){
-
-    }
-
-    public function removeData($id){
-
-    }
+   
 
 }

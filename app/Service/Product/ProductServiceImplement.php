@@ -2,15 +2,39 @@
 
 namespace App\Service\Product;
 
+use App\Models\KeranjangKasir;
+use App\Models\ProductBeli;
+use App\Models\ProductJual as proJual;
+use App\Repository\BaseRepositoryDua;
+use App\Repository\KeranjangKasir\KeranjangKasirRepository;
 use App\Repository\Product;
 use App\Repository\Product\ProductRepository;
+use App\Repository\ProductBeli\ProductBeliRepository;
+use App\Repository\ProductJual\ProductJualRepository;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
+
 class ProductServiceImplement implements ProductService{
 
     protected $ProductRepository;
-    public function __construct(ProductRepository $ProductRepository)
+    public function __construct(ProductRepository $ProductRepository, 
+    BaseRepositoryDua $baseRepository,
+    ProductBeli $modelprodBeli,
+    KeranjangKasir $modelKeranjang,
+    proJual $modelProdJual,
+    ProductJualRepository $repoProdJual,
+    ProductBeliRepository $repoProdBeli,
+    KeranjangKasirRepository $repoKeranjang)
     {
         $this->ProductRepository = $ProductRepository;
+        $this->baseRepository = $baseRepository;
+        $this->modelprodBeli = $modelprodBeli;
+        $this->modelKeranjang =  $modelKeranjang;
+        $this->modelProdJual = $modelProdJual;
+        $this->repoProdJual = $repoProdJual;
+        $this->repoProdBeli = $repoProdBeli;
+        $this->repoKeranjang = $repoKeranjang;
     }
 
     public function getAllProductNoPaginate()
@@ -106,7 +130,37 @@ class ProductServiceImplement implements ProductService{
         if ($validated->fails()) {
             return $validated->errors();
         }
-        $delete = $this->ProductRepository->deleteProduct($id->id_product);
+
+        
+            DB::beginTransaction();
+        try {
+            if (count($this->baseRepository->getAllData($this->modelProdJual,array("product_id" => $id->id_product))) > 0) {
+                $getAllProductJual = $this->repoProdJual->getProductJualByIdProduct($id->id_product);
+                $listIdProdJual = [];
+                foreach ($getAllProductJual as $key => $value) {
+                   $listIdProdJual[$key] = $value->id_product_jual;
+                }
+                $keranjang = $this->repoKeranjang->getAllKeranjangByIdProdcutJual($listIdProdJual);
+                if (count($keranjang) > 0) {
+                   foreach ($keranjang as $keyKer => $valueKer) {
+                      //1, hapus keranjang
+                      $this->repoKeranjang->DeleteKeranjangStruck($valueKer->id_keranjang_kasir);
+                   }
+                }
+                //2 delete product jual 
+                $this->repoProdJual->deleteProductJualByIdProduct($id->id_product);
+             }
+             if (count($this->baseRepository->getAllData($this->modelprodBeli,array("product_id" => $id->id_product))) > 0) {
+                 //3. delete prod beli
+                 $this->repoProdBeli->deleteProductBeliByIdProd($id->id_product);
+              }
+              //4 hapus product
+             $delete = $this->ProductRepository->deleteProduct($id->id_product);
+             DB::commit(); 
+        } catch (\Exception $e) {
+             DB::rollBack();
+             $delete = false;
+        }
         return $delete;
     }
 

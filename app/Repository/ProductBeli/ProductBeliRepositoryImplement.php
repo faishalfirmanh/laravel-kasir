@@ -55,4 +55,10 @@ class ProductBeliRepositoryImplement implements ProductBeliRepository{
         $model = $this->model->find($id);
         return $model->delete();
     }
+
+    public function deleteProductBeliByIdProd($idProd)
+    {
+        $data = $this->model->where('product_id',$idProd)->delete();
+        return $data;
+    }
 }

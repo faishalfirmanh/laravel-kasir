@@ -10,4 +10,6 @@ interface ProductJualService{
     public function getProductJualSearchService($request);
     public function postProductJualService($request,$id);
     public function deleteProductJualService($id);
+
+    public function deleteProductJualServiceByIdProdct($request);
 }

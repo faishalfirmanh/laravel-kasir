@@ -106,4 +106,16 @@ class ProductJualServiceImplement implements ProductJualService{
         return $delete;
     }
 
+    public function deleteProductJualServiceByIdProdct($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'product_id' => 'required|integer|exists:product_juals,product_id'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        $saveDelete = $this->ProductJualRepository->deleteProductJualByIdProduct($request->product_id);
+        return  $saveDelete;
+    }
+
 }

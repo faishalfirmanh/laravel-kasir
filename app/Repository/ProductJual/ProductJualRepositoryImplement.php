@@ -135,4 +135,10 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
         $data = $this->model->where('product_beli_id',$id_product_beli)->first();
         return $data;
     }
+
+    public function deleteProductJualByIdProduct($idPord)
+    {
+        $data = $this->model->where('product_id',$idPord)->delete();
+        return $data;
+    }
 }

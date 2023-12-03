@@ -12,4 +12,6 @@ interface ProductJualRepository{
     public function getProductJualByStartKgAndProdIdFirst($id_prod,$start_kg);
     public function postProductJual($data,$id);
     public function deleteProductJual($id);
+
+    public function deleteProductJualByIdProduct($idprod);
 }

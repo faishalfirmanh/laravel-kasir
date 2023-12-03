@@ -8,4 +8,5 @@ interface ProductBeliRepository{
     public function getProductBeliById($id_product_beli);
     public function saveProductBeli($id,$request);
     public function deleteProductBeli($id);
+    public function deleteProductBeliByIdProd($idProd);
 }

@@ -171,6 +171,15 @@ if (!function_exists('cekCountAllDataSearch')) {
     }
 }
 
+function getAllDataDinamis($modelNya,$where = array()){
+    if (count($where) > 0) {
+        $data = $modelNya->where($where)->get();
+    }else{
+        $data = $modelNya->get();
+    }
+    return $data;
+}
+
 if (!function_exists('cekCountTransaction')) { //date  = 'yyyy-mm-dd', keuntungan yang sudah fix status new struck = 2
     function cekCountTransaction($toko_id, $date){
         $result_data = DB::select('

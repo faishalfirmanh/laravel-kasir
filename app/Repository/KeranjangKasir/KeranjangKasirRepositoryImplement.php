@@ -193,4 +193,10 @@ class KeranjangKasirRepositoryImplement implements KeranjangKasirRepository{
              GROUP by p.id_product HAVING COUNT(p.id_product) < 2 )');
         return $resuletQuery;
     }
+
+    public function getAllKeranjangByIdProdcutJual($id_product_jaul)
+    {
+        $data = $this->model->whereIn('product_jual_id',$id_product_jaul)->get();
+        return $data;
+    }
 }

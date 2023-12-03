@@ -21,4 +21,5 @@ interface KeranjangKasirRepository{
 
     public function queryCheck1TransDobule($struck_id,$id_product_jual);
     public function queryCheck1TransSingle($id_product_jual,$struck_id);
+    public function getAllKeranjangByIdProdcutJual($id_product_jual);
 }
