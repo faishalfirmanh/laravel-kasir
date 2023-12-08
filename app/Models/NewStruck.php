@@ -20,6 +20,7 @@ class NewStruck extends Model
         'kembalian',
         'keuntungan_bersih',
         'status', //0 generate, 1 tambah keranjang, 2 pembeli bayar (selesai), , 4 batal (cancel)
+        'nama_pembeli',
         'created_at'
     ];
 

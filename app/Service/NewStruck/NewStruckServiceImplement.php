@@ -57,6 +57,7 @@ class NewStruckServiceImplement implements NewStruckService{
         $validated = Validator::make($request->all(),[
             'id_struck' => 'required|exists:new_strucks,id_struck',
             'user_bayar' =>  'required|gte:'.$cek_data,
+            'nama_pembeli' =>  'string|nullable'
         ]);
         /**gte = gether than equal atau lebih besar = */
         if ($validated->fails()) {
@@ -73,7 +74,7 @@ class NewStruckServiceImplement implements NewStruckService{
         try {
             $update_status_keranjang = $this->repository_keranjang->UpdateStatusKeranjangByStruckId($request->id_struck,2);
             $get_keuntungan = $this->getKeuntunganByIdStruckService($request);
-            $save_db = $this->repository->updateInputPriceUserBayar($request->id_struck,2,$request->user_bayar,$get_keuntungan['total_semua_keuntungan']);
+            $save_db = $this->repository->updateInputPriceUserBayar($request->id_struck,2,$request->user_bayar,$get_keuntungan['total_semua_keuntungan'],$request->nama_pembeli);
             //get all product
             $get_all_keranjang = $this->repository_keranjang->getAllKeranjangByIdKasir($request->id_struck);
             foreach ($get_all_keranjang as $key => $value) {
@@ -142,6 +143,7 @@ class NewStruckServiceImplement implements NewStruckService{
         $get_data_struck = $this->repository->getStruckById($request->id_struck);
         $list = $this->repository->getProductByIdStruck($request->id_struck);
         $data = array('list'=> $list, /**timestamp dari mysql tidak bisa langsung ditampilkan pada php harus diconvert dulu */
+                    'nama_pembeli' => $get_data_struck->nama_pembeli,
                     'tanggal'=> date('M j Y g:i A', strtotime($get_data_struck->updated_at)),
                     'dibayar'=> number_format($get_data_struck->pembeli_bayar),
                     'total_harga'=>number_format($get_data_struck->total_harga_dibayar),

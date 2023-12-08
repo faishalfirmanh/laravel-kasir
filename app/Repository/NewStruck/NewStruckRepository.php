@@ -10,7 +10,7 @@ interface NewStruckRepository{
 
     public function getProductByIdStruck($id);
     public function updateStruckPlusMins1($request);
-    public function updateInputPriceUserBayar($id, $status = 0, $pembeli_bayar = 0, $keuntungan_bersih = 0);
+    public function updateInputPriceUserBayar($id, $status = 0, $pembeli_bayar = 0, $keuntungan_bersih = 0, $name_buyer);
 
     public function QueryMySqlGetKeuntungan($id_struck);
     public function updateStatusStruck($id_struck, $status);

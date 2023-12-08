@@ -36,13 +36,14 @@ class NewStruckRepositoryImpelemnt implements NewStruckRepository{
         
     }
 
-    public function updateInputPriceUserBayar($id, $status = 0, $pembeli_bayar = 0,$keuntungan_bersih = 0)
+    public function updateInputPriceUserBayar($id, $status = 0, $pembeli_bayar = 0,$keuntungan_bersih = 0, $name_buyer)
     {
         $model = $this->model->query()->where('id_struck',$id)->first();
         $model->pembeli_bayar = $pembeli_bayar;
         $model->kembalian = $pembeli_bayar - $model->total_harga_dibayar;
         $model->status = $status;
         $model->keuntungan_bersih = $keuntungan_bersih;
+        $model->nama_pembeli = $name_buyer;
         $model->save();
         return $model->fresh();
     }

@@ -151,7 +151,8 @@
 
     <div style="margin-bottom: 15px;">
         <p>3. User Bayar</p> <br>
-        <input type="number" min="1" id="user_bayar_id"> 
+        <input type="number" min="1" id="user_bayar_id"> <br> <br>
+        <input type="text" id="bayer_name" placeholder="masukkan nama pembeli"> 
         <div style="margin-bottom: 20px;margin-top: 15px;">
             <button id="btn-hitung-transaksi">Hitung transaksi</button>
         </div>
@@ -162,6 +163,7 @@
         <h4>Tampilan struck</h4>
         <br><br>
         <ul id="id-ul-view-struck">
+            <li>Nama pembeli &nbsp;&nbsp;&nbsp;  <span id="id_name_buyer"></span></li>
             <li>Total &nbsp;&nbsp;&nbsp;  <span id="id_struckUser_total"></span></li>
             <li>Bayar &nbsp;&nbsp;&nbsp;  <span id="id_struckUser_bayar"></span></li>
             <li>Kembali &nbsp;&nbsp;&nbsp; <span id="id_struckUser_kembali"></span></li>
@@ -281,8 +283,10 @@ $("#btn-hitung-transaksi").click(function(){
 
     let struck_id = document.getElementById('id_struck').value
     let input_price = document.getElementById('user_bayar_id').value
-    let input_data = { 'id_struck' : struck_id, 'user_bayar' : input_price }
+    let name_buyer = document.getElementById('bayer_name').value.trim().length === 0 ? null : document.getElementById('bayer_name').value;
+    let input_data = { 'id_struck' : struck_id, 'user_bayar' : input_price, 'nama_pembeli' : name_buyer }
     let loading_struck = document.getElementById("loading-struck-id");
+    console.log('name bayer',name_buyer);
     $.ajax({
         type: "post",  
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -302,7 +306,7 @@ $("#btn-hitung-transaksi").click(function(){
                 if (loading_struck) {
                     loading_struck.remove();
                 }
-                
+                console.log('json data atas',responseJson);
                 list_product_buy_customer.map((item,key)=>{
                    
                   
@@ -333,10 +337,13 @@ $("#btn-hitung-transaksi").click(function(){
                 let total_must_pay = document.getElementById('id_struckUser_total');
                 let user_pay = document.getElementById('id_struckUser_bayar')
                 let kembalian = document.getElementById('id_struckUser_kembali')
+                let bayer_name = document.getElementById('id_name_buyer');
 
                 total_must_pay.textContent = json_data.total_harga;
                 user_pay.textContent = json_data.dibayar
                 kembalian.textContent = json_data.kembalian
+                bayer_name.textContent = json_data.nama_pembeli
+                console.log('json data',json_data);
 
                 let btn_trn = document.getElementById('btn-hitung-transaksi');
                 btn_trn.setAttribute("disabled", true);
