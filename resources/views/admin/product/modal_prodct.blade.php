@@ -34,3 +34,26 @@
         </form>
     </div>
 </div>
+
+<div class="modal2" id="modalProdTerjual">
+    <div class="modal__wrapper">
+        <div>
+            <h3>Total terjual <span style="color: black;" id="total_terjual"></span></h3>
+        </div>
+        <p></p>
+        <form action="" id="form-product-total-terjual">
+            {{-- <div class="input-group">
+                <label id="id_label_nama_variant" class="text-label-modal" for="nama_variant" style="margin-left: 5px;">Nama variant</label>
+                <input class="input-modal-global" id="nama_variant" required type="text" style="margin-top:5px;" name="nama_variant" placeholder="nama variant">
+            </div> --}}
+            <div class="input-group" style="margin-bottom: 20px">
+                <label class="text-label-modal" for="date_transaksi" style="margin-left: 5px;">Tanggal transaksi</label>
+                <input class="input-modal-global input-date-trans" required id="date_transaksi" type="date" style="margin-top:5px;" name="date_transaksi">
+            </div>
+            <div class="btn-group-modal2">
+                <button type="submit" class="btn-modal2 btn-blue">Submit</button>
+                <button class="btn-modal2 btn-light-modal2 modal__close_2_prod_terjual">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

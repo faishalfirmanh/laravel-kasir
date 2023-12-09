@@ -112,31 +112,7 @@ $("#name_product").keyup(function(){
 
 $(document).ready(function() {
 
-    function getTotalProductTerjual(id_product){
-            return new Promise(function(resolve, reject) {
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    url: `{{ route('total-product-terjual') }}`,
-                    type: 'post',
-                    data: { 'id_product' : id_product},
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
-                    },
-                    success: function(data) {
-                        // const terjual = 'terjual' //data.data;
-                        const json = data;
-                        resolve(json);
-                        
-                    },
-                    error: function(xhr, status, error) {
-                        // console.log('',xhr);
-                         reject("error get product terjual");
-                    }
-                });
-            })
-    }
+   
    $('#id-table-product').DataTable({
         "serverside": true,
         "pageLength": 10,
@@ -228,7 +204,7 @@ $(document).ready(function() {
                     const btn_price_sell = `<a href="${row.route_url}" class="fas fa-money-bill" style="background:#b4a2fb;margin-right:10px;" title="price-product"></a>`;
                     const btn_cek_terjual =  `<a  onclick="alertTerjual(${row.id_product})" class="fas fa-store" style="background:#189B87;margin-right:15px;" title="product-terjual"></a>`;
                      return `<i onclick="editProduct(${row.id_product})" class="far fa-edit" style="margin-right:5px;"></i>` +
-                        cek + btn_price_sell;
+                        cek + btn_price_sell +btn_cek_terjual;
                      }
             }
          ]
@@ -245,6 +221,106 @@ $(document).ready(function() {
         let navbar_atas = document.getElementsByClassName('top-bar');
         let navbar_atas_id = document.getElementById('top-bar');
         const navbar_samping_id = document.getElementById('sidebar');
+
+        function getTotalProductTerjual(param){
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    url: `{{ route('total-product-terjual') }}`,
+                    type: 'post',
+                    data: param,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                    },
+                    success: function(data) {
+                        // const terjual = 'terjual' //data.data;
+                        const json = data;
+                        resolve(json);
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        // console.log('',xhr);
+                         reject("error get product terjual");
+                    }
+                });
+            })
+        }
+
+        function removeElementsByClass(className) {
+            var elements = document.getElementsByClassName(className);
+            while (elements.length > 0) {
+                elements[0].parentNode.removeChild(elements[0]);
+            }
+        }
+
+        const alertTerjual = async (id_product) =>{
+            //open modal
+            const modal = document.querySelector('#modalProdTerjual')
+            const modal_close = modal.querySelector('.modal__close_2_prod_terjual')
+            const modal_total = document.getElementById("modalProdTerjual");
+            const form_total_terjual = document.getElementById("form-product-total-terjual")
+            removeElementsByClass("hidden-input-class");
+            modal.classList.add('show-modal')
+            navbar_atas_id.style.position = "initial";
+            navbar_samping_id.style.position = "initial";
+            modal_close.addEventListener('click', function(e) {
+                e.preventDefault()
+                modal_total.classList.remove('show-modal')
+                navbar_atas_id.style.position = "fixed";
+                navbar_samping_id.style.position = "fixed";
+            })
+            //open modal
+            // const date;
+            const param = {'id_product': id_product}
+            let span_total_prd = document.getElementById('total_terjual');
+            try {
+                const ajaxData = await getTotalProductTerjual(param);
+                const totalterjual = ajaxData.data[0].data;
+                console.log('ajaxdata',);
+                span_total_prd.textContent = "";
+                appendDelayedTextNode(span_total_prd,totalterjual,700);
+                
+                var hiddenInput = document.createElement("input");
+                hiddenInput.type = "hidden";
+                hiddenInput.id = `in_product_${id_product}`;
+                hiddenInput.className = "hidden-input-class";
+                form_total_terjual.appendChild(hiddenInput);
+            } catch (error) {
+                console.log('error total');
+                console.log(error);
+            }
+           
+        }
+
+        $('#modalProdTerjual').on("submit", async function(e) {
+            e.preventDefault();
+            var input_date = document.getElementsByClassName('input-date-trans');
+            let span_total_prd = document.getElementById('total_terjual');
+            let attribute = document.getElementsByClassName("hidden-input-class")[0].getAttribute('id');//cek attribute id product
+            let id_prd = attribute.split("_")[2];
+        
+            if (input_date.length > 0) {
+                var val_date = input_date[0].value; 
+                if (val_date.trim().length > 0) {
+                    let param_with_date = {'id_product': id_prd, 'date' : val_date}
+                    try {
+                        const ajaxData = await getTotalProductTerjual(param_with_date);
+                        const totalterjualDate = ajaxData.data[0].data;
+                        span_total_prd.textContent = "";
+                        appendDelayedTextNode(span_total_prd,totalterjualDate,700);
+                    
+                    } catch (error) {
+                        console.log('error total');
+                        appendDelayedTextNode(span_total_prd,"error total product",700);
+                    }
+                }
+            }
+                
+        })
+
+       
 
 
         function getAllToko(){
