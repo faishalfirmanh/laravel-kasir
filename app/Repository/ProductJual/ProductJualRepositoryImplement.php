@@ -81,7 +81,7 @@ class ProductJualRepositoryImplement implements ProductJualRepository{
 
     public function getProductJualByIdProduct($id)
     {
-        $data = $this->model->where('product_id',$id)->with(['productName','productBeliKulak'])->orderBy('id_product_jual','asc')->get();
+        $data = $this->model->where('product_id',$id)->with(['productName','productBeliKulak','keranjangProducJaul'])->orderBy('id_product_jual','asc')->get();
         return $data;
     }
 

@@ -111,6 +111,32 @@ $("#name_product").keyup(function(){
 });
 
 $(document).ready(function() {
+
+    function getTotalProductTerjual(id_product){
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    url: `{{ route('total-product-terjual') }}`,
+                    type: 'post',
+                    data: { 'id_product' : id_product},
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem("token")}`);
+                    },
+                    success: function(data) {
+                        // const terjual = 'terjual' //data.data;
+                        const json = data;
+                        resolve(json);
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        // console.log('',xhr);
+                         reject("error get product terjual");
+                    }
+                });
+            })
+    }
    $('#id-table-product').DataTable({
         "serverside": true,
         "pageLength": 10,
@@ -200,6 +226,7 @@ $(document).ready(function() {
                         `<i onclick="deleteProduct(${row.id_product})" class="far fa-trash-alt" style="background:red;margin-right:5px" title="delete-toko"></i>` :
                         '';
                     const btn_price_sell = `<a href="${row.route_url}" class="fas fa-money-bill" style="background:#b4a2fb;margin-right:10px;" title="price-product"></a>`;
+                    const btn_cek_terjual =  `<a  onclick="alertTerjual(${row.id_product})" class="fas fa-store" style="background:#189B87;margin-right:15px;" title="product-terjual"></a>`;
                      return `<i onclick="editProduct(${row.id_product})" class="far fa-edit" style="margin-right:5px;"></i>` +
                         cek + btn_price_sell;
                      }

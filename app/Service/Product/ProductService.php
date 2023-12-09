@@ -11,4 +11,5 @@ interface ProductService{
     public function getProductByIdServiceInput($id);
     public function postProductService($data,$id);
     public function deleteProductService($id);
+    public function getTotalProductTerjualByIdProductService($request);
 }

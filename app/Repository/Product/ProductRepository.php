@@ -11,4 +11,5 @@ interface ProductRepository{
     public function updateStockKg($idPrd, $stockFinal);
     public function updateStockPcs($idPrd, $stockFinal);
     public function deleteProduct($id);
+    public function getTotolAllProductTerjual($id_product,$date);
 }

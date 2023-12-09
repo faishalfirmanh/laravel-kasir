@@ -33,6 +33,7 @@
                         <th>Keuntungan</th>
                         <th>Total product (beda merk)</th>
                         <th>tanggal</th>
+                        <th>Pembeli</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -98,10 +99,21 @@
                 {
                     "data" : `string_date`, render: function(data, type, row){
                         const aa = row.created_at;
+                        const dateObject = new Date(aa);
+                        const hours = dateObject.getHours();
+                        const minutes = dateObject.getMinutes();
+                      
                         const dt = new Date(aa).toISOString().split('T')[0];
                         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                        const string_date = new Date(dt).toLocaleString("id-ID", options)
+                        const timeJam = `${hours}:${minutes}`;
+                        const string_date = `${new Date(dt).toLocaleString("id-ID", options)} | ${timeJam}`
                         return string_date;
+                    }
+                },
+                {
+                    "data" :  `pembeli`, render: function(data,type, row){
+                        const pembeli = row.nama_pembeli == null || row.nama_pembeli == "" ? "-" : row.nama_pembeli;
+                        return pembeli;
                     }
                 },
                 { "data" : 'btn', render: function(data, type, row) {

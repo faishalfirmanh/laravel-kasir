@@ -25,4 +25,14 @@ class ProductJual extends Model
     public function productBeliKulak(){
         return $this->belongsTo(ProductBeli::class,'product_beli_id');
     }
+
+    public function keranjangProducJaul(){
+        return $this->hasMany(KeranjangKasir::class,'product_jual_id')->where('status',2);
+    }
+
+    // public function getTotalTerjualAttribute(){
+    //     $cek = $this->keranjangProducJaul;//->count();
+    //     return $cek;//['jumlah_item_dibeli'];
+
+    // }
 }

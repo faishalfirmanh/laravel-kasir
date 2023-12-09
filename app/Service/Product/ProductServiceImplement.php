@@ -164,4 +164,17 @@ class ProductServiceImplement implements ProductService{
         return $delete;
     }
 
+    public function getTotalProductTerjualByIdProductService($request)
+    {
+        $validated = Validator::make($request->all(),[
+            'id_product' => 'required|exists:products,id_product',
+            'date' => 'nullable|date'
+        ]);
+        if ($validated->fails()) {
+            return $validated->errors();
+        }
+        $data = $this->ProductRepository->getTotolAllProductTerjual($request->id_product, $request->date);
+        return $data;
+    }
+
 }

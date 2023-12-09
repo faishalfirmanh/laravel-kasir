@@ -61,7 +61,7 @@ class NewStruckController extends Controller
     public function listTransactionAll(Request $request)
     {
         $data = $this->service->getAllStruckTransactionService($request);
-        return $this->generalResponseV2($data,9);
+        return $this->generalResponseV2($data,10);
     }
 
     public function listTransactionPaginate(Request $request)

@@ -73,6 +73,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::post('/product-add', 'store')->name('product-add');
         Route::post('/product-delete', 'remove')->name('product-delete');
         Route::post('/product-upload-excel', 'uploadExcelProductController')->name('product-upload-excel');
+        Route::post('/total-product-terjual', 'getProductTerjualByIdProduct')->name('total-product-terjual');// api cek product terhual (id_product, date (opisonal))
     
         //product jual
         Route::post('/product-jual-byid-product','getProductJualByIdProduct')->name('product-jual-byid-product');

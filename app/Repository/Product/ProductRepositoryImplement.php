@@ -4,7 +4,7 @@ namespace App\Repository\Product;
 
 use App\Models\Product;
 use App\Repository\Product\ProductRepository;
-
+use Illuminate\Support\Facades\DB;
 class ProductRepositoryImplement implements ProductRepository{
 
     protected $model;
@@ -123,5 +123,30 @@ class ProductRepositoryImplement implements ProductRepository{
         $model_save->pcs = $stockFinal;
         $model_save->save();
         return $model_save->fresh();
+    }
+
+    public function getTotolAllProductTerjual($id_product,$date)
+    {
+        if ($date != "" || $date != null) {
+            $totalAll = DB::table('products as p')
+                ->leftJoin('product_juals as pj', 'p.id_product', '=', 'pj.product_id')
+                ->leftJoin('keranjang_kasirs as k', 'pj.id_product_jual', '=', 'k.product_jual_id')
+                ->where('p.id_product', $id_product)
+                ->where('k.status', 2)
+                ->whereDate('k.created_at', $date)
+                ->sum('k.jumlah_item_dibeli');
+           
+        }else{
+            $totalAll = DB::table('products as p')
+            ->leftJoin('product_juals as pj', 'p.id_product', '=', 'pj.product_id')
+            ->leftJoin('keranjang_kasirs as k', 'pj.id_product_jual', '=', 'k.product_jual_id')
+            ->where('p.id_product', $id_product)
+            ->where('k.status', 2)
+            ->select(DB::raw('SUM(k.jumlah_item_dibeli) as totalAll'))
+            ->first();
+            
+       }
+       $total = gettype($totalAll) == "object" ? round($totalAll->totalAll ?? 0) : (int) $totalAll;
+        return $total;
     }
 }
