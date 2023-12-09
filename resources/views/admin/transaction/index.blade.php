@@ -54,6 +54,7 @@
       $(document).ready(function(){
         $('#transaksi-ajax-list').DataTable({
             "serverside": true,
+            "order": [[0, 'desc']],
             "pageLength": 10,
             "ajax": {
                 "url": "{{ route('get-all-transaction') }}",
@@ -106,7 +107,7 @@
                         const dt = new Date(aa).toISOString().split('T')[0];
                         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                         const timeJam = `${hours}:${minutes}`;
-                        const string_date = `${new Date(dt).toLocaleString("id-ID", options)} | ${timeJam}`
+                        const string_date = `${new Date(aa).toLocaleString("id-ID", options)} | ${timeJam}`
                         return string_date;
                     }
                 },

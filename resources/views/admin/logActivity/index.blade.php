@@ -43,6 +43,8 @@
    
    $(document).ready(function() {
       $('#activity-ajax-list').DataTable({
+         "serverside": true,
+         "order": [[0, 'desc']],
          "ajax": {
             "url": "{{ route('get-log-all') }}",
             "dataSrc": "data",/*response data*/
@@ -82,7 +84,7 @@
                         const dt = new Date(aa).toISOString().split('T')[0];
                         const time_ = new Date(aa).getHours() + ":" + new Date(aa).getMinutes()
                         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                        const string_date = new Date(dt).toLocaleString("id-ID", options)
+                        const string_date = new Date(aa).toLocaleString("id-ID", options)
                         return `${string_date} | ${time_}`;
                     }
             },
