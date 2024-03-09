@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CobaController;
 use App\Http\Controllers\API\KategoriController;
 use App\Http\Controllers\API\NewStruckController;
 use App\Http\Controllers\API\ProductController;
@@ -30,6 +31,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('login',[UserController::class,'loginUser'])->name('login');
 Route::post('logout-api',[UserController::class,'logouttess'])->name('logout-api');
 
+Route::post('cobaCreate',[CobaController::class,'CobaCreate'])->name('cobaCreate');
+Route::get('getAllCoba',[CobaController::class,'getAll'])->name('getAllCoba');
+Route::post('getById',[CobaController::class,'getCobaById'])->name('getById');
+Route::post('cari',[CobaController::class,'searchCoba'])->name('cari');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     //--use jwt--
